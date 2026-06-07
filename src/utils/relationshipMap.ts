@@ -93,6 +93,10 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
   const lifePlace = textAnswer(answers, 'life-place')
   const motivation = textAnswer(answers, 'availability-carence')
   const lowClarityCount = relationalClarityScore(answers)
+  const gazeAnswer = textAnswer(answers, 'intimacy-gaze')
+  const gazeDetail = textAnswer(answers, 'intimacy-gaze-detail')
+  const gazeEaseValue = answers['intimacy-gaze-ease']
+  const gazeEase = typeof gazeEaseValue === 'number' ? gazeEaseValue : null
 
   const clarityNeed =
     numericAnswer(answers, 'values-consistency') >= 4 ||
@@ -286,6 +290,42 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
           ? 'Disponibilidad posible, con aspectos que conviene cuidar'
           : 'Un momento para avanzar despacio y escucharte'
 
+  let gazeReading: string | undefined
+  if (gazeAnswer || gazeEase !== null) {
+    if (
+      gazeEase !== null &&
+      gazeEase >= 4 &&
+      includesAny(gazeAnswer, ['natural', 'conexión'])
+    ) {
+      gazeReading =
+        'La mirada y la presencia parecen ser una vía importante de conexión para ti. Sueles poder sostener ese contacto sin sentir que necesitas protegerte de inmediato.'
+    } else if (
+      includesAny(gazeAnswer, [
+        'hasta que siento confianza',
+        'puede intimidarme',
+        'me remueve',
+      ]) ||
+      includesAny(gazeDetail, [
+        'confianza',
+        'seguridad emocional',
+        'juzgado',
+        'invasiva',
+      ])
+    ) {
+      gazeReading =
+        'Tus respuestas sugieren que la mirada y la presencia pueden ser una vía importante de conexión, aunque necesitas sentir seguridad y confianza antes de sostener una intimidad más directa.'
+    } else if (
+      (gazeEase !== null && gazeEase <= 2) ||
+      includesAny(gazeAnswer, ['apartar la mirada', 'demasiada intensidad'])
+    ) {
+      gazeReading =
+        'Parece que el contacto visual intenso puede activar cierta autoprotección. Esto no es negativo: indica que el ritmo y una presencia cuidadosa son importantes para abrirte sin sentirte expuesto/a.'
+    } else {
+      gazeReading =
+        'La forma en que sostienes la mirada parece cambiar con la confianza, la intensidad y cómo percibes la presencia de la otra persona. Necesitas que ese contacto se sienta cuidado, no exigido.'
+    }
+  }
+
   return {
     bondingStyle,
     safetyNeeds,
@@ -295,5 +335,6 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
     strengths: strengths.slice(0, 3),
     availabilityLevel,
     availabilityLabel,
+    gazeReading,
   }
 }

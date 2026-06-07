@@ -15,8 +15,10 @@ export function AppLayout({
   minimal = false,
 }: AppLayoutProps) {
   return (
-    <div className="min-h-screen">
-      <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-5 py-6 sm:px-8 lg:px-10">
+    <div className={minimal ? 'h-[100dvh] overflow-hidden' : 'min-h-screen'}>
+      <header className={`relative z-20 mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10 ${
+        minimal ? 'h-[5.25rem] py-4' : 'py-6'
+      }`}>
         <button
           type="button"
           onClick={() => onNavigate('landing')}
@@ -76,10 +78,12 @@ export function AppLayout({
 
       <main>{children}</main>
 
-      <footer className="mx-auto mt-20 flex max-w-7xl flex-col gap-4 border-t border-line px-5 py-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-        <p>Real Linkings · Menos ruido. Más atención a lo que importa.</p>
-        <p>Una herramienta para conocerte y elegir con más conciencia.</p>
-      </footer>
+      {!minimal && (
+        <footer className="mx-auto mt-20 flex max-w-7xl flex-col gap-4 border-t border-line px-5 py-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+          <p>Real Linkings · Menos ruido. Más atención a lo que importa.</p>
+          <p>Una herramienta para conocerte y elegir con más conciencia.</p>
+        </footer>
+      )}
     </div>
   )
 }

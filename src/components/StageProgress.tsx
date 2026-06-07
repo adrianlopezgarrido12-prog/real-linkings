@@ -1,37 +1,54 @@
 interface StageProgressProps {
-  stages: { id: string; label: string }[]
-  current: number
+  dimension: number
+  totalDimensions: number
+  label: string
+  substep: number
+  totalSubsteps: number
+  globalProgress: number
 }
 
-export function StageProgress({ stages, current }: StageProgressProps) {
-  const progress = ((current + 1) / stages.length) * 100
+export function StageProgress({
+  dimension,
+  totalDimensions,
+  label,
+  substep,
+  totalSubsteps,
+  globalProgress,
+}: StageProgressProps) {
+  const dimensionProgress = (substep / totalSubsteps) * 100
 
   return (
-    <div className="mb-7 sm:mb-10">
-      <div className="flex items-end justify-between gap-5">
-        <div>
-          <p className="eyebrow">Tu recorrido</p>
-          <p className="mt-2 font-serif text-xl text-forest sm:text-2xl">
-            {stages[current].label}
+    <div className="mb-4 shrink-0 sm:mb-5">
+      <div className="flex items-end justify-between gap-4">
+        <div className="min-w-0">
+          <p className="eyebrow truncate">
+            {dimension}/{totalDimensions} · {label}
+          </p>
+          <p className="mt-1.5 text-xs text-muted">
+            {totalSubsteps === 1
+              ? 'Lectura final'
+              : `Paso ${substep} de ${totalSubsteps}`}
           </p>
         </div>
-        <p className="shrink-0 text-xs font-medium tracking-[0.12em] text-muted">
-          {String(current + 1).padStart(2, '0')}
-          <span className="mx-2 text-line">/</span>
-          {String(stages.length).padStart(2, '0')}
-        </p>
+        <span className="shrink-0 font-serif text-lg italic text-clay">
+          {Math.round(globalProgress)}%
+        </span>
       </div>
 
-      <div className="mt-5 h-px overflow-hidden bg-forest/10">
+      <div className="mt-3 h-px overflow-hidden bg-forest/10">
         <div
-          className="h-full bg-clay transition-[width] duration-700 ease-out"
-          style={{ width: `${progress}%` }}
+          className="h-full bg-clay transition-[width] duration-500 ease-out"
+          style={{ width: `${globalProgress}%` }}
         />
       </div>
-      <div className="mt-2 flex justify-between text-[0.65rem] text-muted/70">
-        <span>Lo visible</span>
-        <span>Tu mapa completo</span>
-      </div>
+      {totalSubsteps > 1 && (
+        <div className="mt-1.5 h-0.5 overflow-hidden rounded-full bg-forest/6">
+          <div
+            className="h-full rounded-full bg-moss/50 transition-[width] duration-500 ease-out"
+            style={{ width: `${dimensionProgress}%` }}
+          />
+        </div>
+      )}
     </div>
   )
 }

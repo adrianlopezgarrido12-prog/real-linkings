@@ -47,7 +47,7 @@ export function SymbolicFileUpload({
   }
 
   return (
-    <div className="rounded-2xl border border-white/12 bg-white/[0.045] p-5 sm:p-6">
+    <div className="rounded-2xl border border-white/12 bg-white/[0.045] p-4">
       <div className="grid gap-4 sm:grid-cols-[0.6fr_1.4fr] sm:items-end">
         <label className="block">
           <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[#c9b987]">
@@ -58,7 +58,7 @@ export function SymbolicFileUpload({
             onChange={(event) =>
               setCategory(event.target.value as SymbolicFileCategory)
             }
-            className="min-h-12 w-full rounded-xl border border-white/15 bg-[#152321] px-4 text-sm text-[#f5f0e5] outline-none focus:border-[#c9b987]/65"
+            className="min-h-11 w-full rounded-xl border border-white/15 bg-[#152321] px-3 text-xs text-[#f5f0e5] outline-none focus:border-[#c9b987]/65"
           >
             {categories.map((item) => (
               <option key={item}>{item}</option>
@@ -66,7 +66,7 @@ export function SymbolicFileUpload({
           </select>
         </label>
 
-        <label className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-dashed border-[#c9b987]/45 bg-[#c9b987]/8 px-5 text-center text-sm font-medium text-[#eee6d3] transition hover:bg-[#c9b987]/12">
+        <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-dashed border-[#c9b987]/45 bg-[#c9b987]/8 px-4 text-center text-xs font-medium text-[#eee6d3] transition hover:bg-[#c9b987]/12">
           Seleccionar archivos del dispositivo
           <input
             type="file"
@@ -79,11 +79,11 @@ export function SymbolicFileUpload({
       </div>
 
       {files.length > 0 && (
-        <ul className="mt-5 divide-y divide-white/10">
+        <ul className="mt-3 max-h-24 divide-y divide-white/10 overflow-y-auto">
           {files.map((file) => (
             <li
               key={file.id}
-              className="flex items-center justify-between gap-4 py-3"
+              className="flex items-center justify-between gap-4 py-2"
             >
               <div className="min-w-0">
                 <p className="truncate text-sm text-[#f5f0e5]">{file.name}</p>
@@ -105,7 +105,7 @@ export function SymbolicFileUpload({
         </ul>
       )}
 
-      <p className="mt-5 text-xs leading-5 text-[#f5f0e5]/42">
+      <p className="mt-3 text-[0.68rem] leading-5 text-[#f5f0e5]/42">
         En este prototipo los archivos solo se guardan en el estado local de
         esta sesión. No se envían a ningún servidor.
       </p>

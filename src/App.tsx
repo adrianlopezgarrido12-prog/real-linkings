@@ -75,6 +75,7 @@ function App() {
       {currentPage === 'compatibility-report' && (
         <CompatibilityReportPage
           candidate={selectedCandidate}
+          answers={answers}
           symbolicProfile={symbolicProfile}
           onBack={() => navigate('matches')}
         />

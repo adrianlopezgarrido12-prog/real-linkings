@@ -47,7 +47,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               <span aria-hidden="true">→</span>
             </Button>
             <span className="text-xs text-muted">
-              12 salas · una dimensión opcional
+              12 dimensiones · una capa simbólica opcional
             </span>
           </div>
         </div>

@@ -59,6 +59,10 @@ export const candidates: CandidateProfile[] = [
         'Utiliza estos lenguajes como herramientas narrativas, no como certezas.',
       uploadedFiles: [],
     },
+    gazeProfile: {
+      comfort: 4,
+      tendency: 'direct',
+    },
   },
   {
     id: 'candidate-daniel',
@@ -88,6 +92,10 @@ export const candidates: CandidateProfile[] = [
       wantsSymbolicLayer: false,
       uploadedFiles: [],
     },
+    gazeProfile: {
+      comfort: 2,
+      tendency: 'needs-trust',
+    },
   },
   {
     id: 'candidate-marta',
@@ -113,6 +121,10 @@ export const candidates: CandidateProfile[] = [
     },
     priorities: ['innerWorld', 'intimacy', 'lifestyle'],
     traits: ['espontánea', 'creativa', 'exploradora'],
+    gazeProfile: {
+      comfort: 4,
+      tendency: 'direct',
+    },
   },
 ]
 

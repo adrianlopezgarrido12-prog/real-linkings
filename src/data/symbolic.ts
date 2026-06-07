@@ -40,6 +40,7 @@ export const humanDesignTypes = [
   'Manifesting Generator',
   'Projector',
   'Reflector',
+  'No lo sé',
 ]
 
 export const humanDesignAuthorities = [

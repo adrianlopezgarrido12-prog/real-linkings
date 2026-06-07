@@ -17,103 +17,103 @@ export interface QuestionSection {
 export const questionSections: QuestionSection[] = [
   {
     id: 'basic',
-    label: 'Identidad básica',
+    label: 'Dimensión de lo visible',
     title: 'Lo visible también ayuda a situarnos',
     reflection: 'Lo visible abre el recorrido, pero no lo agota.',
     description:
-      'Empezamos por lo visible: los datos que permiten situarte. Esta parte no define quién eres, solo abre la primera puerta.',
+      'Empezamos por los datos que permiten situarte. Esta parte no define quién eres: es la primera capa desde la que empezamos a construir tu mapa.',
     atmosphere: 'clear',
-    nextLabel: 'Entrar en tu vida práctica',
+    nextLabel: 'Continuar',
   },
   {
     id: 'practicalLife',
-    label: 'Vida práctica',
+    label: 'Dimensión de la vida práctica',
     title: 'La forma concreta que tiene tu día a día',
     reflection: 'El lugar concreto donde una relación tendría que poder vivir.',
     description:
       'Una relación también se construye en lo cotidiano: horarios, ciudad, estilo de vida, disponibilidad real y forma de habitar el día a día.',
     atmosphere: 'earth',
-    nextLabel: 'Continuar hacia tu proyecto vital',
+    nextLabel: 'Continuar',
   },
   {
     id: 'lifeProject',
-    label: 'Proyecto vital',
+    label: 'Dimensión del proyecto vital',
     title: 'La vida que quieres poder compartir',
     reflection: 'Una relación también es una dirección elegida entre dos.',
     description:
       'Amar también implica mirar hacia dónde camina cada persona. No basta con gustarse: hace falta saber si se quiere construir en direcciones que puedan convivir.',
     atmosphere: 'structure',
-    nextLabel: 'Abrir la sala de tus valores',
+    nextLabel: 'Continuar',
   },
   {
     id: 'values',
-    label: 'Valores y visión del amor',
+    label: 'Dimensión de los valores',
     title: 'Los principios desde los que eliges',
     reflection: 'Lo que permanece cuando la intensidad cambia.',
     description:
       'A veces dos personas se desean, pero no entienden el amor de la misma manera. Aquí miramos qué principios sostienen tu forma de elegir.',
     atmosphere: 'depth',
-    nextLabel: 'Continuar hacia el mapa emocional',
+    nextLabel: 'Continuar',
   },
   {
     id: 'emotionalStyle',
-    label: 'Estilo emocional',
+    label: 'Dimensión emocional',
     title: 'Cómo te mueves cuando alguien empieza a importarte',
     reflection: 'Donde cercanía y protección empiezan a encontrarse.',
     description:
       'No todos nos movemos igual cuando alguien empieza a importarnos. Algunas personas buscan claridad. Otras necesitan espacio. Otras se protegen antes de abrirse.',
     atmosphere: 'warm',
-    nextLabel: 'Entrar en cómo atraviesas el conflicto',
+    nextLabel: 'Continuar',
   },
   {
     id: 'communication',
-    label: 'Comunicación y conflicto',
+    label: 'Dimensión del conflicto',
     title: 'Lo que ocurre cuando estar de acuerdo ya no es posible',
     reflection: 'No se trata de no romperse, sino de aprender a reparar.',
     description:
       'Una relación no se revela solo cuando todo va bien. También aparece en cómo se habla, se discute, se repara y se vuelve a mirar al otro después de una tensión.',
     atmosphere: 'honest',
-    nextLabel: 'Continuar hacia la intimidad',
+    nextLabel: 'Continuar',
   },
   {
     id: 'intimacy',
-    label: 'Intimidad y afecto',
+    label: 'Dimensión de la intimidad',
     title: 'Las formas en las que permites que alguien se acerque',
     reflection: 'La cercanía también tiene un ritmo, un lenguaje y unos límites.',
     description:
       'El deseo, la ternura y el contacto también forman parte del vínculo. Esta sección no busca invadir, sino entender cómo vives la cercanía.',
     atmosphere: 'delicate',
-    nextLabel: 'Abrir la sala de tu historia relacional',
+    nextLabel: 'Continuar',
   },
   {
     id: 'patterns',
-    label: 'Historia relacional y patrones',
+    label: 'Dimensión de los patrones',
     title: 'Lo que no quieres seguir repitiendo sin darte cuenta',
     reflection: 'Mirar lo vivido no obliga a quedarse dentro de ello.',
     description:
       'No se trata de exponer heridas, sino de reconocer qué patrones se repiten y qué partes de ti necesitan ser cuidadas con más conciencia.',
     atmosphere: 'silent',
-    nextLabel: 'Continuar hacia tu mundo interior',
+    nextLabel: 'Continuar',
   },
   {
     id: 'innerWorld',
-    label: 'Anhelos y mundo interior',
+    label: 'Dimensión del anhelo',
     title: 'La parte de ti que espera poder ser compartida',
     reflection: 'A veces lo más importante es también lo más difícil de nombrar.',
     description:
       'Lo que anhelamos en el amor dice mucho de lo que buscamos construir, pero también de lo que alguna vez sentimos que nos faltó.',
     atmosphere: 'poetic',
-    nextLabel: 'Entrar en tu disponibilidad actual',
+    nextLabel: 'Continuar',
   },
   {
     id: 'availability',
-    label: 'Disponibilidad relacional',
+    label: 'Dimensión de la disponibilidad',
     title: 'El espacio que hoy puedes ofrecer de verdad',
     reflection: 'Desear una relación y poder cuidarla no siempre son lo mismo.',
     description:
       'Desear una relación no siempre significa estar disponible para sostenerla. Mirarlo con honestidad también es una forma de cuidado.',
     atmosphere: 'mature',
-    nextLabel: 'Abrir la dimensión simbólica',
+    nextLabel: 'Pasar a la dimensión simbólica',
   },
 ]
 
@@ -530,6 +530,53 @@ export const questions: Question[] = [
     prompt: 'Completa la frase desde lo que te hace sentir cuidado/a.',
     type: 'sentence',
     sentenceStart: 'La cercanía se vuelve segura cuando...',
+  },
+  {
+    id: 'intimacy-gaze',
+    category: 'intimacy',
+    intro:
+      'La intimidad no empieza solo en el cuerpo. A veces empieza en algo tan simple y tan difícil como sostener la mirada de otra persona sin actuar, sin defenderse y sin esconderse.',
+    prompt:
+      '¿Cómo te resulta sostener la mirada de otra persona cuando hay presencia, atracción o vulnerabilidad?',
+    type: 'single',
+    options: [
+      'Me resulta natural y suelo sentir conexión.',
+      'Me gusta, pero puede intimidarme si la otra persona me importa.',
+      'Me cuesta al principio, hasta que siento confianza.',
+      'Me remueve bastante sentirme mirado/a de verdad.',
+      'Tiendo a apartar la mirada cuando siento demasiada intensidad.',
+      'Depende, pero quiero concretarlo mejor.',
+    ],
+    conditionalWhen: 'Depende, pero quiero concretarlo mejor.',
+    conditionalPrompt: '¿De qué depende principalmente?',
+    conditionalOptions: [
+      'Del nivel de confianza que tenga con la persona.',
+      'De si siento atracción.',
+      'De si me siento juzgado/a.',
+      'De si siento seguridad emocional.',
+      'De si la mirada se siente invasiva o cuidadosa.',
+      'De mi estado interno en ese momento.',
+    ],
+    conditionalAnswerId: 'intimacy-gaze-detail',
+    conditionalRequired: true,
+  },
+  {
+    id: 'intimacy-gaze-ease',
+    category: 'intimacy',
+    prompt:
+      'Me resulta fácil mirar a los ojos y dejarme mirar sin sentir que tengo que protegerme.',
+    type: 'scale',
+    scaleLabels: ['Muy difícil', 'Muy fácil'],
+  },
+  {
+    id: 'intimacy-gaze-nuance',
+    category: 'intimacy',
+    prompt:
+      'Si quieres, matiza qué te ocurre cuando sostienes la mirada de alguien que te atrae o te importa.',
+    helper: 'Opcional',
+    placeholder:
+      'Ejemplo: me gusta, pero si siento demasiada intensidad tiendo a apartar la mirada.',
+    type: 'text',
   },
 
   {

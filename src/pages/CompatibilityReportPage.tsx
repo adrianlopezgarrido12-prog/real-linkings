@@ -2,19 +2,25 @@ import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { CompatibilitySummary } from '../components/CompatibilitySummary'
 import { ScoreBar } from '../components/ScoreBar'
-import type { CandidateProfile, SymbolicProfile } from '../types'
+import type {
+  AnswerValue,
+  CandidateProfile,
+  SymbolicProfile,
+} from '../types'
 import { mainUser } from '../data/mockUsers'
 import { hasSymbolicData } from '../data/symbolic'
 import { calculateCompatibility } from '../utils/compatibility'
 
 interface CompatibilityReportPageProps {
   candidate: CandidateProfile
+  answers: Record<string, AnswerValue>
   symbolicProfile: SymbolicProfile
   onBack: () => void
 }
 
 export function CompatibilityReportPage({
   candidate,
+  answers,
   symbolicProfile,
   onBack,
 }: CompatibilityReportPageProps) {
@@ -28,6 +34,26 @@ export function CompatibilityReportPage({
       : userHasSymbolic
         ? `Tú has completado esta capa y ${candidate.name} no. Esto no indica falta de afinidad; simplemente puede mostrar formas distintas de acercarse al autoconocimiento.`
         : `${candidate.name} ha completado esta capa y tú has preferido omitirla. Esto no indica falta de afinidad; simplemente puede mostrar formas distintas de acercarse al autoconocimiento.`
+  const gazeAnswer = answers['intimacy-gaze']
+  const gazeEase = answers['intimacy-gaze-ease']
+  const userHasGazeAnswer =
+    typeof gazeAnswer === 'string' || typeof gazeEase === 'number'
+  const userGazeComfort =
+    typeof gazeEase === 'number'
+      ? gazeEase
+      : typeof gazeAnswer === 'string' &&
+          gazeAnswer.includes('Me resulta natural')
+        ? 4
+        : 3
+  const candidateGaze = candidate.gazeProfile
+  const gazeCompatibilityReading =
+    candidateGaze && userHasGazeAnswer
+      ? userGazeComfort >= 4 && candidateGaze.comfort >= 4
+        ? 'Ambos parecéis valorar una presencia directa y sostenida, lo que podría facilitar una sensación de conexión silenciosa.'
+        : Math.abs(userGazeComfort - candidateGaze.comfort) >= 2
+          ? 'Una persona parece cómoda con una mirada intensa y la otra necesita más confianza antes de sostenerla. Esta diferencia no implica incompatibilidad, pero convendría cuidar el ritmo.'
+          : 'Ambos parecéis necesitar que la mirada y la presencia crezcan con suficiente confianza. Esto podría ayudaros a respetar el ritmo de apertura del otro.'
+      : undefined
 
   return (
     <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 lg:px-10">
@@ -121,6 +147,28 @@ export function CompatibilityReportPage({
           </Card>
         </div>
       </div>
+
+      {gazeCompatibilityReading && (
+        <Card className="mt-6 overflow-hidden p-6 sm:p-8">
+          <div className="grid gap-5 lg:grid-cols-[0.42fr_1.58fr] lg:items-center">
+            <div>
+              <p className="eyebrow">Dentro de la intimidad</p>
+              <h2 className="mt-2 font-serif text-2xl text-forest">
+                Mirada y presencia
+              </h2>
+            </div>
+            <div>
+              <p className="text-sm leading-7 text-ink">
+                {gazeCompatibilityReading}
+              </p>
+              <p className="mt-2 text-xs leading-5 text-muted">
+                Esta lectura habla de ritmo, vulnerabilidad y forma de conectar.
+                No modifica por sí sola el porcentaje general.
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <Card tone="forest" className="mt-6 overflow-hidden p-7 sm:p-10">
         <div className="max-w-3xl">

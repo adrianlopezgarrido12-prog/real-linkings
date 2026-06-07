@@ -54,20 +54,20 @@ export function StageAtmosphere({
 }: StageAtmosphereProps) {
   return (
     <div
-      className={`grain relative min-h-[68vh] overflow-hidden rounded-[2.4rem] border p-5 shadow-[0_28px_90px_rgba(38,55,47,0.10)] sm:p-9 lg:p-14 ${atmosphereClasses[atmosphere]}`}
+      className={`onboarding-panel grain relative h-full overflow-x-hidden overflow-y-auto rounded-[2rem] border p-4 shadow-[0_24px_70px_rgba(38,55,47,0.10)] sm:rounded-[2.4rem] sm:p-7 lg:p-9 ${atmosphereClasses[atmosphere]}`}
     >
-      <span
+      <div
         aria-hidden="true"
-        className={`absolute -right-24 -top-24 size-72 rounded-full opacity-25 blur-3xl ${accentClasses[atmosphere][0]}`}
-      />
-      <span
-        aria-hidden="true"
-        className={`absolute -bottom-24 -left-20 size-64 rounded-full opacity-20 blur-3xl ${accentClasses[atmosphere][1]}`}
-      />
-      <span
-        aria-hidden="true"
-        className="absolute right-8 top-8 size-24 rounded-full border border-current opacity-[0.06] sm:size-36"
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+      >
+        <span
+          className={`absolute -right-24 -top-24 size-72 rounded-full opacity-25 blur-3xl ${accentClasses[atmosphere][0]}`}
+        />
+        <span
+          className={`absolute -bottom-24 -left-20 size-64 rounded-full opacity-20 blur-3xl ${accentClasses[atmosphere][1]}`}
+        />
+        <span className="absolute right-8 top-8 size-24 rounded-full border border-current opacity-[0.06] sm:size-36" />
+      </div>
       <div className="relative z-10">{children}</div>
     </div>
   )

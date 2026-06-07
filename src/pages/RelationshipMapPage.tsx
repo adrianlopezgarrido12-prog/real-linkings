@@ -26,11 +26,11 @@ export function RelationshipMapPage({
     symbolicProfile.humanDesignType &&
       `Human Design: ${symbolicProfile.humanDesignType}${
         symbolicProfile.humanDesignAuthority
-          ? `, autoridad ${symbolicProfile.humanDesignAuthority.toLowerCase()}`
+          ? ` · Autoridad ${symbolicProfile.humanDesignAuthority.toLowerCase()}`
           : ''
       }${
         symbolicProfile.humanDesignProfile
-          ? `, perfil ${symbolicProfile.humanDesignProfile}`
+          ? ` · Perfil ${symbolicProfile.humanDesignProfile}`
           : ''
       }`,
     symbolicProfile.uploadedFiles?.length &&
@@ -153,6 +153,23 @@ export function RelationshipMapPage({
           </div>
         </Card>
 
+        {relationshipMap.gazeReading && (
+          <Card
+            tone="transparent"
+            className="md:col-span-2 lg:col-span-3 lg:p-8"
+          >
+            <div className="grid gap-5 lg:grid-cols-[0.38fr_1.62fr] lg:items-center">
+              <div>
+                <span className="font-serif text-xl italic text-clay">05</span>
+                <p className="eyebrow mt-5">Mirada y presencia</p>
+              </div>
+              <p className="font-serif text-xl leading-8 text-forest sm:text-2xl">
+                {relationshipMap.gazeReading}
+              </p>
+            </div>
+          </Card>
+        )}
+
         {showSymbolicLayer && (
           <Card
             tone="forest"
@@ -161,7 +178,7 @@ export function RelationshipMapPage({
             <div className="grid gap-8 lg:grid-cols-[0.52fr_1.48fr]">
               <div>
                 <span className="font-serif text-xl italic text-[#d8cda8]">
-                  05
+                  {relationshipMap.gazeReading ? '06' : '05'}
                 </span>
                 <p className="eyebrow mt-6 !text-[#c9b987]">
                   Dimensión simbólica

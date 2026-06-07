@@ -38,12 +38,20 @@ export interface Question {
   id: string
   category: QuestionCategory
   prompt: string
+  intro?: string
   helper?: string
+  placeholder?: string
   type: QuestionType
   options?: string[]
   scaleLabels?: [string, string]
   sentenceStart?: string
   nuancePrompt?: string
+  nuancePlaceholder?: string
+  conditionalWhen?: string
+  conditionalPrompt?: string
+  conditionalOptions?: string[]
+  conditionalAnswerId?: string
+  conditionalRequired?: boolean
 }
 
 export type AnswerValue = string | number | string[]
@@ -82,6 +90,12 @@ export interface CandidateProfile extends UserProfile {
   relationshipVision: string
   highlights: string[]
   symbolicProfile?: SymbolicProfile
+  gazeProfile?: GazeProfile
+}
+
+export interface GazeProfile {
+  comfort: number
+  tendency: 'direct' | 'needs-trust' | 'protective'
 }
 
 export type SymbolicFileCategory =
@@ -174,4 +188,5 @@ export interface RelationshipMap {
   strengths: string[]
   availabilityLevel: number
   availabilityLabel: string
+  gazeReading?: string
 }
