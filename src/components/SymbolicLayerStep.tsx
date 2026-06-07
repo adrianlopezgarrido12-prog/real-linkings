@@ -5,12 +5,9 @@ import {
   zodiacSigns,
 } from '../data/symbolic'
 import type { SymbolicProfile } from '../types'
-import { Button } from './Button'
-import { OnboardingStageIntro } from './OnboardingStageIntro'
 import { SymbolicFileUpload } from './SymbolicFileUpload'
 
 export type SymbolicView =
-  | 'intro'
   | 'astrology'
   | 'personality'
   | 'documents'
@@ -20,7 +17,6 @@ interface SymbolicLayerStepProps {
   view: SymbolicView
   profile: SymbolicProfile
   onChange: (profile: SymbolicProfile) => void
-  onStart: () => void
   onSkip: () => void
 }
 
@@ -33,7 +29,6 @@ export function SymbolicLayerStep({
   view,
   profile,
   onChange,
-  onStart,
   onSkip,
 }: SymbolicLayerStepProps) {
   const update = <Key extends keyof SymbolicProfile>(
@@ -41,55 +36,31 @@ export function SymbolicLayerStep({
     value: SymbolicProfile[Key],
   ) => onChange({ ...profile, wantsSymbolicLayer: true, [key]: value })
 
-  if (view === 'intro') {
-    return (
-      <div className="flex h-full flex-col justify-center">
-        <OnboardingStageIntro
-          room="Dimensión 11 de 12 · Opcional"
-          title="Dimensión simbólica"
-          subtitle="Una capa narrativa, nunca un veredicto."
-          description="Algunas personas también se comprenden a través de símbolos, arquetipos o mapas personales. Si este lenguaje forma parte de ti, puedes añadirlo aquí. Si no, puedes saltarlo sin que afecte al núcleo de tu mapa relacional."
-          dark
-        />
-
-        <div className="max-w-3xl rounded-2xl border border-[#c9b987]/20 bg-white/[0.045] p-5 sm:p-6">
-          <p className="text-sm leading-6 text-[#f5f0e5]/68">
-            Esta dimensión es opcional. Tu compatibilidad principal se
-            construirá desde tus respuestas prácticas, emocionales y
-            relacionales.
-          </p>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <Button
-              className="!bg-[#c9b987] !text-[#14211f] hover:!bg-[#dbcda6]"
-              onClick={onStart}
-            >
-              Entrar en esta dimensión
-            </Button>
-            <Button
-              variant="ghost"
-              className="!text-[#eee6d3] hover:!bg-white/8"
-              onClick={onSkip}
-            >
-              Omitir dimensión simbólica
-            </Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const skipButton = (
+    <div className="mb-3 flex justify-end sm:absolute sm:right-0 sm:top-0 sm:mb-0">
+      <button
+        type="button"
+        onClick={onSkip}
+        className="rounded-full border border-[#c9b987]/25 bg-[#101c1b]/55 px-3 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.11em] text-[#d8c78f] backdrop-blur-md transition hover:border-[#c9b987]/55 hover:text-white"
+      >
+        Omitir dimensión simbólica
+      </button>
+    </div>
+  )
 
   if (view === 'astrology') {
     return (
-      <div className="flex h-full flex-col justify-center">
+      <div className="relative flex h-full flex-col justify-center">
+        {skipButton}
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#c9b987]">
-          Dimensión simbólica · Astrología
+          Astrología · Una referencia opcional
         </p>
-        <h1 className="mt-2 font-serif text-2xl text-[#f5f0e5] sm:mt-3 sm:text-5xl">
-          Tres referencias, solo si hablan tu lenguaje.
+        <h1 className="mt-2 max-w-3xl font-serif text-3xl text-[#f5f0e5] sm:mt-3 sm:text-5xl">
+          Empieza por aquello que ya conozcas.
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-6 text-[#f5f0e5]/60">
-          Puedes añadir solo tu signo solar o completar también luna y
-          ascendente si los conoces.
+          Puedes completar solo el signo solar, añadir luna y ascendente o no
+          responder nada. Esta capa nunca decidirá tu afinidad principal.
         </p>
         <div className="mt-7 grid gap-4 sm:grid-cols-3">
           {[
@@ -132,7 +103,8 @@ export function SymbolicLayerStep({
 
   if (view === 'personality') {
     return (
-      <div className="flex h-full flex-col justify-center">
+      <div className="relative flex h-full flex-col justify-center">
+        {skipButton}
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#c9b987]">
           Dimensión simbólica · Mapas personales
         </p>
@@ -216,7 +188,8 @@ export function SymbolicLayerStep({
 
   if (view === 'documents') {
     return (
-      <div className="flex h-full flex-col justify-center">
+      <div className="relative flex h-full flex-col justify-center">
+        {skipButton}
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#c9b987]">
           Dimensión simbólica · Documentos
         </p>
@@ -239,7 +212,8 @@ export function SymbolicLayerStep({
   }
 
   return (
-    <div className="flex h-full flex-col justify-center">
+    <div className="relative flex h-full flex-col justify-center">
+      {skipButton}
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#c9b987]">
         Dimensión simbólica · Notas y privacidad
       </p>

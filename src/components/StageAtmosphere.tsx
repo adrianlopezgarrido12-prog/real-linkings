@@ -8,25 +8,25 @@ interface StageAtmosphereProps {
 
 const atmosphereClasses: Record<StageAtmosphereName, string> = {
   clear:
-    'border-[#e4ded2] bg-[linear-gradient(145deg,rgba(255,253,248,0.96),rgba(244,239,229,0.82))]',
+    'border-[#ddd7ca] bg-[linear-gradient(135deg,#fffdf8_0%,#f3eee3_58%,#e9eee9_100%)]',
   earth:
-    'border-[#d8c7ae] bg-[linear-gradient(145deg,rgba(244,235,220,0.96),rgba(229,218,198,0.78))]',
+    'border-[#cbae82] bg-[linear-gradient(135deg,#f2dfbd_0%,#dec39d_54%,#c9aa7e_100%)]',
   structure:
-    'border-[#bfcdbf] bg-[linear-gradient(145deg,rgba(239,244,237,0.96),rgba(215,226,216,0.82))]',
+    'border-[#93ad97] bg-[linear-gradient(135deg,#e4eee4_0%,#bfd4c1_55%,#92b09a_100%)]',
   depth:
-    'border-[#c9c3b6] bg-[linear-gradient(145deg,rgba(239,235,224,0.97),rgba(216,214,197,0.82))]',
+    'border-[#93917f] bg-[linear-gradient(135deg,#e9e2cf_0%,#c7c2a6_55%,#999b80_100%)]',
   warm:
-    'border-[#dfc6b8] bg-[linear-gradient(145deg,rgba(248,235,226,0.97),rgba(237,211,197,0.82))]',
+    'border-[#d48d70] bg-[linear-gradient(135deg,#f7dfd0_0%,#e9b59c_55%,#cf8064_100%)]',
   honest:
-    'border-[#bdcec5] bg-[linear-gradient(145deg,rgba(237,244,239,0.97),rgba(209,225,215,0.82))]',
+    'border-[#73a291] bg-[linear-gradient(135deg,#e4f1e9_0%,#add2c0_55%,#6b9f8e_100%)]',
   delicate:
-    'border-[#e1c7c3] bg-[linear-gradient(145deg,rgba(250,239,235,0.97),rgba(239,217,212,0.82))]',
+    'border-[#d49a9d] bg-[linear-gradient(135deg,#f8e5e1_0%,#e9bfc0_55%,#d28e95_100%)]',
   silent:
-    'border-[#cbc9c0] bg-[linear-gradient(145deg,rgba(239,238,232,0.97),rgba(216,215,207,0.84))]',
+    'border-[#9da09c] bg-[linear-gradient(135deg,#ececea_0%,#c7cac6_55%,#9da29e_100%)]',
   poetic:
-    'border-[#d7c5c0] bg-[radial-gradient(circle_at_82%_12%,rgba(182,108,82,0.16),transparent_20rem),linear-gradient(145deg,rgba(248,241,237,0.97),rgba(227,218,222,0.82))]',
+    'border-[#ad829f] bg-[radial-gradient(circle_at_82%_12%,rgba(255,232,218,0.6),transparent_20rem),linear-gradient(135deg,#eee0e8_0%,#d5b4cd_55%,#a87b9d_100%)]',
   mature:
-    'border-[#aec1b3] bg-[linear-gradient(145deg,rgba(231,240,233,0.97),rgba(197,216,203,0.84))]',
+    'border-[#668d70] bg-[linear-gradient(135deg,#dcebdd_0%,#a9c6ae_55%,#62896c_100%)]',
   night:
     'border-[#8f8464]/30 bg-[radial-gradient(circle_at_82%_8%,rgba(143,132,100,0.18),transparent_22rem),linear-gradient(145deg,#111d1d,#172826_58%,#171a25)] text-[#f5f0e5] shadow-[0_30px_80px_rgba(16,25,25,0.22)]',
   summary:
@@ -68,7 +68,7 @@ export function StageAtmosphere({
         />
         <span className="absolute right-8 top-8 size-24 rounded-full border border-current opacity-[0.06] sm:size-36" />
       </div>
-      <div className="relative z-10">{children}</div>
+      <div className="stage-content relative z-10 h-full">{children}</div>
     </div>
   )
 }

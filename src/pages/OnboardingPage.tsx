@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '../components/Button'
+import { DimensionInterlude } from '../components/DimensionInterlude'
+import { JourneyLine } from '../components/JourneyLine'
 import { OnboardingStageIntro } from '../components/OnboardingStageIntro'
 import { OnboardingSummaryStep } from '../components/OnboardingSummaryStep'
 import { QuestionStep } from '../components/QuestionStep'
@@ -55,6 +57,18 @@ type OnboardingScreen =
     }
   | {
       id: string
+      kind: 'interlude'
+      dimension: number
+      label: string
+      atmosphere: StageAtmosphereName
+      title: string
+      text: string
+      prompt: string
+      substep: number
+      totalSubsteps: number
+    }
+  | {
+      id: string
       kind: 'symbolic'
       dimension: 11
       label: 'Dimensión simbólica'
@@ -75,40 +89,63 @@ type OnboardingScreen =
 
 type QuestionOnboardingScreen = Extract<
   OnboardingScreen,
-  { kind: 'intro' | 'questions' }
+  { kind: 'intro' | 'questions' | 'interlude' }
 >
 
-const dimensionPauses: Record<string, string[]> = {
-  basic: [
-    'No necesitamos resumirte en una etiqueta. Solo empezar a situar desde dónde llegas.',
-  ],
-  practicalLife: [
-    'La vida cotidiana no es el fondo de una relación. Es una parte de la relación.',
-  ],
-  lifeProject: [
-    'Dos caminos no tienen que ser idénticos para poder avanzar juntos.',
-  ],
-  values: [
-    'Amar no es retener ni llenar un vacío. También es aprender a cuidar la libertad del otro.',
-  ],
-  emotionalStyle: [
-    'Acercarse y protegerse pueden convivir dentro de una misma persona.',
-  ],
-  communication: [
-    'Reparar no borra lo ocurrido. Permite volver a mirarlo juntos.',
-  ],
-  intimacy: [
-    'Toda cercanía necesita deseo, consentimiento, lenguaje y cuidado.',
-  ],
-  patterns: [
-    'Un patrón deja de gobernarnos cuando podemos reconocerlo mientras está ocurriendo.',
-  ],
-  innerWorld: [
-    'Sentirse en casa con alguien no debería exigir desaparecer dentro de la relación.',
-  ],
-  availability: [
-    'La disponibilidad no es no tener miedo. Es poder actuar con honestidad incluso cuando aparece.',
-  ],
+const dimensionInterludes: Record<
+  string,
+  { title: string; text: string; prompt: string }
+> = {
+  basic: {
+    title: 'Lo que se ve es solo el comienzo.',
+    text: 'Los datos ayudan a situarte, pero no cuentan todavía cómo te acercas, qué necesitas ni qué esperas poder construir.',
+    prompt: '¿Qué parte de ti te gustaría que alguien descubriera después de la primera impresión?',
+  },
+  practicalLife: {
+    title: 'El vínculo también necesita un lugar en el calendario.',
+    text: 'La disponibilidad no se demuestra solo con intención. También aparece en los horarios, las distancias y la capacidad de reorganizar la vida cotidiana.',
+    prompt: '¿Tu vida actual tiene espacio para una relación real o solo para imaginarla?',
+  },
+  lifeProject: {
+    title: 'Compartir camino no significa renunciar al propio.',
+    text: 'Una dirección compatible permite que dos proyectos personales se acompañen sin que uno tenga que desaparecer dentro del otro.',
+    prompt: '¿Qué quieres construir con alguien y qué necesitas seguir construyendo por ti mismo/a?',
+  },
+  values: {
+    title: 'Los valores aparecen cuando elegir tiene un coste.',
+    text: 'Es fácil coincidir en palabras como honestidad o libertad. Lo importante es descubrir qué significan cuando hay miedo, deseo o desacuerdo.',
+    prompt: '¿Qué principio quieres seguir cuidando incluso cuando amar se vuelva incómodo?',
+  },
+  emotionalStyle: {
+    title: 'Acercarse y protegerse pueden ocurrir a la vez.',
+    text: 'No buscamos corregir tu forma de sentir. Buscamos comprender qué hace que puedas abrirte y qué activa tu necesidad de recuperar distancia.',
+    prompt: '¿Qué tendría que sentir tu cuerpo para saber que puede bajar la guardia?',
+  },
+  communication: {
+    title: 'Un conflicto también revela cómo cuidamos.',
+    text: 'La diferencia no rompe por sí sola un vínculo. Lo decisivo suele ser cómo se habla, cuánto se escucha y si existe una forma posible de reparación.',
+    prompt: 'Cuando algo duele, ¿intentas tener razón o volver a encontrarte con la otra persona?',
+  },
+  intimacy: {
+    title: 'La cercanía necesita ritmo, lenguaje y consentimiento.',
+    text: 'La intimidad puede aparecer en el tacto, en el silencio, en una conversación o en la capacidad de sostener una mirada sin esconderse.',
+    prompt: '¿Qué convierte para ti la intensidad en una presencia segura?',
+  },
+  patterns: {
+    title: 'Reconocer un patrón ya empieza a cambiarlo.',
+    text: 'No se trata de juzgar lo vivido. Se trata de ver qué respuestas antiguas siguen apareciendo cuando algo importante está en juego.',
+    prompt: '¿Qué haces para protegerte que a veces termina alejándote de lo que deseas?',
+  },
+  innerWorld: {
+    title: 'Lo que anhelas también habla de lo que quieres aprender.',
+    text: 'Algunos deseos nacen de una falta; otros, de una visión de futuro. A menudo conviven y necesitan ser escuchados sin vergüenza.',
+    prompt: '¿Buscas a alguien que complete algo o a alguien con quien compartir lo que ya estás construyendo?',
+  },
+  availability: {
+    title: 'Querer una relación no siempre significa poder sostenerla.',
+    text: 'Estar disponible no exige tener la vida resuelta. Sí implica poder ofrecer presencia, honestidad y responsabilidad sobre lo que uno activa.',
+    prompt: '¿Qué puedes cuidar hoy con hechos, no solo con deseo?',
+  },
 }
 
 function questionWeight(question: Question) {
@@ -201,13 +238,28 @@ export function OnboardingPage({
           questions: questions.map((question) =>
             question.intro ? { ...question, intro: undefined } : question,
           ),
-          pause:
-            groupIndex === Math.floor(groups.length / 2)
-              ? dimensionPauses[section.id]?.[0]
-              : undefined,
           substep: 1,
           totalSubsteps: 1,
         })
+
+        if (
+          groupIndex === Math.floor((groups.length - 1) / 2) &&
+          dimensionInterludes[section.id]
+        ) {
+          const interlude = dimensionInterludes[section.id]
+          sectionScreens.push({
+            id: `${section.id}-interlude`,
+            kind: 'interlude',
+            dimension: index + 1,
+            label: section.label,
+            atmosphere: section.atmosphere,
+            title: interlude.title,
+            text: interlude.text,
+            prompt: interlude.prompt,
+            substep: 1,
+            totalSubsteps: 1,
+          })
+        }
       })
 
       return sectionScreens.map((screen, screenIndex) => ({
@@ -218,7 +270,6 @@ export function OnboardingPage({
     })
 
     const symbolicViews: SymbolicView[] = [
-      'intro',
       'astrology',
       'personality',
       'documents',
@@ -286,9 +337,7 @@ export function OnboardingPage({
     }
 
     const direction = target > screenIndex ? 'forward' : 'backward'
-    const changesDimension =
-      screens[target].dimension !== currentScreen.dimension
-    const duration = changesDimension ? 560 : 460
+    const duration = 560
 
     setTransition({ target, direction, duration })
     transitionTimer.current = window.setTimeout(() => {
@@ -311,11 +360,6 @@ export function OnboardingPage({
       return
     }
     goToScreen(screenIndex - 1)
-  }
-
-  const startSymbolicDimension = () => {
-    onSymbolicChange({ ...symbolicProfile, wantsSymbolicLayer: true })
-    goNext()
   }
 
   const skipSymbolicDimension = () => {
@@ -352,9 +396,19 @@ export function OnboardingPage({
               questions={screen.questions}
               answers={answers}
               onAnswer={onAnswer}
-              pause={screen.pause}
             />
           </div>
+        )}
+
+        {screen.kind === 'interlude' && (
+          <DimensionInterlude
+            dimension={screen.dimension}
+            label={screen.label}
+            title={screen.title}
+            text={screen.text}
+            prompt={screen.prompt}
+            atmosphere={screen.atmosphere}
+          />
         )}
 
         {screen.kind === 'symbolic' && (
@@ -362,7 +416,6 @@ export function OnboardingPage({
             view={screen.view}
             profile={symbolicProfile}
             onChange={onSymbolicChange}
-            onStart={startSymbolicDimension}
             onSkip={skipSymbolicDimension}
           />
         )}
@@ -380,16 +433,15 @@ export function OnboardingPage({
   const nextLabel =
     currentScreen.kind === 'summary'
       ? 'Construir mi mapa relacional'
-      : isFirstScreenOfDimension
-        ? 'Entrar en esta dimensión'
-        : isLastScreenOfDimension && nextScreen?.dimension !== 11
-          ? 'Pasar a la siguiente dimensión'
-          : isLastScreenOfDimension && nextScreen?.dimension === 11
-            ? 'Abrir la dimensión simbólica'
-            : 'Continuar'
-
-  const hidePrimaryNavigation =
-    currentScreen.kind === 'symbolic' && currentScreen.view === 'intro'
+      : currentScreen.kind === 'symbolic'
+        ? 'Continuar'
+        : isFirstScreenOfDimension
+          ? 'Entrar en esta dimensión'
+          : isLastScreenOfDimension && nextScreen?.dimension !== 11
+            ? 'Pasar a la siguiente dimensión'
+            : isLastScreenOfDimension && nextScreen?.dimension === 11
+              ? 'Abrir la dimensión simbólica'
+              : 'Continuar'
 
   return (
     <div className="mx-auto flex h-[calc(100dvh-5.25rem)] max-w-6xl flex-col overflow-hidden px-4 pb-3 sm:px-8 lg:px-10">
@@ -400,9 +452,10 @@ export function OnboardingPage({
         substep={currentScreen.substep}
         totalSubsteps={currentScreen.totalSubsteps}
         globalProgress={globalProgress}
+        atmosphere={currentScreen.atmosphere}
       />
 
-      <div className="grid min-h-0 flex-1">
+      <div className="relative grid min-h-0 flex-1">
         <div
           key={`current-${currentScreen.id}`}
           className={`col-start-1 row-start-1 min-h-0 min-w-0 ${
@@ -435,6 +488,26 @@ export function OnboardingPage({
             {renderScreen(transition.target)}
           </div>
         )}
+
+        <div
+          key={`journey-${transition?.target ?? screenIndex}`}
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[2rem] sm:rounded-[2.4rem] ${
+            transition
+              ? transition.direction === 'forward'
+                ? 'journey-transition-forward'
+                : 'journey-transition-backward'
+              : ''
+          }`}
+        >
+          <JourneyLine
+            atmosphere={
+              transition
+                ? screens[transition.target].atmosphere
+                : currentScreen.atmosphere
+            }
+          />
+        </div>
       </div>
 
       <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
@@ -456,16 +529,14 @@ export function OnboardingPage({
               Concreta de qué depende para continuar.
             </p>
           )}
-          {!hidePrimaryNavigation && (
-            <Button
-              className="!min-h-10 !px-4 sm:!px-6"
-              onClick={goNext}
-              disabled={Boolean(transition) || conditionalBlocked}
-            >
-              {nextLabel}
-              <span aria-hidden="true">→</span>
-            </Button>
-          )}
+          <Button
+            className="!min-h-10 !px-4 sm:!px-6"
+            onClick={goNext}
+            disabled={Boolean(transition) || conditionalBlocked}
+          >
+            {nextLabel}
+            <span aria-hidden="true">→</span>
+          </Button>
         </div>
       </div>
     </div>
