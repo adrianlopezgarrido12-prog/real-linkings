@@ -101,6 +101,74 @@ button {
   animation: reveal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+@keyframes room-exit-forward {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateX(-11%) scale(0.985);
+  }
+}
+
+@keyframes room-enter-forward {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateX(11%) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes room-exit-backward {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateX(11%) scale(0.985);
+  }
+}
+
+@keyframes room-enter-backward {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateX(-11%) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-room-exit-forward {
+  animation: room-exit-forward 720ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.animate-room-enter-forward {
+  animation: room-enter-forward 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-room-exit-backward {
+  animation: room-exit-backward 720ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.animate-room-enter-backward {
+  animation: room-enter-backward 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

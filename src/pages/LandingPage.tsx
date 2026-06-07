@@ -43,7 +43,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           </p>
           <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Button onClick={onStart} className="px-8">
-              Construir mi mapa relacional
+              Descubrir mi mapa relacional
               <span aria-hidden="true">→</span>
             </Button>
             <span className="text-xs text-muted">

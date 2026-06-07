@@ -1,72 +1,37 @@
-import { ProgressBar } from './ProgressBar'
-
 interface StageProgressProps {
   stages: { id: string; label: string }[]
   current: number
-  onSelect: (index: number) => void
 }
 
-export function StageProgress({
-  stages,
-  current,
-  onSelect,
-}: StageProgressProps) {
+export function StageProgress({ stages, current }: StageProgressProps) {
   const progress = ((current + 1) / stages.length) * 100
 
   return (
-    <div>
-      <div className="mb-8 lg:hidden">
-        <ProgressBar
-          value={progress}
-          label={`Sala ${current + 1} de ${stages.length}`}
-        />
-        <p className="mt-3 text-sm font-medium text-forest">
-          {stages[current].label}
+    <div className="mb-7 sm:mb-10">
+      <div className="flex items-end justify-between gap-5">
+        <div>
+          <p className="eyebrow">Tu recorrido</p>
+          <p className="mt-2 font-serif text-xl text-forest sm:text-2xl">
+            {stages[current].label}
+          </p>
+        </div>
+        <p className="shrink-0 text-xs font-medium tracking-[0.12em] text-muted">
+          {String(current + 1).padStart(2, '0')}
+          <span className="mx-2 text-line">/</span>
+          {String(stages.length).padStart(2, '0')}
         </p>
       </div>
 
-      <aside className="hidden lg:block">
-        <div className="sticky top-8">
-          <p className="eyebrow mb-5">Las salas de tu mapa</p>
-          <ol className="space-y-1">
-            {stages.map((stage, index) => (
-              <li key={stage.id}>
-                <button
-                  type="button"
-                  onClick={() => onSelect(index)}
-                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-xs transition ${
-                    index === current
-                      ? 'bg-paper text-forest shadow-sm'
-                      : index < current
-                        ? 'text-moss hover:bg-white/35'
-                        : 'text-muted hover:bg-white/35'
-                  }`}
-                >
-                  <span
-                    className={`flex size-6 shrink-0 items-center justify-center rounded-full border text-[0.62rem] ${
-                      index < current
-                        ? 'border-moss bg-moss text-paper'
-                        : index === current
-                          ? 'border-forest text-forest'
-                          : 'border-line text-muted'
-                    }`}
-                  >
-                    {index < current ? '✓' : index + 1}
-                  </span>
-                  <span className="leading-4">{stage.label}</span>
-                </button>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-7">
-            <ProgressBar value={progress} />
-            <p className="mt-3 text-xs leading-5 text-muted">
-              Cada sala añade una capa distinta. Puedes volver cuando lo
-              necesites.
-            </p>
-          </div>
-        </div>
-      </aside>
+      <div className="mt-5 h-px overflow-hidden bg-forest/10">
+        <div
+          className="h-full bg-clay transition-[width] duration-700 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <div className="mt-2 flex justify-between text-[0.65rem] text-muted/70">
+        <span>Lo visible</span>
+        <span>Tu mapa completo</span>
+      </div>
     </div>
   )
 }
