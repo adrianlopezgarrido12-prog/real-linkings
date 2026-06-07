@@ -4,6 +4,7 @@ import { DimensionInterlude } from '../components/DimensionInterlude'
 import { JourneyLine } from '../components/JourneyLine'
 import { OnboardingStageIntro } from '../components/OnboardingStageIntro'
 import { OnboardingSummaryStep } from '../components/OnboardingSummaryStep'
+import { ProfilePhotoStep } from '../components/ProfilePhotoStep'
 import { QuestionStep } from '../components/QuestionStep'
 import { StageAtmosphere } from '../components/StageAtmosphere'
 import { StageProgress } from '../components/StageProgress'
@@ -19,12 +20,15 @@ import type {
   Question,
   StageAtmosphereName,
   SymbolicProfile,
+  UploadedProfilePhoto,
 } from '../types'
 
 interface OnboardingPageProps {
   answers: Record<string, AnswerValue>
+  profilePhotos: UploadedProfilePhoto[]
   symbolicProfile: SymbolicProfile
   onAnswer: (questionId: string, value: AnswerValue) => void
+  onProfilePhotosChange: (photos: UploadedProfilePhoto[]) => void
   onSymbolicChange: (profile: SymbolicProfile) => void
   onFinish: () => void
   onExit: () => void
@@ -68,6 +72,15 @@ type OnboardingScreen =
       totalSubsteps: number
     }
   | {
+      id: 'basic-photos'
+      kind: 'photos'
+      dimension: 1
+      label: 'Dimensión de lo visible'
+      atmosphere: 'clear'
+      substep: number
+      totalSubsteps: number
+    }
+  | {
       id: string
       kind: 'symbolic'
       dimension: 11
@@ -89,7 +102,7 @@ type OnboardingScreen =
 
 type QuestionOnboardingScreen = Extract<
   OnboardingScreen,
-  { kind: 'intro' | 'questions' | 'interlude' }
+  { kind: 'intro' | 'questions' | 'interlude' | 'photos' }
 >
 
 const dimensionInterludes: Record<
@@ -97,9 +110,9 @@ const dimensionInterludes: Record<
   { title: string; text: string; prompt: string }
 > = {
   basic: {
-    title: 'Lo que se ve es solo el comienzo.',
-    text: 'Los datos ayudan a situarte, pero no cuentan todavía cómo te acercas, qué necesitas ni qué esperas poder construir.',
-    prompt: '¿Qué parte de ti te gustaría que alguien descubriera después de la primera impresión?',
+    title: 'La atracción importa. No tiene que explicarlo todo.',
+    text: 'El rostro y el cuerpo forman parte del deseo. No hace falta negarlo ni convertirlos en una medida del valor de alguien. Una imagen puede abrir una posibilidad; cuando lo demás encaja, deja de ser un examen y se vuelve una forma más de reconocer a la persona.',
+    prompt: 'Una foto puede despertar interés. Lo que hace que quieras quedarte casi nunca cabe entero en ella.',
   },
   practicalLife: {
     title: 'El vínculo también necesita un lugar en el calendario.',
@@ -178,8 +191,10 @@ function groupQuestions(questions: Question[]) {
 
 export function OnboardingPage({
   answers,
+  profilePhotos,
   symbolicProfile,
   onAnswer,
+  onProfilePhotosChange,
   onSymbolicChange,
   onFinish,
   onExit,
@@ -259,6 +274,18 @@ export function OnboardingPage({
             substep: 1,
             totalSubsteps: 1,
           })
+
+          if (section.id === 'basic') {
+            sectionScreens.push({
+              id: 'basic-photos',
+              kind: 'photos',
+              dimension: 1,
+              label: 'Dimensión de lo visible',
+              atmosphere: 'clear',
+              substep: 1,
+              totalSubsteps: 1,
+            })
+          }
         }
       })
 
@@ -411,6 +438,14 @@ export function OnboardingPage({
           />
         )}
 
+        {screen.kind === 'photos' && (
+          <ProfilePhotoStep
+            photos={profilePhotos}
+            onChange={onProfilePhotosChange}
+            onSkip={goNext}
+          />
+        )}
+
         {screen.kind === 'symbolic' && (
           <SymbolicLayerStep
             view={screen.view}
@@ -423,6 +458,7 @@ export function OnboardingPage({
         {screen.kind === 'summary' && (
           <OnboardingSummaryStep
             answers={answers}
+            profilePhotoCount={profilePhotos.length}
             symbolicProfile={symbolicProfile}
           />
         )}

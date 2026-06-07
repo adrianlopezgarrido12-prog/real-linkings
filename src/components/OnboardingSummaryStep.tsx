@@ -4,11 +4,13 @@ import type { AnswerValue, SymbolicProfile } from '../types'
 
 interface OnboardingSummaryStepProps {
   answers: Record<string, AnswerValue>
+  profilePhotoCount: number
   symbolicProfile: SymbolicProfile
 }
 
 export function OnboardingSummaryStep({
   answers,
+  profilePhotoCount,
   symbolicProfile,
 }: OnboardingSummaryStepProps) {
   const sections = questionsBySection.map((section) => {
@@ -64,6 +66,15 @@ export function OnboardingSummaryStep({
             {symbolicAdded
               ? 'Dimensión simbólica añadida como capa narrativa secundaria.'
               : 'Dimensión simbólica omitida. El núcleo de tu mapa está completo.'}
+          </p>
+          <p className="mt-2 text-xs leading-5 text-forest/72">
+            {profilePhotoCount > 0
+              ? `${profilePhotoCount} foto${
+                  profilePhotoCount === 1 ? '' : 's'
+                } añadida${
+                  profilePhotoCount === 1 ? '' : 's'
+                } para mostrar tu presencia visual.`
+              : 'Fotos omitidas. Podrás añadirlas más adelante.'}
           </p>
         </div>
 

@@ -61,6 +61,14 @@ export interface Answer {
   value: AnswerValue
 }
 
+export interface UploadedProfilePhoto {
+  id: string
+  name: string
+  type: string
+  size: number
+  previewUrl: string
+}
+
 export interface CompatibilityDimensions {
   lifeProject: number
   values: number

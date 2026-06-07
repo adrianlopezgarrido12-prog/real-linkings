@@ -12,11 +12,13 @@ import type {
   AppPage,
   CandidateProfile,
   SymbolicProfile,
+  UploadedProfilePhoto,
 } from './types'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('landing')
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
+  const [profilePhotos, setProfilePhotos] = useState<UploadedProfilePhoto[]>([])
   const [symbolicProfile, setSymbolicProfile] = useState<SymbolicProfile>({
     ...emptySymbolicProfile,
     uploadedFiles: [],
@@ -50,10 +52,12 @@ function App() {
       {currentPage === 'onboarding' && (
         <OnboardingPage
           answers={answers}
+          profilePhotos={profilePhotos}
           symbolicProfile={symbolicProfile}
           onAnswer={(questionId, value) =>
             setAnswers((current) => ({ ...current, [questionId]: value }))
           }
+          onProfilePhotosChange={setProfilePhotos}
           onSymbolicChange={setSymbolicProfile}
           onFinish={() => navigate('relationship-map')}
           onExit={() => navigate('landing')}
