@@ -18,6 +18,21 @@ function isSelected(answer: AnswerValue | undefined, option: string) {
   return Array.isArray(answer) ? answer.includes(option) : answer === option
 }
 
+function needsMoreDetail(value: AnswerValue | undefined) {
+  if (typeof value !== 'string') return false
+
+  const normalized = value.trim().toLowerCase()
+  if (normalized.length === 0 || normalized.length > 55) return false
+
+  return [
+    /^depende[. ]*$/,
+    /^depende (del|de la|de)[^.]*[. ]*$/,
+    /^no (lo )?sé[. ]*$/,
+    /^no estoy segur[oa](\/a)?[. ]*$/,
+    /^según (el momento|la persona|el contexto)[. ]*$/,
+  ].some((pattern) => pattern.test(normalized))
+}
+
 export function QuestionStep({
   category,
   title,
@@ -63,6 +78,14 @@ export function QuestionStep({
       <div className="space-y-12">
         {questions.map((question, index) => {
           const answer = answers[question.id]
+          const nuanceId = `${question.id}__nuance`
+          const nuance = answers[nuanceId]
+          const hasAnswer = Array.isArray(answer)
+            ? answer.length > 0
+            : answer !== undefined && answer !== ''
+          const vagueOpenAnswer =
+            (question.type === 'text' || question.type === 'sentence') &&
+            needsMoreDetail(answer)
 
           return (
             <div
@@ -101,8 +124,18 @@ export function QuestionStep({
                         ? 'Continúa la frase...'
                         : 'Escribe con tus propias palabras...'
                     }
-                    className="w-full resize-none rounded-2xl border border-line bg-white/55 px-5 py-4 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/60 focus:border-moss focus:bg-white"
+                    className={`w-full resize-none rounded-2xl border bg-white/55 px-5 py-4 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/60 focus:bg-white ${
+                      vagueOpenAnswer
+                        ? 'border-clay/65 focus:border-clay'
+                        : 'border-line focus:border-moss'
+                    }`}
                   />
+                  {vagueOpenAnswer && (
+                    <p className="mt-2 text-xs leading-5 text-clay">
+                      Esta respuesta necesita una segunda capa. ¿De qué depende?
+                      ¿Qué suele ocurrir en ti cuando cambia el contexto?
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -179,6 +212,28 @@ export function QuestionStep({
                       </button>
                     )
                   })}
+                </div>
+              )}
+
+              {question.nuancePrompt && hasAnswer && (
+                <div className="ml-0 mt-5 rounded-2xl border border-line/80 bg-ivory/55 p-4 sm:ml-8">
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-sm font-medium text-forest">
+                      {question.nuancePrompt}
+                    </p>
+                    <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted">
+                      Opcional
+                    </span>
+                  </div>
+                  <textarea
+                    value={typeof nuance === 'string' ? nuance : ''}
+                    onChange={(event) =>
+                      onAnswer(nuanceId, event.target.value)
+                    }
+                    rows={2}
+                    placeholder="No hace falta explicarlo todo. Una frase concreta es suficiente."
+                    className="w-full resize-none border-0 border-b border-moss/25 bg-transparent px-0 py-2 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/55 focus:border-forest"
+                  />
                 </div>
               )}
             </div>

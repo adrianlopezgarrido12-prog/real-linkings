@@ -99,7 +99,7 @@ export const questions: Question[] = [
       'Con estabilidad y ganas de compartir',
       'En transición, pero con espacio emocional',
       'Reordenando prioridades importantes',
-      'Explorando sin necesidad de acelerar',
+      'Explorando, pero dispuesto/a a observar qué puedo sostener',
     ],
   },
   {
@@ -124,7 +124,7 @@ export const questions: Question[] = [
     options: [
       'Despacio, dejando que la confianza crezca',
       'Con intención clara desde el principio',
-      'Sin un ritmo fijado, observando cómo se siente',
+      'Con calma al principio y más presencia si hay reciprocidad',
       'Con tiempo frecuente para conocernos de verdad',
     ],
   },
@@ -145,7 +145,7 @@ export const questions: Question[] = [
       'Un proyecto central que cuidar',
       'Una parte importante junto a otros proyectos',
       'Una compañía estable con mucha autonomía',
-      'Quiero descubrirlo sin imponer una forma',
+      'Todavía no tengo definida la forma, pero necesito intención y continuidad',
     ],
   },
   {
@@ -183,15 +183,21 @@ export const questions: Question[] = [
       'Es un deseo importante',
       'Estoy abierto/a, pero no es imprescindible',
       'Prefiero una vida sin hijos',
-      'Todavía necesito explorarlo',
+      'Todavía no lo tengo claro; necesito pensar qué vida quiero sostener',
     ],
   },
   {
     id: 'life-commitment',
     category: 'lifeProject',
-    prompt: 'Completa la frase pensando en lo cotidiano, no en la intensidad inicial.',
-    type: 'sentence',
-    sentenceStart: 'Para mí, comprometerme significa...',
+    prompt: '¿Qué expresa mejor lo que significa comprometerte?',
+    type: 'single',
+    options: [
+      'Elegir cuidar la relación incluso cuando baja la intensidad',
+      'Construir un proyecto común sin perder la libertad individual',
+      'Estar presente de forma coherente, no solo cuando apetece',
+      'Dar seguridad emocional con hechos, no solo palabras',
+      'Avanzar despacio, pero con una intención clara',
+    ],
   },
 
   {
@@ -230,8 +236,14 @@ export const questions: Question[] = [
     id: 'values-freedom',
     category: 'values',
     prompt: '¿Qué lugar ocupa la libertad individual dentro de una pareja?',
-    type: 'scale',
-    scaleLabels: ['Prioriza el nosotros', 'La autonomía es esencial'],
+    type: 'single',
+    options: [
+      'Es imprescindible conservar espacios propios',
+      'Quiero mucha cercanía, pero sin sensación de control',
+      'La libertad debe convivir con acuerdos claros',
+      'Me cuesta equilibrar libertad y seguridad emocional',
+      'Necesito sentir que elegir a alguien no significa perderme',
+    ],
   },
   {
     id: 'values-consistency',
@@ -264,15 +276,17 @@ export const questions: Question[] = [
   {
     id: 'emotional-distance',
     category: 'emotionalStyle',
-    prompt: '¿Qué haces cuando sientes que alguien se aleja?',
+    prompt: 'Cuando sientes que alguien se aleja, normalmente...',
     type: 'single',
     options: [
-      'Busco hablar y recuperar claridad',
-      'Insisto hasta obtener una respuesta',
-      'Me retiro antes de que pueda doler más',
-      'Observo y doy espacio',
-      'Intento actuar como si no me afectara',
+      'Busco hablarlo cuanto antes para recuperar claridad',
+      'Me pongo en alerta y necesito señales de claridad',
+      'Me cierro y espero a ver qué hace la otra persona',
+      'Intento actuar con normalidad, pero por dentro me afecta',
+      'Me alejo antes de sentirme rechazado/a',
     ],
+    nuancePrompt:
+      'Matiza tu respuesta en una frase. ¿Qué suele hacer que reacciones así?',
   },
   {
     id: 'emotional-closeness',
@@ -280,11 +294,11 @@ export const questions: Question[] = [
     prompt: '¿Qué haces cuando alguien se acerca demasiado?',
     type: 'single',
     options: [
-      'Disfruto la cercanía',
-      'Necesito recuperar espacio',
-      'Empiezo a buscar defectos o dudas',
-      'Me adapto aunque me sature',
-      'Depende de la confianza construida',
+      'Disfruto la cercanía y puedo seguir nombrando mis límites',
+      'Necesito recuperar espacio para no sentirme absorbido/a',
+      'Empiezo a buscar defectos o dudas para bajar la intensidad',
+      'Me adapto aunque me sature y tardo en decirlo',
+      'Al principio observo; con coherencia me permito acercarme',
     ],
   },
   {
@@ -319,14 +333,14 @@ export const questions: Question[] = [
   {
     id: 'communication-tension',
     category: 'communication',
-    prompt: 'Cuando hay tensión, ¿qué tiendes a hacer primero?',
+    prompt: 'Cuando hay tensión en una relación, tiendes a...',
     type: 'single',
     options: [
-      'Hablar',
-      'Callar',
-      'Alejarme',
-      'Insistir',
-      'Intentar arreglarlo rápido',
+      'Hablarlo cuanto antes para recuperar claridad',
+      'Necesitar un tiempo antes de poder hablar bien',
+      'Callarme para evitar empeorar la situación',
+      'Insistir demasiado cuando siento incertidumbre',
+      'Desconectarme emocionalmente hasta sentirme seguro/a',
     ],
   },
   {
@@ -459,6 +473,8 @@ export const questions: Question[] = [
       'Sentirme invadido/a',
       'La falta de reciprocidad',
     ],
+    nuancePrompt:
+      'Matiza tu respuesta en una frase. ¿Qué sueles hacer cuando esto ocurre?',
   },
   {
     id: 'patterns-awareness',
@@ -493,6 +509,8 @@ export const questions: Question[] = [
       'Detalles cotidianos',
       'Curiosidad por quién soy',
     ],
+    nuancePrompt:
+      'Matiza tu respuesta en una frase. ¿Cómo notas que alguien te elige sin dejar de ser libre?',
   },
   {
     id: 'inner-show',
@@ -525,8 +543,10 @@ export const questions: Question[] = [
       'Echo de menos intimidad y compañía',
       'Quiero dejar atrás una etapa de soledad',
       'Busco sentirme elegido/a',
-      'No tengo una respuesta clara todavía',
+      'Todavía no distingo bien entre deseo de relación y necesidad de compañía',
     ],
+    nuancePrompt:
+      'Matiza tu respuesta en una frase. ¿Qué puedes ofrecer hoy, además de lo que deseas recibir?',
   },
   {
     id: 'availability-space',

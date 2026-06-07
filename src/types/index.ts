@@ -42,6 +42,7 @@ export interface Question {
   options?: string[]
   scaleLabels?: [string, string]
   sentenceStart?: string
+  nuancePrompt?: string
 }
 
 export type AnswerValue = string | number | string[]

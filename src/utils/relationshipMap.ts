@@ -18,27 +18,69 @@ function selectedAnswer(answers: Answers, id: string) {
   return Array.isArray(value) ? value : typeof value === 'string' ? [value] : []
 }
 
+function normalizeText(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+}
+
 function includesAny(value: string | string[], terms: string[]) {
-  const normalized = (Array.isArray(value) ? value.join(' ') : value).toLowerCase()
-  return terms.some((term) => normalized.includes(term.toLowerCase()))
+  const normalized = normalizeText(
+    Array.isArray(value) ? value.join(' ') : value,
+  )
+  return terms.some((term) => normalized.includes(normalizeText(term)))
 }
 
 function average(values: number[]) {
   return values.reduce((total, value) => total + value, 0) / values.length
 }
 
+function relationalClarityScore(answers: Answers) {
+  const lowClarityPhrases = [
+    'todavia no tengo definida',
+    'todavia no lo tengo claro',
+    'todavia no distingo bien',
+  ]
+
+  return Object.entries(answers).filter(
+    ([id, answer]) =>
+      !id.endsWith('__nuance') &&
+      typeof answer === 'string' &&
+      lowClarityPhrases.some(
+        (phrase) =>
+          normalizeText(answer).includes(phrase) &&
+          textAnswer(answers, `${id}__nuance`).trim().length < 20,
+      ),
+  ).length
+}
+
 export function generateRelationshipMap(answers: Answers): RelationshipMap {
-  const answeredCount = Object.values(answers).filter((answer) =>
-    Array.isArray(answer) ? answer.length > 0 : answer !== '',
+  const answeredCount = Object.entries(answers).filter(
+    ([id, answer]) =>
+      !id.endsWith('__nuance') &&
+      (Array.isArray(answer) ? answer.length > 0 : answer !== ''),
   ).length
 
   if (answeredCount < 6) {
     return defaultRelationshipMap
   }
 
+  const freedomPreference = textAnswer(answers, 'values-freedom')
+  const freedomScore = includesAny(freedomPreference, [
+    'espacios propios',
+    'sin sensación de control',
+    'no significa perderme',
+  ])
+    ? 5
+    : includesAny(freedomPreference, ['acuerdos claros'])
+      ? 4
+      : includesAny(freedomPreference, ['me cuesta equilibrar'])
+        ? 3
+        : 3
   const autonomyNeed = average([
     numericAnswer(answers, 'intimacy-space'),
-    numericAnswer(answers, 'values-freedom'),
+    freedomScore,
   ])
   const directCommunication = numericAnswer(answers, 'communication-direct')
   const vulnerability = numericAnswer(answers, 'emotional-vulnerability')
@@ -50,6 +92,7 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
   const chosenNeeds = selectedAnswer(answers, 'inner-chosen')
   const lifePlace = textAnswer(answers, 'life-place')
   const motivation = textAnswer(answers, 'availability-carence')
+  const lowClarityCount = relationalClarityScore(answers)
 
   const clarityNeed =
     numericAnswer(answers, 'values-consistency') >= 4 ||
@@ -66,8 +109,15 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
     ])
 
   const protectsWithDistance =
-    includesAny(emotionalDistance, ['me retiro', 'no me afectara']) ||
-    includesAny(conflictResponse, ['callar', 'alejarme']) ||
+    includesAny(emotionalDistance, [
+      'me cierro',
+      'por dentro me afecta',
+      'me alejo',
+    ]) ||
+    includesAny(conflictResponse, [
+      'callarme',
+      'desconectarme emocionalmente',
+    ]) ||
     includesAny(textAnswer(answers, 'emotional-closeness'), [
       'recuperar espacio',
       'buscar defectos',
@@ -86,7 +136,10 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
     numericAnswer(answers, 'patterns-awareness'),
   ])
   const availabilityLevel = Math.round(
-    Math.max(35, Math.min(94, 30 + availabilityAverage * 13)),
+    Math.max(
+      35,
+      Math.min(94, 30 + availabilityAverage * 13 - lowClarityCount * 4),
+    ),
   )
 
   let bondingStyle =
@@ -126,9 +179,9 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
   } else if (includesAny(lifePlace, ['mucha autonomía'])) {
     desiredRelationship =
       'Imaginas una relación estable que acompañe la vida de ambos sin ocuparla por completo: compromiso, presencia y un proyecto común que conviva con caminos individuales.'
-  } else if (includesAny(lifePlace, ['descubrirlo'])) {
+  } else if (includesAny(lifePlace, ['todavía no tengo definida'])) {
     desiredRelationship =
-      'Prefieres descubrir la forma de la relación junto a la otra persona, sin imponer un guion previo, pero esperando que la honestidad y la capacidad de elegir estén presentes.'
+      'Todavía estás concretando qué lugar y qué forma debería tener una relación en tu vida. Sí aparece una necesidad reconocible de intención, continuidad y suficiente honestidad para no avanzar desde la inercia.'
   }
 
   let innerReading =
@@ -149,6 +202,11 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
   }
 
   const sensitiveAreas: string[] = []
+  if (lowClarityCount >= 2) {
+    sensitiveAreas.push(
+      'En algunas áreas importantes todavía parece haber poca claridad. Esto no es negativo, pero quizá parte del proceso consista en comprender mejor qué necesitas antes de buscar una relación seria.',
+    )
+  }
   if (abandonmentSensitivity) {
     sensitiveAreas.push(
       'Podría aparecer cierta sensibilidad ante la distancia emocional o la falta de definición. La incertidumbre sostenida puede hacer que necesites confirmar antes de tiempo dónde estás.',
