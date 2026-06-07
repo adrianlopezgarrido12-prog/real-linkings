@@ -80,6 +80,25 @@ export function RelationshipMapPage({
           </p>
         </Card>
 
+        <Card
+          tone="transparent"
+          className="relative overflow-hidden md:col-span-2 lg:col-span-3 lg:p-9"
+        >
+          <div className="absolute -right-12 -top-20 size-48 rounded-full border border-moss/10" />
+          <div className="grid gap-7 lg:grid-cols-[0.38fr_1.62fr] lg:items-start">
+            <div>
+              <span className="font-serif text-xl italic text-clay">04</span>
+              <p className="eyebrow mt-6">Lectura interior</p>
+              <p className="mt-3 text-xs leading-5 text-muted">
+                Lo que parece haber debajo de tus preferencias.
+              </p>
+            </div>
+            <p className="relative max-w-4xl font-serif text-2xl leading-relaxed text-forest sm:text-3xl">
+              {relationshipMap.innerReading}
+            </p>
+          </div>
+        </Card>
+
         <Card className="lg:p-8">
           <p className="eyebrow">Zonas sensibles</p>
           <ul className="mt-5 space-y-5">

@@ -131,6 +131,23 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
       'Prefieres descubrir la forma de la relación junto a la otra persona, sin imponer un guion previo, pero esperando que la honestidad y la capacidad de elegir estén presentes.'
   }
 
+  let innerReading =
+    'Más allá de lo práctico, parece que buscas una relación donde puedas sentir presencia sin tener que reclamarla y cercanía sin dejar de escucharte. Quieres que el encuentro sea una elección compartida, no una respuesta apresurada a la soledad.'
+
+  if (autonomyNeed >= 4 && clarityNeed) {
+    innerReading =
+      'Tus respuestas señalan un deseo de presencia clara y libertad al mismo tiempo. Parece importante para ti que la relación no se viva como posesión ni vigilancia, sino como una elección renovada entre dos personas que conservan su voz.'
+  } else if (abandonmentSensitivity) {
+    innerReading =
+      'Hay un deseo de sentirte elegido/a con claridad, pero también una invitación a no convertir esa necesidad en una prueba constante. Quizá buscas aprender que la presencia puede sentirse sin retener al otro ni anticipar su ausencia.'
+  } else if (protectsWithDistance) {
+    innerReading =
+      'Parece que deseas una cercanía que no invada y una libertad que no obligue a desaparecer. Más que intensidad, podrías estar buscando un lugar donde abrirte sin actuar un personaje ni perder el cuidado de tu propio espacio.'
+  } else if (seeksDepth) {
+    innerReading =
+      'Más allá de compartir planes, buscas poder ser visto/a con honestidad. Parece importante que el encuentro permita profundidad sin exigencia: abrirse por confianza, no por presión, y cuidar al otro sin pedirle que complete lo que solo tú puedes mirar.'
+  }
+
   const sensitiveAreas: string[] = []
   if (abandonmentSensitivity) {
     sensitiveAreas.push(
@@ -215,6 +232,7 @@ export function generateRelationshipMap(answers: Answers): RelationshipMap {
     bondingStyle,
     safetyNeeds,
     desiredRelationship,
+    innerReading,
     sensitiveAreas: sensitiveAreas.slice(0, 3),
     strengths: strengths.slice(0, 3),
     availabilityLevel,

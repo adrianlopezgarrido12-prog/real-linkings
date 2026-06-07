@@ -115,6 +115,7 @@ export interface CompatibilityReport {
   relationalDynamic: string
   likelyConnection: string
   likelyTension: string
+  relationshipLesson: string
   observeSignals: string[]
   relationalRisk: 'Bajo' | 'Moderado' | 'Elevado'
   longTermPotential: 'Prometedor' | 'Posible con atención' | 'Limitado'
@@ -124,6 +125,7 @@ export interface RelationshipMap {
   bondingStyle: string
   safetyNeeds: string
   desiredRelationship: string
+  innerReading: string
   sensitiveAreas: string[]
   strengths: string[]
   availabilityLevel: number

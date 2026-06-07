@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { Button } from '../components/Button'
 import { ProgressBar } from '../components/ProgressBar'
 import { QuestionStep } from '../components/QuestionStep'
+import { ReflectionQuote } from '../components/ReflectionQuote'
 import { questionsBySection } from '../data/questions'
+import { onboardingReflections } from '../data/reflections'
 import type { AnswerValue } from '../types'
 
 interface OnboardingPageProps {
@@ -20,6 +22,7 @@ export function OnboardingPage({
 }: OnboardingPageProps) {
   const [step, setStep] = useState(0)
   const section = questionsBySection[step]
+  const sectionReflection = onboardingReflections[section.id]
   const progress = ((step + 1) / questionsBySection.length) * 100
   const answeredInSection = section.questions.filter((question) => {
     const answer = answers[question.id]
@@ -97,6 +100,14 @@ export function OnboardingPage({
         </aside>
 
         <div className="min-w-0">
+          {sectionReflection && (
+            <ReflectionQuote
+              text={sectionReflection.text}
+              context={sectionReflection.context}
+              className="mb-12"
+            />
+          )}
+
           <QuestionStep
             category={section.id}
             title={section.title}

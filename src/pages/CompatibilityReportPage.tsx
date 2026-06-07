@@ -25,7 +25,7 @@ export function CompatibilityReportPage({
         className="mb-7 inline-flex items-center gap-2 text-xs font-semibold text-muted transition hover:text-forest"
       >
         <span aria-hidden="true">←</span>
-        Volver a compatibilidades
+        Volver a posibilidades
       </button>
 
       <CompatibilitySummary candidate={candidate} report={report} />
@@ -142,6 +142,31 @@ export function CompatibilityReportPage({
         </div>
       </Card>
 
+      <Card
+        tone="transparent"
+        className="relative mt-6 overflow-hidden p-7 sm:p-10"
+      >
+        <div className="absolute -bottom-20 -right-16 size-56 rounded-full border border-moss/10" />
+        <div className="relative grid gap-8 lg:grid-cols-[0.58fr_1.42fr]">
+          <div>
+            <p className="eyebrow">Lo que este encuentro podría enseñaros</p>
+            <h2 className="mt-3 font-serif text-3xl leading-tight text-forest sm:text-4xl">
+              Encajar no basta. También importa cómo aprendéis a elegiros.
+            </h2>
+          </div>
+          <div className="border-l border-moss/25 pl-6 sm:pl-8">
+            <p className="font-serif text-xl leading-8 text-forest sm:text-2xl sm:leading-9">
+              {report.relationshipLesson}
+            </p>
+            <p className="mt-5 text-sm leading-7 text-muted">
+              Una relación no se sostiene porque dos personas coincidan en
+              todo, sino porque pueden cuidar lo que aparece entre ellas sin
+              poseerse ni dejar de escucharse.
+            </p>
+          </div>
+        </div>
+      </Card>
+
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Card className="p-6 sm:p-8">
           <p className="eyebrow">Nivel de cuidado estimado</p>
@@ -232,9 +257,9 @@ export function CompatibilityReportPage({
           {report.recommendation}
         </p>
         <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-forest/68">
-          No hay algoritmo que pueda saber si una relación va a nacer. Sí
-          podemos detectar si merece una conversación lenta, honesta y bien
-          cuidada.
+          Ninguna lectura puede saber si una relación va a nacer. Sí puede
+          ayudarnos a reconocer si merece una conversación lenta, honesta y
+          bien cuidada.
         </p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           <Button>

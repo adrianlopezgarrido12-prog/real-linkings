@@ -201,7 +201,7 @@ export function calculateCompatibility(
 
   const explanation =
     totalScore >= 80
-      ? `Este vínculo muestra una compatibilidad alta en ${topLabels.join(', ')}. Ambas personas parecen compartir una base sólida para construir. La principal zona a conversar aparece en ${weakest.label.toLowerCase()}; no es necesariamente una incompatibilidad, pero requeriría claridad y capacidad de reparación.`
+      ? `Este encuentro muestra una afinidad alta en ${topLabels.join(', ')}. Ambas personas parecen compartir una base sólida para construir. La principal zona a conversar aparece en ${weakest.label.toLowerCase()}; no tiene por qué cerrar la posibilidad, pero requeriría claridad y capacidad de reparación.`
       : totalScore >= 60
         ? `Hay una conexión posible y varios puntos de afinidad, especialmente en ${topLabels.slice(0, 2).join(' y ')}. A la vez, las diferencias en ${weakest.label.toLowerCase()} podrían generar tensión si no se hablan con honestidad desde el principio.`
         : `Puede existir curiosidad o atracción, pero aparecen diferencias relevantes en el modo de imaginar y sostener una relación. La distancia en ${weakest.label.toLowerCase()} merece más atención que la afinidad inicial.`
@@ -224,6 +224,17 @@ export function calculateCompatibility(
       : totalScore >= 62
         ? 'Podría haber una alternancia entre cercanía y ajuste: momentos de encuentro claro seguidos de otros en los que cada persona necesite traducir mejor sus ritmos y expectativas.'
         : 'La dinámica podría sentirse estimulante al principio, pero exigir demasiada adaptación para sostenerse. Conviene observar si ambos pueden negociar las diferencias sin intentar cambiar al otro.'
+
+  const relationshipLesson =
+    candidate.priorities.includes('lifestyle') &&
+    user.priorities.includes('lifeProject')
+      ? `El encuentro con ${candidate.name} podría invitaros a distinguir libertad de distancia y compromiso de renuncia. Para que ambos pudierais elegir sin perderos, haría falta hablar con claridad sobre cuánto espacio necesita cada uno y qué presencia puede ofrecer de verdad.`
+      : candidate.priorities.includes('availability') &&
+          user.priorities.includes('availability')
+        ? `Este encuentro podría recordaros que estar disponible no significa estar siempre de acuerdo ni responder de inmediato. Con ${candidate.name}, el aprendizaje estaría en cuidar la presencia sin convertirla en exigencia y en dejar que la confianza se demuestre con actos.`
+        : totalScore >= 75
+          ? `Más allá de la afinidad, este encuentro podría enseñaros a no confundir facilidad con conocimiento. Elegirse implicaría seguir mirando al otro como alguien libre, capaz de sorprender, poner límites y cambiar sin dejar de cuidar lo que construís.`
+          : `Este encuentro podría ayudaros a reconocer que no toda atracción necesita convertirse en relación. Cuidar también puede significar ver la diferencia con honestidad, sin intentar poseer lo posible ni pedir al otro que encaje en una expectativa.`
 
   const depthReading =
     totalScore >= 80
@@ -256,10 +267,10 @@ export function calculateCompatibility(
 
   const recommendation =
     totalScore >= 82
-      ? 'Merece una conversación pausada. Hay base para explorar el vínculo sin acelerar la intimidad ni dar la compatibilidad por hecha.'
+      ? 'Merece una conversación pausada. Hay base para explorar el encuentro sin acelerar la intimidad ni dar la sintonía por hecha.'
       : totalScore >= 62
         ? 'Puede ser valioso conocerse si ambos pueden hablar pronto sobre sus ritmos y expectativas. Observa los hechos, no solo la conexión.'
-        : 'Conviene avanzar con cautela y sin intentar convertir la intensidad en compatibilidad. Prioriza claridad sobre el proyecto y la disponibilidad.'
+        : 'Conviene avanzar con cautela y sin intentar convertir la intensidad en capacidad de construir. Prioriza claridad sobre el proyecto y la disponibilidad.'
 
   return {
     candidateId: candidate.id,
@@ -274,6 +285,7 @@ export function calculateCompatibility(
     relationalDynamic,
     likelyConnection,
     likelyTension,
+    relationshipLesson,
     observeSignals,
     relationalRisk,
     longTermPotential,

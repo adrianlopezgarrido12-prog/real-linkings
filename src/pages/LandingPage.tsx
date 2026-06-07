@@ -1,5 +1,7 @@
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
+import { ReflectionQuote } from '../components/ReflectionQuote'
+import { reflections } from '../data/reflections'
 
 interface LandingPageProps {
   onStart: () => void
@@ -112,6 +114,28 @@ export function LandingPage({ onStart }: LandingPageProps) {
               ))}
             </div>
           </Card>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 pb-24 sm:px-8 lg:px-10">
+        <div className="grid gap-8 border-y border-line/80 py-16 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
+          <div>
+            <p className="eyebrow">Otra forma de buscar el amor</p>
+            <h2 className="mt-4 max-w-lg font-serif text-4xl leading-tight text-forest sm:text-5xl">
+              Una persona no es un perfil que consumir.
+            </h2>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-muted">
+              Durante años, las aplicaciones de citas nos han acostumbrado a
+              mirar personas como opciones o estímulos. Real Linkings parte de
+              otra premisa: una relación no debería empezar desde la prisa, la
+              validación o el consumo, sino desde la presencia, la claridad y
+              la intención.
+            </p>
+          </div>
+          <ReflectionQuote
+            text={reflections[0]}
+            context="Una premisa para empezar"
+          />
         </div>
       </section>
 

@@ -109,6 +109,8 @@ export const relationshipMap: RelationshipMap = {
     'Tus respuestas sugieren que necesitas claridad emocional para abrirte con seguridad. La presencia consistente y poder hablar sin retirar el afecto son importantes para ti.',
   desiredRelationship:
     'Quieres construir una relación estable, honesta y con horizonte compartido, sin renunciar al espacio propio ni a la identidad de cada persona.',
+  innerReading:
+    'Más allá de tus preferencias, parece que buscas una relación donde la presencia no se convierta en exigencia y la libertad no se confunda con distancia. Quieres poder elegir y sentirte elegido/a sin tener que dejar de ser tú.',
   sensitiveAreas: [
     'Podría haber cierta ambivalencia entre tu deseo de resolver pronto y tu necesidad de protegerte cuando no sientes claridad.',
     'Esta zona no es un problema, pero convendría mirar con honestidad cuánto esfuerzo asumes para evitar decepcionar.',

@@ -60,10 +60,10 @@ export function CompatibilitySummary({
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2 lg:justify-start">
           <span className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-paper/80">
-            Riesgo {report.relationalRisk.toLowerCase()}
+            Cuidado {report.relationalRisk.toLowerCase()}
           </span>
           <span className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-paper/80">
-            Potencial {report.longTermPotential.toLowerCase()}
+            Horizonte {report.longTermPotential.toLowerCase()}
           </span>
         </div>
       </div>
