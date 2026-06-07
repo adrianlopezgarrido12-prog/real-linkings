@@ -65,7 +65,7 @@ export function AppLayout({
                 currentPage === 'matches' ? 'text-forest' : ''
               }`}
             >
-              Compatibilidades
+              Posibilidades
             </button>
             <span className="flex size-9 items-center justify-center rounded-full bg-forest text-xs font-semibold text-paper">
               A
@@ -77,8 +77,8 @@ export function AppLayout({
       <main>{children}</main>
 
       <footer className="mx-auto mt-20 flex max-w-7xl flex-col gap-4 border-t border-line px-5 py-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
-        <p>Real Linkings · No más matches vacíos. Más vínculo real.</p>
-        <p>Un prototipo de compatibilidad consciente.</p>
+        <p>Real Linkings · Menos ruido. Más atención a lo que importa.</p>
+        <p>Una herramienta para conocerte y elegir con más conciencia.</p>
       </footer>
     </div>
   )

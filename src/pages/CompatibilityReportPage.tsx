@@ -30,6 +30,27 @@ export function CompatibilityReportPage({
 
       <CompatibilitySummary candidate={candidate} report={report} />
 
+      <Card className="mt-6 p-7 sm:p-10">
+        <div className="grid gap-8 lg:grid-cols-[0.62fr_1.38fr]">
+          <div>
+            <p className="eyebrow">Lectura del encuentro</p>
+            <h2 className="mt-3 font-serif text-3xl leading-tight text-forest sm:text-4xl">
+              Lo que podría unirles y lo que pediría más cuidado.
+            </h2>
+          </div>
+          <div className="space-y-5">
+            {report.depthReading.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="text-sm leading-7 text-muted first:text-base first:text-ink"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      </Card>
+
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <Card className="p-6 sm:p-8">
           <div className="mb-4">
@@ -50,7 +71,7 @@ export function CompatibilityReportPage({
 
         <div className="space-y-6">
           <Card tone="sage" className="p-6 sm:p-8">
-            <p className="eyebrow">Fortalezas del vínculo</p>
+            <p className="eyebrow">Lo que podría sostenerles</p>
             <div className="mt-6 space-y-6">
               {report.strengths.map((strength, index) => (
                 <div key={strength.title} className="flex gap-4">
@@ -69,7 +90,9 @@ export function CompatibilityReportPage({
           </Card>
 
           <Card className="p-6 sm:p-8">
-            <p className="eyebrow !text-clay">Zonas sensibles</p>
+            <p className="eyebrow !text-clay">
+              Diferencias que merecen atención
+            </p>
             <div className="mt-6 space-y-5">
               {report.risks.map((risk) => (
                 <div
@@ -87,11 +110,43 @@ export function CompatibilityReportPage({
         </div>
       </div>
 
+      <Card tone="forest" className="mt-6 overflow-hidden p-7 sm:p-10">
+        <div className="max-w-3xl">
+          <p className="eyebrow !text-sage">Dinámica probable</p>
+          <h2 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
+            Si esta relación avanzara, no todo aparecería al mismo tiempo.
+          </h2>
+          <p className="mt-5 text-sm leading-7 text-paper/65">
+            {report.relationalDynamic}
+          </p>
+        </div>
+        <div className="mt-9 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2">
+          <div className="bg-forest p-6 sm:p-8">
+            <span className="font-serif text-xl italic text-sage">01</span>
+            <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.13em] text-paper/85">
+              La conexión podría aparecer cuando...
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-paper/62">
+              {report.likelyConnection}
+            </p>
+          </div>
+          <div className="bg-forest p-6 sm:p-8">
+            <span className="font-serif text-xl italic text-clay">02</span>
+            <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.13em] text-paper/85">
+              La tensión podría aparecer cuando...
+            </h3>
+            <p className="mt-4 text-sm leading-7 text-paper/62">
+              {report.likelyTension}
+            </p>
+          </div>
+        </div>
+      </Card>
+
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Card className="p-6 sm:p-8">
-          <p className="eyebrow">Lectura orientativa</p>
+          <p className="eyebrow">Nivel de cuidado estimado</p>
           <h2 className="mt-3 font-serif text-3xl text-forest">
-            Riesgo relacional estimado
+            Diferencias que pedirían atención
           </h2>
           <div className="mt-6 flex items-center gap-5">
             <div
@@ -108,17 +163,17 @@ export function CompatibilityReportPage({
                 {report.relationalRisk}
               </p>
               <p className="mt-1 text-sm leading-6 text-muted">
-                No mide el valor de ninguna persona. Señala cuánto cuidado
-                podrían requerir las diferencias observadas.
+                No mide el valor de nadie ni anticipa un resultado. Solo indica
+                cuánto diálogo podrían requerir las diferencias observadas.
               </p>
             </div>
           </div>
         </Card>
 
         <Card tone="forest" className="p-6 sm:p-8">
-          <p className="eyebrow !text-sage">Mirada a largo plazo</p>
+          <p className="eyebrow !text-sage">Posibilidad a largo plazo</p>
           <h2 className="mt-3 font-serif text-3xl">
-            Potencial {report.longTermPotential.toLowerCase()}
+            Una construcción {report.longTermPotential.toLowerCase()}
           </h2>
           <p className="mt-5 text-sm leading-6 text-paper/68">
             {candidate.relationshipVision}
@@ -126,39 +181,64 @@ export function CompatibilityReportPage({
         </Card>
       </div>
 
-      <Card className="mt-6 p-6 sm:p-8">
-        <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
-          <div>
-            <p className="eyebrow">Antes de avanzar</p>
-            <h2 className="mt-3 font-serif text-3xl leading-tight text-forest">
-              Conversaciones que merecen tiempo.
-            </h2>
-            <p className="mt-4 text-sm leading-6 text-muted">
-              No son preguntas para evaluar a nadie. Son puertas para conocer
-              cómo piensa, siente y repara la otra persona.
-            </p>
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
+        <Card className="p-6 sm:p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr]">
+            <div>
+              <p className="eyebrow">Una primera conversación honesta</p>
+              <h2 className="mt-3 font-serif text-3xl leading-tight text-forest">
+                Preguntas para escuchar, no para evaluar.
+              </h2>
+              <p className="mt-4 text-sm leading-6 text-muted">
+                No hace falta formularlas como una entrevista. Son invitaciones
+                para descubrir cómo piensa, siente, elige y repara la otra
+                persona.
+              </p>
+            </div>
+            <ol className="divide-y divide-line/80">
+              {report.suggestedQuestions.map((question, index) => (
+                <li key={question} className="flex gap-4 py-4 first:pt-0">
+                  <span className="font-serif text-lg italic text-clay">
+                    0{index + 1}
+                  </span>
+                  <p className="text-sm leading-6 text-ink">{question}</p>
+                </li>
+              ))}
+            </ol>
           </div>
-          <ol className="divide-y divide-line/80">
-            {report.suggestedQuestions.map((question, index) => (
-              <li key={question} className="flex gap-4 py-4 first:pt-0">
-                <span className="font-serif text-lg italic text-clay">
-                  0{index + 1}
+        </Card>
+
+        <Card tone="sage" className="p-6 sm:p-8">
+          <p className="eyebrow">Señales a observar</p>
+          <h2 className="mt-3 font-serif text-3xl leading-tight text-forest">
+            Lo importante también ocurre entre las respuestas.
+          </h2>
+          <ul className="mt-6 space-y-5">
+            {report.observeSignals.map((signal, index) => (
+              <li key={signal} className="flex gap-4">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-forest/20 text-[0.65rem] text-forest">
+                  {index + 1}
                 </span>
-                <p className="text-sm leading-6 text-ink">{question}</p>
+                <p className="text-sm leading-6 text-forest/72">{signal}</p>
               </li>
             ))}
-          </ol>
-        </div>
-      </Card>
+          </ul>
+        </Card>
+      </div>
 
       <Card tone="sage" className="mt-6 p-7 text-center sm:p-10">
-        <p className="eyebrow">Recomendación final</p>
+        <p className="eyebrow">Una orientación, no un veredicto</p>
         <p className="mx-auto mt-4 max-w-3xl font-serif text-2xl leading-relaxed text-forest sm:text-3xl">
           {report.recommendation}
         </p>
+        <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-forest/68">
+          No hay algoritmo que pueda saber si una relación va a nacer. Sí
+          podemos detectar si merece una conversación lenta, honesta y bien
+          cuidada.
+        </p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
           <Button>
-            Quiero conocer esta compatibilidad
+            Quiero abrir esta conversación
             <span aria-hidden="true">→</span>
           </Button>
           <Button variant="secondary" onClick={onBack}>

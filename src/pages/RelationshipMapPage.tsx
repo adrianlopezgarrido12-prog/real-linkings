@@ -1,14 +1,19 @@
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
-import { relationshipMap } from '../data/mockUsers'
+import type { AnswerValue } from '../types'
+import { generateRelationshipMap } from '../utils/relationshipMap'
 
 interface RelationshipMapPageProps {
+  answers: Record<string, AnswerValue>
   onViewMatches: () => void
 }
 
 export function RelationshipMapPage({
+  answers,
   onViewMatches,
 }: RelationshipMapPageProps) {
+  const relationshipMap = generateRelationshipMap(answers)
+
   return (
     <div className="mx-auto max-w-7xl px-5 pb-10 pt-10 sm:px-8 lg:px-10">
       <header className="mx-auto max-w-3xl text-center animate-reveal">
@@ -17,8 +22,9 @@ export function RelationshipMapPage({
           Tu mapa relacional
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-muted">
-          Una síntesis de cómo buscas vincularte hoy. No define quién eres:
-          abre preguntas para elegir con más conciencia.
+          Esta lectura nace de tus respuestas y del momento que has descrito.
+          No define quién eres: organiza señales para que puedas elegir con más
+          conciencia.
         </p>
       </header>
 
@@ -107,10 +113,11 @@ export function RelationshipMapPage({
       <div className="mt-12 flex flex-col items-center text-center">
         <p className="max-w-lg text-sm leading-6 text-muted">
           El siguiente paso no es ver más personas. Es mirar mejor a aquellas
-          cuya forma de construir podría encontrarse con la tuya.
+          cuya forma de estar, cuidar y construir podría encontrarse con la
+          tuya.
         </p>
         <Button onClick={onViewMatches} className="mt-6 px-8">
-          Ver personas compatibles
+          Ver posibilidades seleccionadas
           <span aria-hidden="true">→</span>
         </Button>
       </div>

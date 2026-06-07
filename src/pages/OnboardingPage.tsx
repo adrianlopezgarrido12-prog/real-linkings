@@ -82,7 +82,7 @@ export function OnboardingPage({
                     >
                       {index < step ? '✓' : index + 1}
                     </span>
-                    {item.title}
+                    {item.label}
                   </button>
                 </li>
               ))}
@@ -100,7 +100,8 @@ export function OnboardingPage({
           <QuestionStep
             category={section.id}
             title={section.title}
-            subtitle={section.subtitle}
+            reflection={section.reflection}
+            description={section.description}
             questions={section.questions}
             answers={answers}
             onAnswer={onAnswer}

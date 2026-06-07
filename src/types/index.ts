@@ -26,7 +26,12 @@ export type CompatibilityCategory =
   | 'availability'
   | 'innerWorld'
 
-export type QuestionType = 'scale' | 'single' | 'multiple' | 'text'
+export type QuestionType =
+  | 'scale'
+  | 'single'
+  | 'multiple'
+  | 'text'
+  | 'sentence'
 
 export interface Question {
   id: string
@@ -36,6 +41,7 @@ export interface Question {
   type: QuestionType
   options?: string[]
   scaleLabels?: [string, string]
+  sentenceStart?: string
 }
 
 export type AnswerValue = string | number | string[]
@@ -105,6 +111,11 @@ export interface CompatibilityReport {
   suggestedQuestions: string[]
   recommendation: string
   explanation: string
+  depthReading: string[]
+  relationalDynamic: string
+  likelyConnection: string
+  likelyTension: string
+  observeSignals: string[]
   relationalRisk: 'Bajo' | 'Moderado' | 'Elevado'
   longTermPotential: 'Prometedor' | 'Posible con atención' | 'Limitado'
 }

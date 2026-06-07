@@ -7,7 +7,8 @@ import type {
 interface QuestionStepProps {
   category: QuestionCategory
   title: string
-  subtitle: string
+  reflection: string
+  description: string
   questions: Question[]
   answers: Record<string, AnswerValue>
   onAnswer: (questionId: string, value: AnswerValue) => void
@@ -20,7 +21,8 @@ function isSelected(answer: AnswerValue | undefined, option: string) {
 export function QuestionStep({
   category,
   title,
-  subtitle,
+  reflection,
+  description,
   questions,
   answers,
   onAnswer,
@@ -41,13 +43,24 @@ export function QuestionStep({
 
   return (
     <section key={category} className="animate-reveal">
-      <div className="mb-10 max-w-2xl">
-        <p className="eyebrow mb-3">Una conversación contigo</p>
-        <h1 className="font-serif text-4xl text-forest sm:text-5xl">{title}</h1>
-        <p className="mt-4 text-base leading-7 text-muted">{subtitle}</p>
+      <div className="mb-14 max-w-3xl">
+        <p className="eyebrow mb-4">Una conversación contigo</p>
+        <h1 className="max-w-2xl font-serif text-4xl leading-tight text-forest sm:text-5xl">
+          {title}
+        </h1>
+        <p className="mt-5 max-w-2xl font-serif text-xl italic leading-8 text-clay">
+          {reflection}
+        </p>
+        <div className="mt-7 max-w-2xl border-l border-moss/35 pl-5">
+          <p className="text-sm leading-7 text-muted">{description}</p>
+          <p className="mt-3 text-xs leading-5 text-moss">
+            Tómate un momento. No buscamos una respuesta perfecta, sino una
+            respuesta que puedas reconocer como tuya.
+          </p>
+        </div>
       </div>
 
-      <div className="space-y-10">
+      <div className="space-y-12">
         {questions.map((question, index) => {
           const answer = answers[question.id]
 
@@ -70,14 +83,27 @@ export function QuestionStep({
                 </div>
               </div>
 
-              {question.type === 'text' && (
-                <textarea
-                  value={typeof answer === 'string' ? answer : ''}
-                  onChange={(event) => onAnswer(question.id, event.target.value)}
-                  rows={3}
-                  placeholder="Escribe con tus propias palabras..."
-                  className="ml-0 w-full resize-none rounded-2xl border border-line bg-white/55 px-5 py-4 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/60 focus:border-moss focus:bg-white sm:ml-8 sm:w-[calc(100%-2rem)]"
-                />
+              {(question.type === 'text' || question.type === 'sentence') && (
+                <div className="ml-0 sm:ml-8">
+                  {question.type === 'sentence' && (
+                    <p className="mb-3 font-serif text-lg italic leading-7 text-forest">
+                      {question.sentenceStart}
+                    </p>
+                  )}
+                  <textarea
+                    value={typeof answer === 'string' ? answer : ''}
+                    onChange={(event) =>
+                      onAnswer(question.id, event.target.value)
+                    }
+                    rows={3}
+                    placeholder={
+                      question.type === 'sentence'
+                        ? 'Continúa la frase...'
+                        : 'Escribe con tus propias palabras...'
+                    }
+                    className="w-full resize-none rounded-2xl border border-line bg-white/55 px-5 py-4 text-sm leading-6 text-ink outline-none transition placeholder:text-muted/60 focus:border-moss focus:bg-white"
+                  />
+                </div>
               )}
 
               {question.type === 'scale' && (

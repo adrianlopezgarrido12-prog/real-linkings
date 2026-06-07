@@ -78,12 +78,13 @@ function scoreDifference(
 }
 
 function getCategoryNote(score: number, label: string) {
-  if (score >= 88) return `Existe una sintonía muy clara en ${label.toLowerCase()}.`
+  if (score >= 88)
+    return `Ambas personas parecen acercarse de una forma muy parecida a ${label.toLowerCase()}.`
   if (score >= 74)
-    return `Hay una base compartida en ${label.toLowerCase()}, con matices conversables.`
+    return `Hay una base compartida en ${label.toLowerCase()}, aunque conviene conocer sus matices.`
   if (score >= 58)
-    return `Puede funcionar, pero conviene entender las diferencias en ${label.toLowerCase()}.`
-  return `Aquí aparecen diferencias importantes que merecen claridad temprana.`
+    return `Las diferencias en ${label.toLowerCase()} podrían complementarse si se hablan con claridad.`
+  return `Aquí aparecen ritmos distintos que merecen una conversación temprana y concreta.`
 }
 
 function buildStrengths(scores: CategoryScore[]): CompatibilityStrength[] {
@@ -93,8 +94,8 @@ function buildStrengths(scores: CategoryScore[]): CompatibilityStrength[] {
     .map((item) => ({
       title:
         item.score >= 88
-          ? `Sintonía en ${item.label.toLowerCase()}`
-          : `Buena base en ${item.label.toLowerCase()}`,
+          ? `Una mirada parecida sobre ${item.label.toLowerCase()}`
+          : `Terreno compartido en ${item.label.toLowerCase()}`,
       description: item.note,
       categories: [item.category],
     }))
@@ -109,7 +110,7 @@ function buildRisks(scores: CategoryScore[]): CompatibilityRisk[] {
   if (lowerScores.length === 0) {
     return [
       {
-        title: 'Cuidar el ritmo real',
+        title: 'No dar por hecha la sintonía',
         description:
           'La afinidad es alta, pero sigue siendo importante observar si la consistencia cotidiana acompaña a la conexión inicial.',
         severity: 'low',
@@ -119,7 +120,7 @@ function buildRisks(scores: CategoryScore[]): CompatibilityRisk[] {
   }
 
   return lowerScores.map((item) => ({
-    title: `Diferentes ritmos en ${item.label.toLowerCase()}`,
+    title: `Ritmos distintos en ${item.label.toLowerCase()}`,
     description:
       item.score < 55
         ? `La distancia en ${item.label.toLowerCase()} podría afectar a decisiones importantes. Conviene hablarlo antes de generar expectativas.`
@@ -182,6 +183,9 @@ export function calculateCompatibility(
     .map((item) => item.label.toLowerCase())
 
   const weakest = [...categoryScores].sort((a, b) => a.score - b.score)[0]
+  const secondWeakest = [...categoryScores].sort(
+    (a, b) => a.score - b.score,
+  )[1]
   const relationalRisk =
     totalScore >= 80 && weakest.score >= 62
       ? 'Bajo'
@@ -202,6 +206,54 @@ export function calculateCompatibility(
         ? `Hay una conexión posible y varios puntos de afinidad, especialmente en ${topLabels.slice(0, 2).join(' y ')}. A la vez, las diferencias en ${weakest.label.toLowerCase()} podrían generar tensión si no se hablan con honestidad desde el principio.`
         : `Puede existir curiosidad o atracción, pero aparecen diferencias relevantes en el modo de imaginar y sostener una relación. La distancia en ${weakest.label.toLowerCase()} merece más atención que la afinidad inicial.`
 
+  const likelyConnection =
+    totalScore >= 80
+      ? `La conexión probablemente aparecería en la facilidad para reconocerse en ${topLabels.slice(0, 2).join(' y ')}. Podría sentirse como una conversación que avanza sin tener que justificar cada prioridad.`
+      : totalScore >= 60
+        ? `El encuentro podría ganar fuerza a través de ${topLabels.slice(0, 2).join(' y ')}. Hay suficiente terreno común para despertar curiosidad y explorar sin forzar una definición inmediata.`
+        : `La curiosidad podría aparecer en ${topLabels[0]}, especialmente si ambos se permiten conocer lo distinto sin convertir la atracción en una promesa.`
+
+  const likelyTension =
+    weakest.score < 55
+      ? `La tensión podría aparecer cuando haya que tomar decisiones relacionadas con ${weakest.label.toLowerCase()}. La diferencia no es menor: necesitaría hechos claros, no solo buena intención.`
+      : `La tensión podría aparecer en los ritmos de ${weakest.label.toLowerCase()} y ${secondWeakest.label.toLowerCase()}. Una persona podría necesitar algo que la otra tarda más en ofrecer o expresar.`
+
+  const relationalDynamic =
+    totalScore >= 82
+      ? 'La dinámica probable combina sensación de reconocimiento y suficiente diferencia para mantener curiosidad. El cuidado principal sería no acelerar la confianza solo porque el comienzo resulte fluido.'
+      : totalScore >= 62
+        ? 'Podría haber una alternancia entre cercanía y ajuste: momentos de encuentro claro seguidos de otros en los que cada persona necesite traducir mejor sus ritmos y expectativas.'
+        : 'La dinámica podría sentirse estimulante al principio, pero exigir demasiada adaptación para sostenerse. Conviene observar si ambos pueden negociar las diferencias sin intentar cambiar al otro.'
+
+  const depthReading =
+    totalScore >= 80
+      ? [
+          `Hay una base especialmente sólida en ${topLabels.slice(0, 3).join(', ')}. Esto no significa que ambos respondan igual a todo, sino que parecen atribuir un valor parecido a aspectos que influyen en la vida cotidiana y en las decisiones importantes.`,
+          `El punto que más cuidado pediría es ${weakest.label.toLowerCase()}. Si logran hablar de esta diferencia sin defenderse ni intentar resolverla demasiado rápido, podría convertirse en una zona de aprendizaje en lugar de desgaste.`,
+          'Para que esta posibilidad se sostenga, la afinidad inicial tendría que convertirse en coherencia: tiempo ofrecido, curiosidad mutua, límites respetados y capacidad de volver a hablar cuando algo incomode.',
+        ]
+      : totalScore >= 60
+        ? [
+            `La relación podría apoyarse en ${topLabels.slice(0, 2).join(' y ')}, dos áreas capaces de crear reconocimiento y deseo de seguir conociéndose. Hay motivos reales para una conversación, aunque todavía no para asumir un horizonte compartido.`,
+            `La diferencia en ${weakest.label.toLowerCase()} podría sentirse con más fuerza cuando aparezcan expectativas, distancia o decisiones concretas. No tendría por qué cerrar la posibilidad, pero sí exige nombrar necesidades antes de acumular interpretaciones.`,
+            'Lo importante sería comprobar si ambos pueden hacer ajustes recíprocos sin que una sola persona cargue con toda la adaptación.',
+          ]
+        : [
+            `Hay puntos de interés, sobre todo alrededor de ${topLabels[0]}, que podrían generar una conversación estimulante o una atracción inicial.`,
+            `Sin embargo, las diferencias en ${weakest.label.toLowerCase()} y ${secondWeakest.label.toLowerCase()} afectan a la forma de imaginar y cuidar una relación. Es importante no confundir intensidad, novedad o curiosidad con capacidad de construir.`,
+            'Si decidieran conocerse, convendría hacerlo sin expectativas anticipadas y observando si las diferencias pueden hablarse con respeto, no solo explicarse.',
+          ]
+
+  const observeSignals = [
+    'Si existe coherencia entre lo que se expresa y lo que se hace con el tiempo.',
+    'Si ambos respetan los ritmos del otro sin castigar la diferencia.',
+    'Si una conversación difícil puede sostenerse sin desaparecer, perseguir ni retirar el cuidado.',
+    'Si aparece curiosidad genuina por la otra persona y no solo atracción o proyección.',
+    totalScore >= 75
+      ? 'Si la facilidad inicial permite seguir haciendo preguntas en lugar de dar al otro por conocido.'
+      : 'Si los ajustes y concesiones empiezan a ser recíprocos en lugar de recaer siempre en la misma persona.',
+  ]
+
   const recommendation =
     totalScore >= 82
       ? 'Merece una conversación pausada. Hay base para explorar el vínculo sin acelerar la intimidad ni dar la compatibilidad por hecha.'
@@ -218,6 +270,11 @@ export function calculateCompatibility(
     suggestedQuestions,
     recommendation,
     explanation,
+    depthReading,
+    relationalDynamic,
+    likelyConnection,
+    likelyTension,
+    observeSignals,
     relationalRisk,
     longTermPotential,
   }

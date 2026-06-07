@@ -16,7 +16,7 @@ const accentClasses = {
 
 export function MatchCard({ candidate, report, onView }: MatchCardProps) {
   return (
-    <Card className="flex h-full flex-col p-5 sm:p-6">
+    <Card className="flex h-full flex-col p-5 sm:p-7">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4">
           <div
@@ -37,51 +37,62 @@ export function MatchCard({ candidate, report, onView }: MatchCardProps) {
           </span>
           <span className="text-sm text-muted">%</span>
           <p className="text-[0.65rem] uppercase tracking-wider text-muted">
-            compatibilidad
+            afinidad orientativa
           </p>
         </div>
       </div>
 
       <div className="my-5 h-px bg-line/80" />
-      <p className="text-xs font-semibold uppercase tracking-wider text-moss">
-        Intención relacional
-      </p>
-      <p className="mt-2 text-sm leading-6 text-ink">{candidate.intention}</p>
-      <p className="mt-3 text-sm leading-6 text-muted">{candidate.bio}</p>
+      <p className="text-sm leading-6 text-muted">{candidate.bio}</p>
 
-      <div className="mt-6">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-moss">
-          Lo que podría sostener el vínculo
+      <div className="mt-6 border-t border-line/70 pt-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-moss">
+          Forma de vincularse
         </p>
-        <ul className="space-y-2">
-          {report.strengths.map((strength) => (
-            <li
-              key={strength.title}
-              className="flex gap-2 text-sm leading-5 text-ink"
-            >
-              <span className="mt-2 size-1.5 shrink-0 rounded-full bg-moss" />
-              {strength.title}
-            </li>
+        <p className="mt-2 text-sm leading-6 text-ink">
+          {candidate.traits.map((trait, index) => (
+            <span key={trait}>
+              {index > 0 && ' · '}
+              {trait}
+            </span>
           ))}
-        </ul>
+        </p>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-moss">
+          Lo que busca construir
+        </p>
+        <p className="mt-2 text-sm leading-6 text-ink">
+          {candidate.relationshipVision}
+        </p>
       </div>
 
       <div className="mt-5 rounded-xl bg-ivory/80 p-4">
         <p className="text-xs font-semibold uppercase tracking-wider text-clay">
-          Zona a conversar
+          Zona que convendría conversar
         </p>
         <p className="mt-2 text-sm leading-5 text-muted">
           {report.risks[0].title}
         </p>
       </div>
 
+      <div className="mt-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-moss">
+          Por qué aparece aquí
+        </p>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          {report.strengths[0].description}
+        </p>
+      </div>
+
       <Button
         variant="secondary"
         fullWidth
-        className="mt-6"
+        className="mt-auto pt-3"
         onClick={() => onView(candidate)}
       >
-        Ver vínculo posible
+        Leer esta posibilidad
         <span aria-hidden="true">→</span>
       </Button>
     </Card>

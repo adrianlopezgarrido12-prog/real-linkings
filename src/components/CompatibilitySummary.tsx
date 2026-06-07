@@ -43,17 +43,17 @@ export function CompatibilitySummary({
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-serif text-4xl">{report.totalScore}%</span>
           <span className="text-[0.62rem] uppercase tracking-[0.16em] text-paper/60">
-            total
+            orientación
           </span>
         </div>
       </div>
 
       <div className="mt-6 text-center lg:mt-0 lg:text-left">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-sage">
-          Compatibilidad con {candidate.name}
+          Lectura compartida con {candidate.name}
         </p>
         <h1 className="mt-3 font-serif text-3xl leading-tight sm:text-4xl">
-          Una afinidad que merece ser mirada con calma.
+          Una posibilidad que merece tiempo antes de convertirse en respuesta.
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-6 text-paper/72">
           {report.explanation}

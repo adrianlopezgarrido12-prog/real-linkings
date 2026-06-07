@@ -8,18 +8,18 @@ interface LandingPageProps {
 const values = [
   {
     number: '01',
-    title: 'Autoconocimiento relacional',
-    text: 'Comprende cómo amas, qué necesitas y qué patrones quieres dejar de repetir.',
+    title: 'Una lectura de cómo amas',
+    text: 'Pon palabras a tus necesidades, tus formas de protegerte y aquello que ya no quieres repetir.',
   },
   {
     number: '02',
-    title: 'Compatibilidad profunda',
-    text: 'Miramos valores, proyecto vital, comunicación, intimidad y disponibilidad real.',
+    title: 'Afinidad con contexto',
+    text: 'Miramos valores, proyecto vital, comunicación, intimidad y capacidad de estar presente.',
   },
   {
     number: '03',
-    title: 'Pocas personas, con sentido',
-    text: 'Sin catálogos infinitos. Solo vínculos que merecen una mirada atenta.',
+    title: 'Pocas posibilidades, bien miradas',
+    text: 'Sin catálogos infinitos. Solo encuentros que merecen tiempo, preguntas y atención.',
   },
 ]
 
@@ -28,14 +28,16 @@ export function LandingPage({ onStart }: LandingPageProps) {
     <>
       <section className="relative mx-auto grid min-h-[78vh] max-w-7xl items-center gap-12 overflow-hidden px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:px-10 lg:pt-4">
         <div className="relative z-10 animate-reveal">
-          <p className="eyebrow mb-5">Compatibilidad para vínculos reales</p>
+          <p className="eyebrow mb-5">
+            Autoconocimiento para elegir con más conciencia
+          </p>
           <h1 className="max-w-3xl font-serif text-[3.4rem] leading-[0.98] tracking-[-0.03em] text-forest sm:text-7xl lg:text-[5.5rem]">
             Menos matches.
             <span className="mt-2 block italic text-clay">Más vínculo.</span>
           </h1>
           <p className="mt-7 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
-            Una plataforma para conocerte mejor y encontrar personas con las
-            que construir algo real.
+            Una plataforma para entender cómo amas y encontrar personas con
+            las que podrías cuidar una relación honesta y duradera.
           </p>
           <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <Button onClick={onStart} className="px-8">
@@ -43,7 +45,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               <span aria-hidden="true">→</span>
             </Button>
             <span className="text-xs text-muted">
-              9 etapas · sin respuestas correctas
+              9 pausas · sin respuestas correctas
             </span>
           </div>
         </div>
@@ -126,7 +128,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               No se trata de deslizar perfiles, acumular conversaciones ni
               perseguir una chispa instantánea. Se trata de comprender cómo
               amas, qué necesitas y con quién podrías construir una relación
-              sana, honesta y sostenible.
+              honesta, recíproca y sostenible.
             </p>
           </div>
 
@@ -152,8 +154,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
           La paciencia también puede ser una forma de deseo.
         </h2>
         <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted">
-          Empieza por un mapa de lo que buscas, lo que puedes ofrecer y las
-          conversaciones que merecen ocurrir.
+          Empieza por reconocer lo que buscas, lo que hoy puedes ofrecer y las
+          conversaciones que no quieres volver a evitar.
         </p>
         <Button onClick={onStart} className="mt-9 px-8">
           Empezar con calma

@@ -53,7 +53,10 @@ function App() {
       )}
 
       {currentPage === 'relationship-map' && (
-        <RelationshipMapPage onViewMatches={() => navigate('matches')} />
+        <RelationshipMapPage
+          answers={answers}
+          onViewMatches={() => navigate('matches')}
+        />
       )}
 
       {currentPage === 'matches' && (
