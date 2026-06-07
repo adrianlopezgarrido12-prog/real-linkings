@@ -49,6 +49,16 @@ export const candidates: CandidateProfile[] = [
     },
     priorities: ['lifeProject', 'values', 'innerWorld', 'availability'],
     traits: ['serena', 'curiosa', 'consistente'],
+    symbolicProfile: {
+      wantsSymbolicLayer: true,
+      sunSign: 'Virgo',
+      moonSign: 'Piscis',
+      risingSign: 'Libra',
+      mbtiType: 'INFP',
+      symbolicNotes:
+        'Utiliza estos lenguajes como herramientas narrativas, no como certezas.',
+      uploadedFiles: [],
+    },
   },
   {
     id: 'candidate-daniel',
@@ -74,6 +84,10 @@ export const candidates: CandidateProfile[] = [
     },
     priorities: ['values', 'lifestyle', 'intimacy'],
     traits: ['independiente', 'sensible', 'reservado'],
+    symbolicProfile: {
+      wantsSymbolicLayer: false,
+      uploadedFiles: [],
+    },
   },
   {
     id: 'candidate-marta',

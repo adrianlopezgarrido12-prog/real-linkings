@@ -1,4 +1,8 @@
-import type { Question, QuestionCategory } from '../types'
+import type {
+  Question,
+  QuestionCategory,
+  StageAtmosphereName,
+} from '../types'
 
 export interface QuestionSection {
   id: QuestionCategory
@@ -6,16 +10,30 @@ export interface QuestionSection {
   title: string
   reflection: string
   description: string
+  atmosphere: StageAtmosphereName
+  nextLabel: string
 }
 
 export const questionSections: QuestionSection[] = [
   {
     id: 'basic',
-    label: 'Datos básicos',
-    title: 'Antes de empezar, situemos dónde estás',
-    reflection: 'Toda forma de encontrarse empieza en un momento concreto.',
+    label: 'Identidad básica',
+    title: 'Lo visible también ayuda a situarnos',
+    reflection: 'Lo visible abre el recorrido, pero no lo agota.',
     description:
-      'No buscamos encajarte en una categoría. Queremos entender el lugar desde el que hoy te acercas a una relación: cuánto espacio tienes, qué deseas y qué ritmo puedes sostener.',
+      'Empezamos por lo visible: los datos que permiten situarte. Esta parte no define quién eres, solo abre la primera puerta.',
+    atmosphere: 'clear',
+    nextLabel: 'Entrar en tu vida práctica',
+  },
+  {
+    id: 'practicalLife',
+    label: 'Vida práctica',
+    title: 'La forma concreta que tiene tu día a día',
+    reflection: 'El lugar concreto donde una relación tendría que poder vivir.',
+    description:
+      'Una relación también se construye en lo cotidiano: horarios, ciudad, estilo de vida, disponibilidad real y forma de habitar el día a día.',
+    atmosphere: 'earth',
+    nextLabel: 'Continuar hacia tu proyecto vital',
   },
   {
     id: 'lifeProject',
@@ -23,47 +41,59 @@ export const questionSections: QuestionSection[] = [
     title: 'La vida que quieres poder compartir',
     reflection: 'Una relación también es una dirección elegida entre dos.',
     description:
-      'No hace falta imaginar el mismo futuro con todos sus detalles. Sí importa saber si las prioridades, los tiempos y aquello que cada persona quiere construir pueden convivir sin que nadie tenga que empequeñecerse.',
+      'Amar también implica mirar hacia dónde camina cada persona. No basta con gustarse: hace falta saber si se quiere construir en direcciones que puedan convivir.',
+    atmosphere: 'structure',
+    nextLabel: 'Abrir la sala de tus valores',
   },
   {
     id: 'values',
-    label: 'Valores',
-    title: 'Lo que quieres cuidar cuando no sea fácil',
-    reflection: 'Los valores se vuelven visibles cuando elegir tiene un coste.',
+    label: 'Valores y visión del amor',
+    title: 'Los principios desde los que eliges',
+    reflection: 'Lo que permanece cuando la intensidad cambia.',
     description:
-      'La honestidad, la libertad o la lealtad pueden significar cosas distintas para cada persona. Esta parte busca comprender qué principios orientan tus decisiones y qué necesitarías compartir de verdad.',
+      'A veces dos personas se desean, pero no entienden el amor de la misma manera. Aquí miramos qué principios sostienen tu forma de elegir.',
+    atmosphere: 'depth',
+    nextLabel: 'Continuar hacia el mapa emocional',
   },
   {
     id: 'emotionalStyle',
     label: 'Estilo emocional',
     title: 'Cómo te mueves cuando alguien empieza a importarte',
-    reflection: 'Acercarse y protegerse suelen convivir dentro de nosotros.',
+    reflection: 'Donde cercanía y protección empiezan a encontrarse.',
     description:
-      'No todos nos acercamos al amor de la misma manera. Algunas personas buscan claridad rápido; otras necesitan espacio. Esta parte no busca juzgarte, sino entender tu forma de protegerte y abrirte.',
+      'No todos nos movemos igual cuando alguien empieza a importarnos. Algunas personas buscan claridad. Otras necesitan espacio. Otras se protegen antes de abrirse.',
+    atmosphere: 'warm',
+    nextLabel: 'Entrar en cómo atraviesas el conflicto',
   },
   {
     id: 'communication',
     label: 'Comunicación y conflicto',
     title: 'Lo que ocurre cuando estar de acuerdo ya no es posible',
-    reflection: 'Una relación no se mide por evitar el conflicto, sino por cómo lo atraviesa.',
+    reflection: 'No se trata de no romperse, sino de aprender a reparar.',
     description:
-      'Las diferencias revelan nuestros ritmos, defensas y necesidades. Queremos conocer qué te ayuda a seguir presente cuando algo incomoda y qué hace posible una reparación sincera.',
+      'Una relación no se revela solo cuando todo va bien. También aparece en cómo se habla, se discute, se repara y se vuelve a mirar al otro después de una tensión.',
+    atmosphere: 'honest',
+    nextLabel: 'Continuar hacia la intimidad',
   },
   {
     id: 'intimacy',
     label: 'Intimidad y afecto',
     title: 'Las formas en las que permites que alguien se acerque',
-    reflection: 'La intimidad necesita deseo, pero también cuidado y confianza.',
+    reflection: 'La cercanía también tiene un ritmo, un lenguaje y unos límites.',
     description:
-      'Dar afecto, recibirlo y dejarse ver no siempre ocurren al mismo ritmo. Aquí exploramos qué convierte la cercanía en un lugar seguro, recíproco y vivo para ti.',
+      'El deseo, la ternura y el contacto también forman parte del vínculo. Esta sección no busca invadir, sino entender cómo vives la cercanía.',
+    atmosphere: 'delicate',
+    nextLabel: 'Abrir la sala de tu historia relacional',
   },
   {
     id: 'patterns',
-    label: 'Heridas y patrones',
+    label: 'Historia relacional y patrones',
     title: 'Lo que no quieres seguir repitiendo sin darte cuenta',
     reflection: 'Mirar lo vivido no obliga a quedarse dentro de ello.',
     description:
-      'Todos aprendemos maneras de acercarnos y protegernos. Algunas nos cuidan; otras terminan alejándonos de lo que deseamos. Esta pausa invita a reconocerlas sin etiquetas ni culpa.',
+      'No se trata de exponer heridas, sino de reconocer qué patrones se repiten y qué partes de ti necesitan ser cuidadas con más conciencia.',
+    atmosphere: 'silent',
+    nextLabel: 'Continuar hacia tu mundo interior',
   },
   {
     id: 'innerWorld',
@@ -71,7 +101,9 @@ export const questionSections: QuestionSection[] = [
     title: 'La parte de ti que espera poder ser compartida',
     reflection: 'A veces lo más importante es también lo más difícil de nombrar.',
     description:
-      'Más allá de los planes, una relación puede ofrecer pertenencia, complicidad y un lugar donde descansar sin dejar de crecer. Aquí miramos qué significa eso para ti.',
+      'Lo que anhelamos en el amor dice mucho de lo que buscamos construir, pero también de lo que alguna vez sentimos que nos faltó.',
+    atmosphere: 'poetic',
+    nextLabel: 'Entrar en tu disponibilidad actual',
   },
   {
     id: 'availability',
@@ -79,7 +111,9 @@ export const questionSections: QuestionSection[] = [
     title: 'El espacio que hoy puedes ofrecer de verdad',
     reflection: 'Desear una relación y poder cuidarla no siempre son lo mismo.',
     description:
-      'Estar disponible no significa no tener miedo ni tener la vida resuelta. Significa poder hacer sitio, sostener conversaciones honestas y asumir la parte propia de una construcción compartida.',
+      'Desear una relación no siempre significa estar disponible para sostenerla. Mirarlo con honestidad también es una forma de cuidado.',
+    atmosphere: 'mature',
+    nextLabel: 'Abrir la dimensión simbólica',
   },
 ]
 
@@ -91,8 +125,52 @@ export const questions: Question[] = [
     type: 'text',
   },
   {
-    id: 'basic-moment',
+    id: 'basic-age',
     category: 'basic',
+    prompt: '¿Qué edad tienes?',
+    type: 'text',
+  },
+  {
+    id: 'basic-city',
+    category: 'basic',
+    prompt: '¿En qué ciudad vives actualmente?',
+    type: 'text',
+  },
+  {
+    id: 'basic-identity',
+    category: 'basic',
+    prompt: '¿Cómo describes tu identidad de género?',
+    type: 'single',
+    options: [
+      'Mujer',
+      'Hombre',
+      'Persona no binaria',
+      'Prefiero describirlo con mis propias palabras',
+      'Prefiero no indicarlo ahora',
+    ],
+  },
+  {
+    id: 'basic-meet',
+    category: 'basic',
+    prompt: '¿A quién te gustaría conocer?',
+    type: 'multiple',
+    options: [
+      'Mujeres',
+      'Hombres',
+      'Personas no binarias',
+      'La identidad de género no es un criterio principal para mí',
+    ],
+  },
+  {
+    id: 'basic-intention',
+    category: 'basic',
+    prompt: '¿Qué tipo de relación estás buscando realmente?',
+    helper: 'No hace falta que suene perfecto. Basta con que se parezca a tu verdad.',
+    type: 'text',
+  },
+  {
+    id: 'basic-moment',
+    category: 'practicalLife',
     prompt: '¿Cómo describirías el momento vital en el que estás?',
     type: 'single',
     options: [
@@ -104,21 +182,14 @@ export const questions: Question[] = [
   },
   {
     id: 'basic-time',
-    category: 'basic',
+    category: 'practicalLife',
     prompt: '¿Cuánto espacio concreto tienes hoy para cuidar una relación?',
     type: 'scale',
     scaleLabels: ['Muy poco ahora', 'Es una prioridad real'],
   },
   {
-    id: 'basic-intention',
-    category: 'basic',
-    prompt: '¿Qué tipo de relación estás buscando realmente?',
-    helper: 'No hace falta que suene perfecto. Basta con que se parezca a tu verdad.',
-    type: 'text',
-  },
-  {
     id: 'basic-pace',
-    category: 'basic',
+    category: 'practicalLife',
     prompt: '¿A qué ritmo te gustaría conocer a alguien?',
     type: 'single',
     options: [
@@ -130,10 +201,34 @@ export const questions: Question[] = [
   },
   {
     id: 'basic-completion',
-    category: 'basic',
+    category: 'practicalLife',
     prompt: 'Completa esta frase sin pensarlo demasiado.',
     type: 'sentence',
     sentenceStart: 'Ahora mismo, compartir mi vida con alguien significaría...',
+  },
+  {
+    id: 'practical-rhythm',
+    category: 'practicalLife',
+    prompt: '¿Qué ritmo describe mejor tu vida cotidiana?',
+    type: 'single',
+    options: [
+      'Estable y previsible la mayor parte del tiempo',
+      'Intenso, pero puedo reservar espacio con intención',
+      'Cambiante; necesito planificar para estar presente',
+      'Flexible y con bastante disponibilidad espontánea',
+    ],
+  },
+  {
+    id: 'practical-mobility',
+    category: 'practicalLife',
+    prompt: '¿Qué margen tienes para integrar a alguien en tu forma de vivir?',
+    type: 'single',
+    options: [
+      'Busco a alguien cerca y con una rutina compatible',
+      'Puedo desplazarme y reorganizar parte de mi semana',
+      'Aceptaría cierta distancia si existe un plan para acercarnos',
+      'Mi vida actual deja poco margen para grandes cambios',
+    ],
   },
 
   {

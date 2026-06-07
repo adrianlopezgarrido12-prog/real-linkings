@@ -1,18 +1,43 @@
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
-import type { AnswerValue } from '../types'
+import { hasSymbolicData } from '../data/symbolic'
+import type { AnswerValue, SymbolicProfile } from '../types'
 import { generateRelationshipMap } from '../utils/relationshipMap'
 
 interface RelationshipMapPageProps {
   answers: Record<string, AnswerValue>
+  symbolicProfile: SymbolicProfile
   onViewMatches: () => void
 }
 
 export function RelationshipMapPage({
   answers,
+  symbolicProfile,
   onViewMatches,
 }: RelationshipMapPageProps) {
   const relationshipMap = generateRelationshipMap(answers)
+  const showSymbolicLayer = hasSymbolicData(symbolicProfile)
+  const symbolicItems = [
+    symbolicProfile.sunSign && `Sol en ${symbolicProfile.sunSign}`,
+    symbolicProfile.moonSign && `Luna en ${symbolicProfile.moonSign}`,
+    symbolicProfile.risingSign &&
+      `Ascendente en ${symbolicProfile.risingSign}`,
+    symbolicProfile.mbtiType && `MBTI: ${symbolicProfile.mbtiType}`,
+    symbolicProfile.humanDesignType &&
+      `Human Design: ${symbolicProfile.humanDesignType}${
+        symbolicProfile.humanDesignAuthority
+          ? `, autoridad ${symbolicProfile.humanDesignAuthority.toLowerCase()}`
+          : ''
+      }${
+        symbolicProfile.humanDesignProfile
+          ? `, perfil ${symbolicProfile.humanDesignProfile}`
+          : ''
+      }`,
+    symbolicProfile.uploadedFiles?.length &&
+      `${symbolicProfile.uploadedFiles.length} documento${
+        symbolicProfile.uploadedFiles.length === 1 ? '' : 's'
+      } simbólico${symbolicProfile.uploadedFiles.length === 1 ? '' : 's'}`,
+  ].filter(Boolean) as string[]
 
   return (
     <div className="mx-auto max-w-7xl px-5 pb-10 pt-10 sm:px-8 lg:px-10">
@@ -127,6 +152,51 @@ export function RelationshipMapPage({
             ))}
           </div>
         </Card>
+
+        {showSymbolicLayer && (
+          <Card
+            tone="forest"
+            className="grain relative overflow-hidden md:col-span-2 lg:col-span-3 lg:p-9"
+          >
+            <div className="grid gap-8 lg:grid-cols-[0.52fr_1.48fr]">
+              <div>
+                <span className="font-serif text-xl italic text-[#d8cda8]">
+                  05
+                </span>
+                <p className="eyebrow mt-6 !text-[#c9b987]">
+                  Dimensión simbólica
+                </p>
+                <p className="mt-3 text-xs leading-5 text-paper/48">
+                  Una capa narrativa que has elegido añadir.
+                </p>
+              </div>
+              <div>
+                {symbolicItems.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {symbolicItems.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-paper/78"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {symbolicProfile.symbolicNotes && (
+                  <p className="mt-5 font-serif text-xl italic leading-8 text-paper/82">
+                    “{symbolicProfile.symbolicNotes}”
+                  </p>
+                )}
+                <p className="mt-5 max-w-3xl text-sm leading-7 text-paper/58">
+                  Esta capa no define tu afinidad, pero puede aportar un
+                  lenguaje adicional para comprender cómo te lees a ti
+                  mismo/a y qué símbolos forman parte de tu identidad.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
       </div>
 
       <div className="mt-12 flex flex-col items-center text-center">

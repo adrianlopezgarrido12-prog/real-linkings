@@ -2,20 +2,32 @@ import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { CompatibilitySummary } from '../components/CompatibilitySummary'
 import { ScoreBar } from '../components/ScoreBar'
-import type { CandidateProfile } from '../types'
+import type { CandidateProfile, SymbolicProfile } from '../types'
 import { mainUser } from '../data/mockUsers'
+import { hasSymbolicData } from '../data/symbolic'
 import { calculateCompatibility } from '../utils/compatibility'
 
 interface CompatibilityReportPageProps {
   candidate: CandidateProfile
+  symbolicProfile: SymbolicProfile
   onBack: () => void
 }
 
 export function CompatibilityReportPage({
   candidate,
+  symbolicProfile,
   onBack,
 }: CompatibilityReportPageProps) {
   const report = calculateCompatibility(mainUser, candidate)
+  const userHasSymbolic = hasSymbolicData(symbolicProfile)
+  const candidateHasSymbolic = hasSymbolicData(candidate.symbolicProfile)
+  const showSymbolicResonances = userHasSymbolic || candidateHasSymbolic
+  const symbolicSummary =
+    userHasSymbolic && candidateHasSymbolic
+      ? `Tanto tú como ${candidate.name} habéis añadido esta dimensión. Esto puede indicar un interés compartido por lenguajes simbólicos, aunque no implica que los interpretéis de la misma manera.`
+      : userHasSymbolic
+        ? `Tú has completado esta capa y ${candidate.name} no. Esto no indica falta de afinidad; simplemente puede mostrar formas distintas de acercarse al autoconocimiento.`
+        : `${candidate.name} ha completado esta capa y tú has preferido omitirla. Esto no indica falta de afinidad; simplemente puede mostrar formas distintas de acercarse al autoconocimiento.`
 
   return (
     <div className="mx-auto max-w-6xl px-5 pb-10 pt-8 sm:px-8 lg:px-10">
@@ -166,6 +178,45 @@ export function CompatibilityReportPage({
           </div>
         </div>
       </Card>
+
+      {showSymbolicResonances && (
+        <Card className="mt-6 overflow-hidden p-7 sm:p-9">
+          <div className="grid gap-7 lg:grid-cols-[0.5fr_1.5fr]">
+            <div>
+              <p className="eyebrow">Resonancias simbólicas</p>
+              <h2 className="mt-3 font-serif text-3xl leading-tight text-forest">
+                Un lenguaje secundario para conversar.
+              </h2>
+            </div>
+            <div>
+              <p className="text-sm leading-7 text-muted">
+                Esta sección no funciona como veredicto. Solo recoge
+                coincidencias, contrastes o lenguajes simbólicos que podrían
+                enriquecer una conversación.
+              </p>
+              <div className="mt-5 rounded-2xl border border-line bg-ivory/65 p-5">
+                <p className="text-sm leading-7 text-ink">{symbolicSummary}</p>
+                {candidateHasSymbolic &&
+                  candidate.symbolicProfile?.mbtiType &&
+                  symbolicProfile.mbtiType && (
+                    <p className="mt-3 text-xs leading-6 text-muted">
+                      Referencia MBTI aportada: tú{' '}
+                      <strong>{symbolicProfile.mbtiType}</strong> ·{' '}
+                      {candidate.name}{' '}
+                      <strong>{candidate.symbolicProfile.mbtiType}</strong>.
+                      Puede servir para abrir preguntas, no para cerrar
+                      conclusiones.
+                    </p>
+                  )}
+              </div>
+              <p className="mt-4 text-xs leading-5 text-muted">
+                Esta información no ha intervenido en el porcentaje ni en las
+                categorías principales del informe.
+              </p>
+            </div>
+          </div>
+        </Card>
+      )}
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Card className="p-6 sm:p-8">

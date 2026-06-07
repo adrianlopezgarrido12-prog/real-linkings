@@ -6,9 +6,6 @@ import type {
 
 interface QuestionStepProps {
   category: QuestionCategory
-  title: string
-  reflection: string
-  description: string
   questions: Question[]
   answers: Record<string, AnswerValue>
   onAnswer: (questionId: string, value: AnswerValue) => void
@@ -35,9 +32,6 @@ function needsMoreDetail(value: AnswerValue | undefined) {
 
 export function QuestionStep({
   category,
-  title,
-  reflection,
-  description,
   questions,
   answers,
   onAnswer,
@@ -58,23 +52,6 @@ export function QuestionStep({
 
   return (
     <section key={category} className="animate-reveal">
-      <div className="mb-14 max-w-3xl">
-        <p className="eyebrow mb-4">Una conversación contigo</p>
-        <h1 className="max-w-2xl font-serif text-4xl leading-tight text-forest sm:text-5xl">
-          {title}
-        </h1>
-        <p className="mt-5 max-w-2xl font-serif text-xl italic leading-8 text-clay">
-          {reflection}
-        </p>
-        <div className="mt-7 max-w-2xl border-l border-moss/35 pl-5">
-          <p className="text-sm leading-7 text-muted">{description}</p>
-          <p className="mt-3 text-xs leading-5 text-moss">
-            Tómate un momento. No buscamos una respuesta perfecta, sino una
-            respuesta que puedas reconocer como tuya.
-          </p>
-        </div>
-      </div>
-
       <div className="space-y-12">
         {questions.map((question, index) => {
           const answer = answers[question.id]

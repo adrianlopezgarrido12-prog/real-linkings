@@ -6,15 +6,21 @@ import { LandingPage } from './pages/LandingPage'
 import { MatchesPage } from './pages/MatchesPage'
 import { OnboardingPage } from './pages/OnboardingPage'
 import { RelationshipMapPage } from './pages/RelationshipMapPage'
+import { emptySymbolicProfile } from './data/symbolic'
 import type {
   AnswerValue,
   AppPage,
   CandidateProfile,
+  SymbolicProfile,
 } from './types'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>('landing')
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
+  const [symbolicProfile, setSymbolicProfile] = useState<SymbolicProfile>({
+    ...emptySymbolicProfile,
+    uploadedFiles: [],
+  })
   const [selectedCandidate, setSelectedCandidate] =
     useState<CandidateProfile>(candidates[0])
 
@@ -44,9 +50,11 @@ function App() {
       {currentPage === 'onboarding' && (
         <OnboardingPage
           answers={answers}
+          symbolicProfile={symbolicProfile}
           onAnswer={(questionId, value) =>
             setAnswers((current) => ({ ...current, [questionId]: value }))
           }
+          onSymbolicChange={setSymbolicProfile}
           onFinish={() => navigate('relationship-map')}
           onExit={() => navigate('landing')}
         />
@@ -55,6 +63,7 @@ function App() {
       {currentPage === 'relationship-map' && (
         <RelationshipMapPage
           answers={answers}
+          symbolicProfile={symbolicProfile}
           onViewMatches={() => navigate('matches')}
         />
       )}
@@ -66,6 +75,7 @@ function App() {
       {currentPage === 'compatibility-report' && (
         <CompatibilityReportPage
           candidate={selectedCandidate}
+          symbolicProfile={symbolicProfile}
           onBack={() => navigate('matches')}
         />
       )}

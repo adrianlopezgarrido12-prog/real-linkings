@@ -47,7 +47,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
               <span aria-hidden="true">→</span>
             </Button>
             <span className="text-xs text-muted">
-              9 pausas · sin respuestas correctas
+              12 salas · una dimensión opcional
             </span>
           </div>
         </div>

@@ -7,6 +7,7 @@ export type AppPage =
 
 export type QuestionCategory =
   | 'basic'
+  | 'practicalLife'
   | 'lifeProject'
   | 'values'
   | 'emotionalStyle'
@@ -80,7 +81,49 @@ export interface CandidateProfile extends UserProfile {
   bio: string
   relationshipVision: string
   highlights: string[]
+  symbolicProfile?: SymbolicProfile
 }
+
+export type SymbolicFileCategory =
+  | 'Carta astral'
+  | 'Human Design'
+  | 'Informe de personalidad'
+  | 'Otro documento simbólico'
+
+export interface UploadedSymbolicFile {
+  id: string
+  name: string
+  type: string
+  size: number
+  category: SymbolicFileCategory
+}
+
+export interface SymbolicProfile {
+  wantsSymbolicLayer: boolean
+  sunSign?: string
+  moonSign?: string
+  risingSign?: string
+  mbtiType?: string
+  humanDesignType?: string
+  humanDesignAuthority?: string
+  humanDesignProfile?: string
+  uploadedFiles?: UploadedSymbolicFile[]
+  symbolicNotes?: string
+}
+
+export type StageAtmosphereName =
+  | 'clear'
+  | 'earth'
+  | 'structure'
+  | 'depth'
+  | 'warm'
+  | 'honest'
+  | 'delicate'
+  | 'silent'
+  | 'poetic'
+  | 'mature'
+  | 'night'
+  | 'summary'
 
 export interface CategoryScore {
   category: CompatibilityCategory
