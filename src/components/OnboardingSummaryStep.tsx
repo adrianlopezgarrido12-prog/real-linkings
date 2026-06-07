@@ -47,7 +47,7 @@ export function OnboardingSummaryStep({
       </p>
 
       <div className="mt-5 grid gap-4 lg:grid-cols-[0.52fr_1.48fr]">
-        <div className="rounded-2xl border border-sage/55 bg-[#e8eee9] p-5">
+        <div className="rounded-2xl border border-sage/55 bg-[#e5f1fb] p-5">
           <p className="eyebrow">Mapa completado</p>
           <div className="mt-3 flex items-end gap-2">
             <span className="font-serif text-5xl text-forest">{completion}</span>

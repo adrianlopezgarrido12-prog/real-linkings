@@ -11,18 +11,18 @@ interface StageProgressProps {
 }
 
 const accentColors: Record<StageAtmosphereName, string> = {
-  clear: '#557b6d',
-  earth: '#98663f',
-  structure: '#315f4d',
-  depth: '#555944',
-  warm: '#a84f3f',
-  honest: '#26705f',
-  delicate: '#a85f68',
-  silent: '#565b59',
-  poetic: '#76506f',
-  mature: '#24583f',
-  night: '#9b8242',
-  summary: '#416f59',
+  clear: '#5589b7',
+  earth: '#4f82ad',
+  structure: '#397da4',
+  depth: '#607cad',
+  warm: '#727fc0',
+  honest: '#3f88aa',
+  delicate: '#7788c5',
+  silent: '#6d829b',
+  poetic: '#7d78bc',
+  mature: '#397f9f',
+  night: '#b8d5ff',
+  summary: '#4f84b3',
 }
 
 export function StageProgress({
@@ -36,12 +36,17 @@ export function StageProgress({
 }: StageProgressProps) {
   const dimensionProgress = (substep / totalSubsteps) * 100
   const accent = accentColors[atmosphere]
+  const dark = atmosphere === 'night'
 
   return (
     <div className="mb-3 shrink-0 sm:mb-4">
       <div className="flex items-end justify-between gap-5">
         <div className="min-w-0">
-          <p className="text-[0.62rem] font-semibold uppercase tracking-[0.17em] text-muted">
+          <p
+            className={`text-[0.62rem] font-semibold uppercase tracking-[0.17em] ${
+              dark ? 'text-white/55' : 'text-muted'
+            }`}
+          >
             Dimensión {dimension} de {totalDimensions}
           </p>
           <h1
@@ -50,7 +55,11 @@ export function StageProgress({
           >
             {label}
           </h1>
-          <p className="mt-0.5 text-[0.68rem] text-muted">
+          <p
+            className={`mt-0.5 text-[0.68rem] ${
+              dark ? 'text-white/48' : 'text-muted'
+            }`}
+          >
             {totalSubsteps === 1
               ? 'Lectura final'
               : `Paso ${substep} de ${totalSubsteps}`}
@@ -64,14 +73,22 @@ export function StageProgress({
         </span>
       </div>
 
-      <div className="mt-2.5 h-px overflow-hidden bg-forest/10">
+      <div
+        className={`mt-2.5 h-px overflow-hidden ${
+          dark ? 'bg-white/12' : 'bg-forest/10'
+        }`}
+      >
         <div
           className="h-full transition-[width,background-color] duration-500 ease-out"
           style={{ width: `${globalProgress}%`, backgroundColor: accent }}
         />
       </div>
       {totalSubsteps > 1 && (
-        <div className="mt-1.5 h-0.5 overflow-hidden rounded-full bg-forest/6">
+        <div
+          className={`mt-1.5 h-0.5 overflow-hidden rounded-full ${
+            dark ? 'bg-white/8' : 'bg-forest/6'
+          }`}
+        >
           <div
             className="h-full rounded-full opacity-45 transition-[width,background-color] duration-500 ease-out"
             style={{ width: `${dimensionProgress}%`, backgroundColor: accent }}

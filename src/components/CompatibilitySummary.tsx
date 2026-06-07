@@ -33,7 +33,7 @@ export function CompatibilitySummary({
             cy="60"
             r="54"
             fill="none"
-            stroke="#d8e4da"
+            stroke="#c7def2"
             strokeWidth="5"
             strokeLinecap="round"
             strokeDasharray={circumference}

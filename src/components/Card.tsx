@@ -7,7 +7,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 const tones = {
   paper: 'border-line/80 bg-paper/90 text-ink',
-  sage: 'border-sage/60 bg-[#e9eee9] text-forest',
+  sage: 'border-sage/60 bg-[#e8f3fc] text-forest',
   forest: 'border-forest bg-forest text-paper',
   transparent: 'border-line/70 bg-white/30 text-ink',
 }

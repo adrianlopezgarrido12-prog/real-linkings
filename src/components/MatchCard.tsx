@@ -9,9 +9,9 @@ interface MatchCardProps {
 }
 
 const accentClasses = {
-  sage: 'bg-[#dce6dd] text-forest',
-  clay: 'bg-[#edd9d0] text-[#754231]',
-  ink: 'bg-[#dfe0dd] text-ink',
+  sage: 'bg-[#dcebf7] text-forest',
+  clay: 'bg-[#e2e5fb] text-[#345b84]',
+  ink: 'bg-[#e2eaf4] text-ink',
 }
 
 export function MatchCard({ candidate, report, onView }: MatchCardProps) {

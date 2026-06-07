@@ -92,10 +92,8 @@ export function QuestionStep({
           return (
             <article
               key={question.id}
-              className={`rounded-[1.65rem] border border-white/75 shadow-[0_14px_38px_rgba(38,55,47,0.05)] backdrop-blur-sm ${
+              className={`rounded-[1.65rem] border border-white/80 bg-white/72 shadow-[0_18px_55px_rgba(74,118,160,0.1)] backdrop-blur-xl ${
                 isGazeQuestion ? 'p-2.5 sm:p-6' : 'p-4 sm:p-6'
-              } ${
-                index % 2 === 0 ? 'bg-white/62' : 'bg-ivory/55'
               }`}
             >
               <div
@@ -103,7 +101,7 @@ export function QuestionStep({
                   isGazeQuestion ? 'mb-3 sm:mb-5' : 'mb-4 sm:mb-5'
                 }`}
               >
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-moss/25 bg-white/45 text-[0.64rem] font-semibold text-moss">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-moss/20 bg-[#edf6ff] text-[0.64rem] font-semibold text-moss">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div>
@@ -225,7 +223,7 @@ export function QuestionStep({
                             : 'min-h-11 gap-2.5 px-3.5 py-2.5 text-xs leading-5 sm:text-sm'
                         } ${
                           selected
-                            ? 'border-forest bg-[#e2eae3] text-forest shadow-sm'
+                            ? 'border-forest bg-[#dfedfb] text-forest shadow-sm'
                             : 'border-line/90 bg-white/55 text-ink hover:border-moss hover:bg-white/80'
                         }`}
                       >
@@ -263,7 +261,7 @@ export function QuestionStep({
                 question.conditionalPrompt &&
                 question.conditionalOptions &&
                 conditionalAnswerId && (
-                  <div className="mt-2.5 rounded-xl border border-clay/25 bg-[#f5e8df]/72 p-2.5 sm:ml-10 sm:mt-4 sm:p-4">
+                  <div className="mt-2.5 rounded-xl border border-clay/25 bg-[#e8edff]/78 p-2.5 sm:ml-10 sm:mt-4 sm:p-4">
                     <div className="mb-2 flex items-center justify-between gap-3 sm:mb-3">
                       <div>
                         <p className="text-xs font-medium text-forest sm:text-sm">

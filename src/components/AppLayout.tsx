@@ -25,7 +25,7 @@ export function AppLayout({
           className="group flex items-center gap-3 text-left"
           aria-label="Ir al inicio"
         >
-          <span className="flex size-9 items-center justify-center rounded-full border border-forest/20 bg-paper/60">
+          <span className="flex size-9 items-center justify-center rounded-full border border-forest/15 bg-white/60 shadow-[0_8px_24px_rgba(76,122,165,0.1)] backdrop-blur-md">
             <svg
               viewBox="0 0 32 32"
               className="size-5 text-forest"

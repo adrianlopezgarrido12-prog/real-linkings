@@ -50,7 +50,7 @@ export function SymbolicFileUpload({
     <div className="rounded-2xl border border-white/12 bg-white/[0.045] p-4">
       <div className="grid gap-4 sm:grid-cols-[0.6fr_1.4fr] sm:items-end">
         <label className="block">
-          <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[#c9b987]">
+          <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.12em] text-[#b8d5ff]">
             Categoría
           </span>
           <select
@@ -58,7 +58,7 @@ export function SymbolicFileUpload({
             onChange={(event) =>
               setCategory(event.target.value as SymbolicFileCategory)
             }
-            className="min-h-11 w-full rounded-xl border border-white/15 bg-[#152321] px-3 text-xs text-[#f5f0e5] outline-none focus:border-[#c9b987]/65"
+            className="min-h-11 w-full rounded-xl border border-white/15 bg-[#1b3556] px-3 text-xs text-[#f7fbff] outline-none focus:border-[#b8d5ff]/65"
           >
             {categories.map((item) => (
               <option key={item}>{item}</option>
@@ -66,7 +66,7 @@ export function SymbolicFileUpload({
           </select>
         </label>
 
-        <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-dashed border-[#c9b987]/45 bg-[#c9b987]/8 px-4 text-center text-xs font-medium text-[#eee6d3] transition hover:bg-[#c9b987]/12">
+        <label className="flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-dashed border-[#b8d5ff]/45 bg-[#b8d5ff]/8 px-4 text-center text-xs font-medium text-[#e5f1ff] transition hover:bg-[#b8d5ff]/12">
           Seleccionar archivos del dispositivo
           <input
             type="file"
@@ -86,8 +86,8 @@ export function SymbolicFileUpload({
               className="flex items-center justify-between gap-4 py-2"
             >
               <div className="min-w-0">
-                <p className="truncate text-sm text-[#f5f0e5]">{file.name}</p>
-                <p className="mt-1 text-xs text-[#f5f0e5]/45">
+                <p className="truncate text-sm text-[#f7fbff]">{file.name}</p>
+                <p className="mt-1 text-xs text-[#f7fbff]/45">
                   {file.category} · {formatSize(file.size)}
                 </p>
               </div>
@@ -96,7 +96,7 @@ export function SymbolicFileUpload({
                 onClick={() =>
                   onChange(files.filter((item) => item.id !== file.id))
                 }
-                className="text-xs text-[#c9b987] transition hover:text-white"
+                className="text-xs text-[#b8d5ff] transition hover:text-white"
               >
                 Quitar
               </button>
@@ -105,7 +105,7 @@ export function SymbolicFileUpload({
         </ul>
       )}
 
-      <p className="mt-3 text-[0.68rem] leading-5 text-[#f5f0e5]/42">
+      <p className="mt-3 text-[0.68rem] leading-5 text-[#f7fbff]/42">
         En este prototipo los archivos solo se guardan en el estado local de
         esta sesión. No se envían a ningún servidor.
       </p>

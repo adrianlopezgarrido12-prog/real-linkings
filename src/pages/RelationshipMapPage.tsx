@@ -56,7 +56,7 @@ export function RelationshipMapPage({
       <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <Card className="md:col-span-2 lg:col-span-2 lg:p-8">
           <div className="flex items-start gap-4">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e8eee9] font-serif text-lg text-forest">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#e5f1fb] font-serif text-lg text-forest">
               01
             </span>
             <div>
@@ -177,10 +177,10 @@ export function RelationshipMapPage({
           >
             <div className="grid gap-8 lg:grid-cols-[0.52fr_1.48fr]">
               <div>
-                <span className="font-serif text-xl italic text-[#d8cda8]">
+                <span className="font-serif text-xl italic text-[#b8d5ff]">
                   {relationshipMap.gazeReading ? '06' : '05'}
                 </span>
-                <p className="eyebrow mt-6 !text-[#c9b987]">
+                <p className="eyebrow mt-6 !text-[#b8d5ff]">
                   Dimensión simbólica
                 </p>
                 <p className="mt-3 text-xs leading-5 text-paper/48">

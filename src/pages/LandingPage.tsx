@@ -80,7 +80,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           <Card className="grain relative w-[78%] rotate-[-2deg] p-7 sm:p-9">
             <div className="mb-8 flex items-center justify-between">
               <span className="eyebrow">Tu mapa relacional</span>
-              <span className="flex size-8 items-center justify-center rounded-full bg-[#e7ece7] text-forest">
+              <span className="flex size-8 items-center justify-center rounded-full bg-[#e5f1fb] text-forest">
                 ∿
               </span>
             </div>

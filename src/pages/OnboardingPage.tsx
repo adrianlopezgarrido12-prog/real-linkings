@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { DimensionInterlude } from '../components/DimensionInterlude'
-import { JourneyLine } from '../components/JourneyLine'
 import { OnboardingStageIntro } from '../components/OnboardingStageIntro'
 import { OnboardingSummaryStep } from '../components/OnboardingSummaryStep'
 import { ProfilePhotoStep } from '../components/ProfilePhotoStep'
@@ -14,6 +13,10 @@ import {
 } from '../components/SymbolicLayerStep'
 import { questionsBySection } from '../data/questions'
 import { onboardingReflections } from '../data/reflections'
+import {
+  stageAccentClasses,
+  stageBackgroundClasses,
+} from '../data/stageThemes'
 import { emptySymbolicProfile } from '../data/symbolic'
 import type {
   AnswerValue,
@@ -330,6 +333,9 @@ export function OnboardingPage({
 
   const currentScreen = screens[screenIndex]
   const nextScreen = screens[screenIndex + 1]
+  const activeAtmosphere = transition
+    ? screens[transition.target].atmosphere
+    : currentScreen.atmosphere
   const globalProgress = ((screenIndex + 1) / screens.length) * 100
   const isFirstScreenOfDimension = currentScreen.substep === 1
   const isLastScreenOfDimension =
@@ -399,7 +405,7 @@ export function OnboardingPage({
     const screen = screens[index]
 
     return (
-      <StageAtmosphere atmosphere={screen.atmosphere}>
+      <StageAtmosphere>
         {screen.kind === 'intro' && (
           <div className="flex h-full flex-col justify-center">
             <OnboardingStageIntro
@@ -480,18 +486,37 @@ export function OnboardingPage({
               : 'Continuar'
 
   return (
-    <div className="mx-auto flex h-[calc(100dvh-5.25rem)] max-w-6xl flex-col overflow-hidden px-4 pb-3 sm:px-8 lg:px-10">
-      <StageProgress
-        dimension={currentScreen.dimension}
-        totalDimensions={12}
-        label={currentScreen.label}
-        substep={currentScreen.substep}
-        totalSubsteps={currentScreen.totalSubsteps}
-        globalProgress={globalProgress}
-        atmosphere={currentScreen.atmosphere}
-      />
+    <div
+      className={`relative h-[calc(100dvh-5.25rem)] overflow-hidden transition-[background] duration-[1600ms] ${stageBackgroundClasses[activeAtmosphere]}`}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <span
+          className={`absolute -right-24 -top-40 size-[32rem] rounded-full opacity-30 blur-3xl transition-colors duration-[1600ms] ${stageAccentClasses[activeAtmosphere][0]}`}
+        />
+        <span
+          className={`absolute -bottom-52 left-[4%] size-[34rem] rounded-full opacity-30 blur-3xl transition-colors duration-[1600ms] ${stageAccentClasses[activeAtmosphere][1]}`}
+        />
+        <span className="absolute right-[13%] top-[16%] size-40 rounded-full border border-white/45 bg-white/10" />
+        <span className="absolute right-[20%] top-[29%] size-20 rounded-[2rem] bg-white/22 backdrop-blur-sm" />
+        <span className="absolute bottom-[8%] left-[8%] h-32 w-64 -rotate-6 rounded-[3rem] border border-white/42 bg-white/12" />
+        <span className="absolute left-[39%] top-[10%] size-3 rounded-full bg-white/65 shadow-[2.5rem_1.2rem_0_rgba(255,255,255,0.35),5rem_-0.5rem_0_rgba(255,255,255,0.45)]" />
+      </div>
 
-      <div className="relative grid min-h-0 flex-1">
+      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col overflow-hidden px-4 pb-3 sm:px-8 lg:px-10">
+        <StageProgress
+          dimension={currentScreen.dimension}
+          totalDimensions={12}
+          label={currentScreen.label}
+          substep={currentScreen.substep}
+          totalSubsteps={currentScreen.totalSubsteps}
+          globalProgress={globalProgress}
+          atmosphere={activeAtmosphere}
+        />
+
+        <div className="grid min-h-0 flex-1 overflow-hidden">
         <div
           key={`current-${currentScreen.id}`}
           className={`col-start-1 row-start-1 min-h-0 min-w-0 ${
@@ -525,54 +550,44 @@ export function OnboardingPage({
           </div>
         )}
 
-        <div
-          key={`journey-${transition?.target ?? screenIndex}`}
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-[2rem] sm:rounded-[2.4rem] ${
-            transition
-              ? transition.direction === 'forward'
-                ? 'journey-transition-forward'
-                : 'journey-transition-backward'
-              : ''
-          }`}
-        >
-          <JourneyLine
-            atmosphere={
-              transition
-                ? screens[transition.target].atmosphere
-                : currentScreen.atmosphere
-            }
-          />
         </div>
-      </div>
 
-      <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
-        <Button
-          variant="ghost"
-          className="!min-h-10 !px-3 sm:!px-5"
-          onClick={goBack}
-          disabled={Boolean(transition)}
-        >
-          <span aria-hidden="true">←</span>
-          <span className="hidden sm:inline">
-            {screenIndex === 0 ? 'Volver al inicio' : 'Atrás'}
-          </span>
-        </Button>
-
-        <div className="text-center">
-          {conditionalBlocked && (
-            <p className="mb-1 text-[0.66rem] text-clay">
-              Concreta de qué depende para continuar.
-            </p>
-          )}
+        <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
           <Button
-            className="!min-h-10 !px-4 sm:!px-6"
-            onClick={goNext}
-            disabled={Boolean(transition) || conditionalBlocked}
+            variant="ghost"
+            className={`!min-h-10 !px-3 sm:!px-5 ${
+              activeAtmosphere === 'night'
+                ? '!text-[#e7f2ff] hover:!bg-white/8'
+                : ''
+            }`}
+            onClick={goBack}
+            disabled={Boolean(transition)}
           >
-            {nextLabel}
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">←</span>
+            <span className="hidden sm:inline">
+              {screenIndex === 0 ? 'Volver al inicio' : 'Atrás'}
+            </span>
           </Button>
+
+          <div className="text-center">
+            {conditionalBlocked && (
+              <p className="mb-1 text-[0.66rem] text-clay">
+                Concreta de qué depende para continuar.
+              </p>
+            )}
+            <Button
+              className={`!min-h-10 !px-4 sm:!px-6 ${
+                activeAtmosphere === 'night'
+                  ? '!bg-[#d7e7ff] !text-[#1a3454] hover:!bg-white'
+                  : ''
+              }`}
+              onClick={goNext}
+              disabled={Boolean(transition) || conditionalBlocked}
+            >
+              {nextLabel}
+              <span aria-hidden="true">→</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>
