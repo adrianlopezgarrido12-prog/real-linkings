@@ -107,7 +107,8 @@ export function SymbolicFileUpload({
 
       <p className="mt-3 text-[0.68rem] leading-5 text-[#f7fbff]/42">
         En este prototipo los archivos solo se guardan en el estado local de
-        esta sesión. No se envían a ningún servidor.
+        esta sesión. No se envían a ningún servidor. No compartas datos médicos
+        reales en este prototipo.
       </p>
     </div>
   )

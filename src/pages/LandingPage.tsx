@@ -25,6 +25,54 @@ const values = [
   },
 ]
 
+const foundations = [
+  {
+    number: '01',
+    title: 'Filosofía y literatura del amor',
+    text: 'Autores como Erich Fromm recuerdan que amar no es poseer ni consumir, sino practicar cuidado, respeto, responsabilidad y conocimiento. La literatura añade conflictos, deseo y ambivalencia.',
+    references: [
+      'Erich Fromm · El arte de amar',
+      'bell hooks · Todo sobre el amor',
+      'Fernando de Rojas · La Celestina',
+      'Rainer Maria Rilke · Cartas a un joven poeta',
+      'Roland Barthes · Fragmentos de un discurso amoroso',
+    ],
+  },
+  {
+    number: '02',
+    title: 'Psicología del vínculo',
+    text: 'El mapa relacional se inspira en ideas de apego adulto, comunicación, reparación, compromiso, intimidad y disponibilidad emocional.',
+    references: [
+      'John Bowlby · Apego y pérdida',
+      'Cindy Hazan & Phillip Shaver · Apego adulto',
+      'Sue Johnson · Terapia focalizada en las emociones',
+      'John Gottman · Investigación sobre parejas',
+    ],
+  },
+  {
+    number: '03',
+    title: 'Ciencia de la compatibilidad',
+    text: 'La compatibilidad no se reduce a gustos. También incluye proyecto vital, valores, conflicto, sexualidad, contexto, estrés, compromiso y capacidad de reparar.',
+    references: [
+      'Finkel, Simpson & Eastwick · Close Relationships',
+      'Robert Sternberg · Teoría triangular del amor',
+      'Elaine Hatfield · Pasión y amor compañero',
+      'Arthur Aron · Cercanía y autoexpansión',
+    ],
+  },
+  {
+    number: '04',
+    title: 'Biología y fronteras experimentales',
+    text: 'Existen investigaciones sobre olor corporal, MHC/HLA, sistemas inmunológicos, microbiota y convivencia. Son preguntas interesantes, no promesas de compatibilidad.',
+    references: [
+      'Estudios sobre MHC/HLA y elección de pareja',
+      'Microbioma y convivencia',
+      'Neurobiología del apego',
+      'Futuras colaboraciones con expertos',
+    ],
+  },
+]
+
 export function LandingPage({ onStart }: LandingPageProps) {
   return (
     <>
@@ -169,6 +217,95 @@ export function LandingPage({ onStart }: LandingPageProps) {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10">
+        <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+          <div>
+            <p className="eyebrow">Amar también se aprende</p>
+            <h2 className="mt-4 max-w-xl font-serif text-4xl leading-tight text-forest sm:text-5xl">
+              Encontrar importa. La capacidad de amar también.
+            </h2>
+            <p className="mt-6 max-w-xl text-sm leading-7 text-muted">
+              Real Linkings parte de una idea sencilla y exigente: el amor no
+              es solo algo que aparece, también es algo que se cultiva. No
+              basta con encontrar a alguien compatible; también importa cómo
+              miras, cuidas, respondes, respetas y conoces al otro.
+            </p>
+          </div>
+          <div className="rounded-[2rem] border border-sage/70 bg-[#e8f3fc] p-7 shadow-soft sm:p-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-moss">
+              Una frase propia de Real Linkings
+            </p>
+            <p className="mt-5 font-serif text-3xl leading-tight text-forest sm:text-4xl">
+              “No buscamos solo a quién amar. También miramos desde dónde somos
+              capaces de amar.”
+            </p>
+            <p className="mt-6 text-xs leading-5 text-muted">
+              Esta orientación dialoga con ideas de Erich Fromm, sin presentar
+              su obra como un método de compatibilidad ni sustituir la
+              investigación psicológica.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-line/80 bg-white/28 px-5 py-24 sm:px-8 lg:px-10">
+        <div className="mx-auto max-w-7xl">
+          <header className="max-w-4xl">
+            <p className="eyebrow">Fundamentos de Real Linkings</p>
+            <h2 className="mt-4 font-serif text-4xl leading-tight text-forest sm:text-5xl">
+              Una base plural para hacer mejores preguntas.
+            </h2>
+            <p className="mt-6 max-w-3xl text-base leading-7 text-muted">
+              Este proyecto nace entre la filosofía del amor, la literatura,
+              la psicología del vínculo, la ciencia de las relaciones y
+              algunas preguntas todavía abiertas sobre la biología del
+              emparejamiento.
+            </p>
+          </header>
+
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {foundations.map((foundation) => (
+              <Card key={foundation.title} className="p-7 sm:p-8">
+                <span className="text-xs font-semibold text-clay">
+                  {foundation.number}
+                </span>
+                <h3 className="mt-4 font-serif text-3xl text-forest">
+                  {foundation.title}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-muted">
+                  {foundation.text}
+                </p>
+                <ul className="mt-6 space-y-2 border-t border-line/75 pt-5">
+                  {foundation.references.map((reference) => (
+                    <li
+                      key={reference}
+                      className="text-xs leading-5 text-ink"
+                    >
+                      {reference}
+                    </li>
+                  ))}
+                </ul>
+                {foundation.number === '01' && (
+                  <p className="mt-5 rounded-xl bg-ivory/75 p-4 text-xs leading-5 text-muted">
+                    En <strong>La Celestina</strong>, el emparejamiento aparece
+                    atravesado por mediación, persuasión e intereses. La obra
+                    sirve para pensar los riesgos de manipular el deseo, no
+                    como modelo de relación.
+                  </p>
+                )}
+              </Card>
+            ))}
+          </div>
+
+          <p className="mt-8 max-w-4xl text-xs leading-6 text-muted">
+            Real Linkings no presenta estas áreas como verdades cerradas ni
+            como diagnóstico. Algunas forman parte de ciencia consolidada;
+            otras son marcos filosóficos, obras culturales o líneas emergentes
+            que deben tratarse con cautela.
+          </p>
         </div>
       </section>
 

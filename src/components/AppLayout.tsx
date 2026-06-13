@@ -4,14 +4,18 @@ import type { AppPage } from '../types'
 interface AppLayoutProps {
   children: ReactNode
   currentPage: AppPage
+  authenticated: boolean
   onNavigate: (page: AppPage) => void
+  onLogout: () => void
   minimal?: boolean
 }
 
 export function AppLayout({
   children,
   currentPage,
+  authenticated,
   onNavigate,
+  onLogout,
   minimal = false,
 }: AppLayoutProps) {
   return (
@@ -51,27 +55,72 @@ export function AppLayout({
 
         {!minimal && (
           <nav className="hidden items-center gap-7 text-xs font-medium text-muted md:flex">
-            <button
-              type="button"
-              onClick={() => onNavigate('relationship-map')}
-              className={`transition hover:text-forest ${
-                currentPage === 'relationship-map' ? 'text-forest' : ''
-              }`}
-            >
-              Mi mapa
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('matches')}
-              className={`transition hover:text-forest ${
-                currentPage === 'matches' ? 'text-forest' : ''
-              }`}
-            >
-              Posibilidades
-            </button>
-            <span className="flex size-9 items-center justify-center rounded-full bg-forest text-xs font-semibold text-paper">
-              A
-            </span>
+            {authenticated ? (
+              <>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('dashboard')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'dashboard' ? 'text-forest' : ''
+                  }`}
+                >
+                  Mi espacio
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('relationship-map')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'relationship-map' ? 'text-forest' : ''
+                  }`}
+                >
+                  Mi mapa
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('matches')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'matches' ? 'text-forest' : ''
+                  }`}
+                >
+                  Posibilidades
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('library')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'library' ? 'text-forest' : ''
+                  }`}
+                >
+                  Biblioteca
+                </button>
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="flex size-9 items-center justify-center rounded-full bg-forest text-xs font-semibold text-paper"
+                  aria-label="Cerrar sesión"
+                  title="Cerrar sesión"
+                >
+                  A
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('login')}
+                  className="transition hover:text-forest"
+                >
+                  Iniciar sesión
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('register')}
+                  className="rounded-full bg-forest px-5 py-2.5 font-semibold text-paper shadow-[0_10px_25px_rgba(36,75,114,0.16)] transition hover:bg-[#315e8c]"
+                >
+                  Crear cuenta
+                </button>
+              </>
+            )}
           </nav>
         )}
       </header>

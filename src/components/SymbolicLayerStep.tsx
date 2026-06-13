@@ -236,8 +236,9 @@ export function SymbolicLayerStep({
       </div>
       <p className="mt-3 max-w-4xl rounded-xl border border-[#b8d5ff]/15 bg-[#b8d5ff]/5 p-3 text-[0.62rem] leading-4 text-[#f7fbff]/48 sm:mt-4 sm:text-[0.68rem] sm:leading-5">
         Más adelante, si esta función se activa de verdad, estos documentos
-        requerirán consentimiento explícito y protección especial. Por ahora
-        solo es una simulación local del prototipo.
+        requerirán consentimiento explícito, protección reforzada y revisión
+        legal. No compartas datos médicos reales. Por ahora solo es una
+        simulación local del prototipo.
       </p>
     </div>
   )

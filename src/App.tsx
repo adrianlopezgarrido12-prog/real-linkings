@@ -3,9 +3,13 @@ import { AppLayout } from './components/AppLayout'
 import { candidates } from './data/mockUsers'
 import { CompatibilityReportPage } from './pages/CompatibilityReportPage'
 import { LandingPage } from './pages/LandingPage'
+import { LibraryPage } from './pages/LibraryPage'
+import { LoginPage } from './pages/LoginPage'
 import { MatchesPage } from './pages/MatchesPage'
 import { OnboardingPage } from './pages/OnboardingPage'
+import { RegisterPage } from './pages/RegisterPage'
 import { RelationshipMapPage } from './pages/RelationshipMapPage'
+import { UserDashboardPage } from './pages/UserDashboardPage'
 import { emptySymbolicProfile } from './data/symbolic'
 import type {
   AnswerValue,
@@ -22,6 +26,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState<AppPage>(
     previewScreen ? 'onboarding' : 'landing',
   )
+  const [authenticated, setAuthenticated] = useState(false)
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [profilePhotos, setProfilePhotos] = useState<UploadedProfilePhoto[]>([])
   const [symbolicProfile, setSymbolicProfile] = useState<SymbolicProfile>({
@@ -42,17 +47,56 @@ function App() {
     navigate('compatibility-report')
   }
 
+  const enterPrototype = () => {
+    setAuthenticated(true)
+    navigate('dashboard')
+  }
+
+  const logout = () => {
+    setAuthenticated(false)
+    navigate('landing')
+  }
+
   const isMinimal = currentPage === 'onboarding'
 
   return (
     <AppLayout
       currentPage={currentPage}
+      authenticated={authenticated}
       onNavigate={navigate}
+      onLogout={logout}
       minimal={isMinimal}
     >
       {currentPage === 'landing' && (
         <LandingPage onStart={() => navigate('onboarding')} />
       )}
+
+      {currentPage === 'login' && (
+        <LoginPage
+          onEnter={enterPrototype}
+          onRegister={() => navigate('register')}
+        />
+      )}
+
+      {currentPage === 'register' && (
+        <RegisterPage
+          onEnter={enterPrototype}
+          onLogin={() => navigate('login')}
+        />
+      )}
+
+      {currentPage === 'dashboard' && (
+        <UserDashboardPage
+          answers={answers}
+          onViewMap={() => navigate('relationship-map')}
+          onEditMap={() => navigate('onboarding')}
+          onViewMatches={() => navigate('matches')}
+          onViewCandidate={selectCandidate}
+          onViewLibrary={() => navigate('library')}
+        />
+      )}
+
+      {currentPage === 'library' && <LibraryPage />}
 
       {currentPage === 'onboarding' && (
         <OnboardingPage

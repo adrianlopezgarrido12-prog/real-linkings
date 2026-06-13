@@ -1,5 +1,9 @@
 export type AppPage =
   | 'landing'
+  | 'login'
+  | 'register'
+  | 'dashboard'
+  | 'library'
   | 'onboarding'
   | 'relationship-map'
   | 'matches'
