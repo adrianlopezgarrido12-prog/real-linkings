@@ -2,19 +2,23 @@ import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { hasSymbolicData } from '../data/symbolic'
 import type { AnswerValue, SymbolicProfile } from '../types'
+import { getCurrentAccessLevel } from '../utils/entitlements'
 import { generateRelationshipMap } from '../utils/relationshipMap'
 
 interface RelationshipMapPageProps {
   answers: Record<string, AnswerValue>
   symbolicProfile: SymbolicProfile
   onViewMatches: () => void
+  onPricing?: () => void
 }
 
 export function RelationshipMapPage({
   answers,
   symbolicProfile,
   onViewMatches,
+  onPricing,
 }: RelationshipMapPageProps) {
+  const accessLevel = getCurrentAccessLevel()
   const relationshipMap = generateRelationshipMap(answers)
   const showSymbolicLayer = hasSymbolicData(symbolicProfile)
   const symbolicItems = [
@@ -215,6 +219,26 @@ export function RelationshipMapPage({
           </Card>
         )}
       </div>
+
+      {accessLevel === 'free' && onPricing && (
+        <Card
+          tone="sage"
+          className="mt-8 flex flex-col gap-6 p-7 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <div>
+            <p className="eyebrow">Desbloquear lectura completa</p>
+            <h2 className="mt-3 font-serif text-3xl text-forest">
+              Más profundidad, sin ocultar tu primera lectura.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-muted">
+              Tu lectura inicial ya está disponible. El mapa completo añade
+              más profundidad por dimensiones, preguntas personalizadas y una
+              síntesis más extensa.
+            </p>
+          </div>
+          <Button onClick={onPricing}>Ver mapa completo</Button>
+        </Card>
+      )}
 
       <div className="mt-12 flex flex-col items-center text-center">
         <p className="max-w-lg text-sm leading-6 text-muted">

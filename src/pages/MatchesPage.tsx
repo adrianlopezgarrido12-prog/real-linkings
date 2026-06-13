@@ -1,20 +1,34 @@
 import { MatchCard } from '../components/MatchCard'
+import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { candidates, mainUser } from '../data/mockUsers'
 import type { CandidateProfile } from '../types'
 import { calculateCompatibility } from '../utils/compatibility'
+import { getCurrentAccessLevel } from '../utils/entitlements'
 
 interface MatchesPageProps {
   onSelectCandidate: (candidate: CandidateProfile) => void
+  onPricing?: () => void
 }
 
-export function MatchesPage({ onSelectCandidate }: MatchesPageProps) {
+export function MatchesPage({
+  onSelectCandidate,
+  onPricing,
+}: MatchesPageProps) {
+  const accessLevel = getCurrentAccessLevel()
   const matches = candidates
     .map((candidate) => ({
       candidate,
       report: calculateCompatibility(mainUser, candidate),
     }))
     .sort((a, b) => b.report.totalScore - a.report.totalScore)
+  const visibleMatchLimit =
+    accessLevel === 'free'
+      ? 3
+      : accessLevel === 'mapa_completo'
+        ? 5
+        : matches.length
+  const visibleMatches = matches.slice(0, visibleMatchLimit)
 
   return (
     <div className="mx-auto max-w-7xl px-5 pb-10 pt-10 sm:px-8 lg:px-10">
@@ -57,7 +71,7 @@ export function MatchesPage({ onSelectCandidate }: MatchesPageProps) {
       </Card>
 
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
-        {matches.map(({ candidate, report }) => (
+        {visibleMatches.map(({ candidate, report }) => (
           <MatchCard
             key={candidate.id}
             candidate={candidate}
@@ -66,6 +80,26 @@ export function MatchesPage({ onSelectCandidate }: MatchesPageProps) {
           />
         ))}
       </div>
+
+      {(accessLevel === 'free' || accessLevel === 'mapa_completo') &&
+        onPricing && (
+          <Card
+            tone="sage"
+            className="mt-8 flex flex-col gap-6 p-7 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div>
+              <p className="eyebrow">Ampliar búsqueda</p>
+              <h2 className="mt-3 font-serif text-3xl text-forest">
+                Una selección más amplia, sin catálogo infinito.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
+                Para recibir una selección más amplia, puedes iniciar un
+                proceso de compatibilidad.
+              </p>
+            </div>
+            <Button onClick={onPricing}>Ver procesos</Button>
+          </Card>
+        )}
 
       <div className="mt-10 flex items-start gap-3 rounded-2xl border border-line bg-white/30 p-5 text-sm leading-6 text-muted">
         <span className="flex size-6 shrink-0 items-center justify-center rounded-full border border-moss text-xs text-moss">

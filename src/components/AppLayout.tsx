@@ -59,6 +59,15 @@ export function AppLayout({
               <>
                 <button
                   type="button"
+                  onClick={() => onNavigate('pricing')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'pricing' ? 'text-forest' : ''
+                  }`}
+                >
+                  Procesos
+                </button>
+                <button
+                  type="button"
                   onClick={() => onNavigate('dashboard')}
                   className={`transition hover:text-forest ${
                     currentPage === 'dashboard' ? 'text-forest' : ''
@@ -105,6 +114,15 @@ export function AppLayout({
               </>
             ) : (
               <>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('pricing')}
+                  className={`transition hover:text-forest ${
+                    currentPage === 'pricing' ? 'text-forest' : ''
+                  }`}
+                >
+                  Procesos
+                </button>
                 <button
                   type="button"
                   onClick={() => onNavigate('login')}

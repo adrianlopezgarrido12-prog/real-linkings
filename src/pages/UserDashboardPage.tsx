@@ -5,6 +5,10 @@ import { candidates, mainUser } from '../data/mockUsers'
 import { questionsBySection } from '../data/questions'
 import type { AnswerValue, CandidateProfile } from '../types'
 import { calculateCompatibility } from '../utils/compatibility'
+import {
+  getCurrentAccessLevel,
+  type AccessLevel,
+} from '../utils/entitlements'
 import { generateRelationshipMap } from '../utils/relationshipMap'
 
 interface UserDashboardPageProps {
@@ -14,6 +18,7 @@ interface UserDashboardPageProps {
   onViewMatches: () => void
   onViewCandidate: (candidate: CandidateProfile) => void
   onViewLibrary: () => void
+  onPricing: () => void
 }
 
 const dimensions = [
@@ -50,6 +55,13 @@ const expertAreas = [
   },
 ]
 
+const accessDescriptions: Record<AccessLevel, string> = {
+  free: 'Todavía estás en el plan gratuito. Puedes construir tu primer mapa o elegir un proceso de compatibilidad.',
+  mapa_completo: 'Tienes activo el Mapa completo.',
+  busqueda_compatible: 'Tienes activa la Búsqueda compatible.',
+  busqueda_profunda: 'Tienes activa la Búsqueda profunda.',
+}
+
 export function UserDashboardPage({
   answers,
   onViewMap,
@@ -57,8 +69,10 @@ export function UserDashboardPage({
   onViewMatches,
   onViewCandidate,
   onViewLibrary,
+  onPricing,
 }: UserDashboardPageProps) {
   const [notice, setNotice] = useState('')
+  const accessLevel = getCurrentAccessLevel()
   const map = generateRelationshipMap(answers)
   const answered = questionsBySection.reduce(
     (total, section) =>
@@ -115,6 +129,26 @@ export function UserDashboardPage({
           {notice}
         </div>
       )}
+
+      <section className="mt-8">
+        <Card
+          tone="sage"
+          className="flex flex-col gap-6 p-7 lg:flex-row lg:items-center lg:justify-between"
+        >
+          <div>
+            <p className="eyebrow">Tu proceso activo</p>
+            <h2 className="mt-3 font-serif text-3xl text-forest">
+              {accessLevel === 'free'
+                ? 'Empieza a tu ritmo'
+                : 'Tu acceso está activo'}
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-forest/72">
+              {accessDescriptions[accessLevel]}
+            </p>
+          </div>
+          <Button onClick={onPricing}>Ver procesos</Button>
+        </Card>
+      </section>
 
       <section className="mt-8">
         <Card className="grid gap-8 p-7 lg:grid-cols-[1.2fr_0.8fr] lg:p-10">

@@ -7,6 +7,9 @@ import { LibraryPage } from './pages/LibraryPage'
 import { LoginPage } from './pages/LoginPage'
 import { MatchesPage } from './pages/MatchesPage'
 import { OnboardingPage } from './pages/OnboardingPage'
+import { PaymentCancelPage } from './pages/PaymentCancelPage'
+import { PaymentSuccessPage } from './pages/PaymentSuccessPage'
+import { PricingPage } from './pages/PricingPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { RelationshipMapPage } from './pages/RelationshipMapPage'
 import { UserDashboardPage } from './pages/UserDashboardPage'
@@ -19,12 +22,22 @@ import type {
   UploadedProfilePhoto,
 } from './types'
 
+function getInitialPage(previewScreen: string | null): AppPage {
+  const pathname = window.location.pathname
+
+  if (pathname.includes('payment-success')) return 'payment-success'
+  if (pathname.includes('payment-cancel')) return 'payment-cancel'
+  if (previewScreen) return 'onboarding'
+
+  return 'landing'
+}
+
 function App() {
   const previewScreen = new URLSearchParams(window.location.search).get(
     'preview',
   )
-  const [currentPage, setCurrentPage] = useState<AppPage>(
-    previewScreen ? 'onboarding' : 'landing',
+  const [currentPage, setCurrentPage] = useState<AppPage>(() =>
+    getInitialPage(previewScreen),
   )
   const [authenticated, setAuthenticated] = useState(false)
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
@@ -40,7 +53,17 @@ function App() {
     window.scrollTo({ top: 0 })
   }, [currentPage])
 
-  const navigate = (page: AppPage) => setCurrentPage(page)
+  const navigate = (page: AppPage) => {
+    setCurrentPage(page)
+
+    if (
+      page !== 'payment-success' &&
+      page !== 'payment-cancel' &&
+      window.location.pathname !== '/'
+    ) {
+      window.history.replaceState({}, '', '/')
+    }
+  }
 
   const selectCandidate = (candidate: CandidateProfile) => {
     setSelectedCandidate(candidate)
@@ -68,7 +91,30 @@ function App() {
       minimal={isMinimal}
     >
       {currentPage === 'landing' && (
-        <LandingPage onStart={() => navigate('onboarding')} />
+        <LandingPage
+          onStart={() => navigate('onboarding')}
+          onPricing={() => navigate('pricing')}
+          onLogin={() => navigate('login')}
+          onRegister={() => navigate('register')}
+        />
+      )}
+
+      {currentPage === 'pricing' && (
+        <PricingPage onStartFree={() => navigate('onboarding')} />
+      )}
+
+      {currentPage === 'payment-success' && (
+        <PaymentSuccessPage
+          onGoDashboard={enterPrototype}
+          onContinueMap={() => navigate('onboarding')}
+        />
+      )}
+
+      {currentPage === 'payment-cancel' && (
+        <PaymentCancelPage
+          onBackToPricing={() => navigate('pricing')}
+          onStartFree={() => navigate('onboarding')}
+        />
       )}
 
       {currentPage === 'login' && (
@@ -93,6 +139,7 @@ function App() {
           onViewMatches={() => navigate('matches')}
           onViewCandidate={selectCandidate}
           onViewLibrary={() => navigate('library')}
+          onPricing={() => navigate('pricing')}
         />
       )}
 
@@ -125,11 +172,15 @@ function App() {
           answers={answers}
           symbolicProfile={symbolicProfile}
           onViewMatches={() => navigate('matches')}
+          onPricing={() => navigate('pricing')}
         />
       )}
 
       {currentPage === 'matches' && (
-        <MatchesPage onSelectCandidate={selectCandidate} />
+        <MatchesPage
+          onSelectCandidate={selectCandidate}
+          onPricing={() => navigate('pricing')}
+        />
       )}
 
       {currentPage === 'compatibility-report' && (

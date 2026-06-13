@@ -5,6 +5,9 @@ import { reflections } from '../data/reflections'
 
 interface LandingPageProps {
   onStart: () => void
+  onPricing: () => void
+  onLogin?: () => void
+  onRegister?: () => void
 }
 
 const values = [
@@ -73,7 +76,7 @@ const foundations = [
   },
 ]
 
-export function LandingPage({ onStart }: LandingPageProps) {
+export function LandingPage({ onStart, onPricing }: LandingPageProps) {
   return (
     <>
       <section className="relative mx-auto grid min-h-[78vh] max-w-7xl items-center gap-12 overflow-hidden px-5 pb-20 pt-10 sm:px-8 lg:grid-cols-[1.08fr_0.92fr] lg:px-10 lg:pt-4">
@@ -218,6 +221,44 @@ export function LandingPage({ onStart }: LandingPageProps) {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10">
+        <Card
+          tone="sage"
+          className="grid gap-10 overflow-hidden p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:p-12"
+        >
+          <div>
+            <p className="eyebrow">Pago único, procesos definidos</p>
+            <h2 className="mt-4 max-w-2xl font-serif text-4xl leading-tight text-forest sm:text-5xl">
+              Tu mapa es tuyo. La búsqueda se compra por procesos.
+            </h2>
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-muted">
+              Puedes empezar gratis, desbloquear tu mapa completo o iniciar una
+              búsqueda compatible con una selección limitada de perfiles.
+            </p>
+            <Button onClick={onPricing} className="mt-8">
+              Ver procesos de compatibilidad
+              <span aria-hidden="true">→</span>
+            </Button>
+          </div>
+          <div className="grid gap-3">
+            {[
+              ['Gratis', 'Primera lectura del mapa'],
+              ['9,99 €', 'Mapa completo'],
+              ['29,99 €', 'Búsqueda compatible'],
+              ['59,99 €', 'Búsqueda profunda'],
+            ].map(([price, label]) => (
+              <div
+                key={label}
+                className="flex items-center justify-between rounded-2xl border border-forest/10 bg-white/42 px-5 py-4"
+              >
+                <span className="text-sm text-forest">{label}</span>
+                <span className="font-serif text-xl text-clay">{price}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
       </section>
 
       <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:px-10">
