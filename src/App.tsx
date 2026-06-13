@@ -16,7 +16,12 @@ import type {
 } from './types'
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<AppPage>('landing')
+  const previewScreen = new URLSearchParams(window.location.search).get(
+    'preview',
+  )
+  const [currentPage, setCurrentPage] = useState<AppPage>(
+    previewScreen ? 'onboarding' : 'landing',
+  )
   const [answers, setAnswers] = useState<Record<string, AnswerValue>>({})
   const [profilePhotos, setProfilePhotos] = useState<UploadedProfilePhoto[]>([])
   const [symbolicProfile, setSymbolicProfile] = useState<SymbolicProfile>({
@@ -52,6 +57,13 @@ function App() {
       {currentPage === 'onboarding' && (
         <OnboardingPage
           answers={answers}
+          initialScreenId={
+            previewScreen === 'mbti'
+              ? 'symbolic-personality'
+              : previewScreen === 'astrology' || previewScreen === 'symbolic'
+                ? 'symbolic-astrology'
+                : undefined
+          }
           profilePhotos={profilePhotos}
           symbolicProfile={symbolicProfile}
           onAnswer={(questionId, value) =>

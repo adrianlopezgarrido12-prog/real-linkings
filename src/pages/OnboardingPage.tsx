@@ -28,6 +28,7 @@ import type {
 
 interface OnboardingPageProps {
   answers: Record<string, AnswerValue>
+  initialScreenId?: string
   profilePhotos: UploadedProfilePhoto[]
   symbolicProfile: SymbolicProfile
   onAnswer: (questionId: string, value: AnswerValue) => void
@@ -194,6 +195,7 @@ function groupQuestions(questions: Question[]) {
 
 export function OnboardingPage({
   answers,
+  initialScreenId,
   profilePhotos,
   symbolicProfile,
   onAnswer,
@@ -330,6 +332,15 @@ export function OnboardingPage({
     ]
     return allScreens
   }, [])
+
+  useEffect(() => {
+    if (!initialScreenId) return
+
+    const initialIndex = screens.findIndex(
+      (screen) => screen.id === initialScreenId,
+    )
+    if (initialIndex >= 0) setScreenIndex(initialIndex)
+  }, [initialScreenId, screens])
 
   const currentScreen = screens[screenIndex]
   const nextScreen = screens[screenIndex + 1]
