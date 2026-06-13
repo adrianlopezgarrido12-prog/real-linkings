@@ -145,8 +145,6 @@ export const questions: Question[] = [
       'Mujer',
       'Hombre',
       'Persona no binaria',
-      'Prefiero describirlo con mis propias palabras',
-      'Prefiero no indicarlo ahora',
     ],
   },
   {
