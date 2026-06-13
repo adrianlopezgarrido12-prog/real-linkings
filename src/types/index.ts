@@ -11,6 +11,7 @@ export type AppPage =
   | 'relationship-map'
   | 'matches'
   | 'compatibility-report'
+  | 'conversation'
 
 export type QuestionCategory =
   | 'basic'
@@ -204,4 +205,25 @@ export interface RelationshipMap {
   availabilityLevel: number
   availabilityLabel: string
   gazeReading?: string
+}
+
+export type ConversationStatus =
+  | 'draft'
+  | 'pending'
+  | 'active'
+  | 'paused'
+  | 'closed'
+
+export interface ConversationRequest {
+  intention: string
+  message: string
+  createdAt: string
+}
+
+export interface ConversationMessage {
+  id: string
+  sender: 'user' | 'candidate' | 'system'
+  body: string
+  sentAt: string
+  simulated?: boolean
 }

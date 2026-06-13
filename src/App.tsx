@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AppLayout } from './components/AppLayout'
 import { candidates } from './data/mockUsers'
 import { CompatibilityReportPage } from './pages/CompatibilityReportPage'
+import { ConversationPage } from './pages/ConversationPage'
 import { LandingPage } from './pages/LandingPage'
 import { LibraryPage } from './pages/LibraryPage'
 import { LoginPage } from './pages/LoginPage'
@@ -18,6 +19,9 @@ import type {
   AnswerValue,
   AppPage,
   CandidateProfile,
+  ConversationMessage,
+  ConversationRequest,
+  ConversationStatus,
   SymbolicProfile,
   UploadedProfilePhoto,
 } from './types'
@@ -48,10 +52,25 @@ function App() {
   })
   const [selectedCandidate, setSelectedCandidate] =
     useState<CandidateProfile>(candidates[0])
+  const [conversationCandidateId, setConversationCandidateId] = useState<
+    string | null
+  >(null)
+  const [conversationStatus, setConversationStatus] =
+    useState<ConversationStatus>('draft')
+  const conversationStatusRef = useRef<ConversationStatus>('draft')
+  const [conversationRequest, setConversationRequest] =
+    useState<ConversationRequest | null>(null)
+  const [conversationMessages, setConversationMessages] = useState<
+    ConversationMessage[]
+  >([])
 
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [currentPage])
+
+  useEffect(() => {
+    conversationStatusRef.current = conversationStatus
+  }, [conversationStatus])
 
   const navigate = (page: AppPage) => {
     setCurrentPage(page)
@@ -68,6 +87,98 @@ function App() {
   const selectCandidate = (candidate: CandidateProfile) => {
     setSelectedCandidate(candidate)
     navigate('compatibility-report')
+  }
+
+  const openConversation = (candidate: CandidateProfile) => {
+    setAuthenticated(true)
+    setSelectedCandidate(candidate)
+
+    if (
+      conversationCandidateId !== candidate.id ||
+      conversationStatus === 'closed'
+    ) {
+      setConversationCandidateId(candidate.id)
+      setConversationStatus('draft')
+      setConversationRequest(null)
+      setConversationMessages([])
+    }
+
+    navigate('conversation')
+  }
+
+  const submitConversationRequest = (request: ConversationRequest) => {
+    setConversationCandidateId(selectedCandidate.id)
+    setConversationRequest(request)
+    setConversationStatus('pending')
+  }
+
+  const simulateConversationAcceptance = () => {
+    const now = new Date().toISOString()
+    setConversationMessages([
+      {
+        id: `system-${Date.now()}`,
+        sender: 'system',
+        body: 'Ambas personas han aceptado abrir esta conversación.',
+        sentAt: now,
+      },
+      {
+        id: `candidate-${Date.now()}`,
+        sender: 'candidate',
+        body: `Hola, Alex. Gracias por acercarte con calma. He leído tu invitación y también me gustaría conocernos sin dar nada por hecho.`,
+        sentAt: now,
+        simulated: true,
+      },
+    ])
+    setConversationStatus('active')
+  }
+
+  const sendConversationMessage = (body: string) => {
+    const sentAt = new Date().toISOString()
+    const messageId = `user-${Date.now()}`
+
+    setConversationMessages((current) => [
+      ...current,
+      {
+        id: messageId,
+        sender: 'user',
+        body,
+        sentAt,
+      },
+    ])
+
+    window.setTimeout(() => {
+      if (conversationStatusRef.current !== 'active') return
+
+      setConversationMessages((current) => [
+        ...current,
+        {
+          id: `candidate-${Date.now()}`,
+          sender: 'candidate',
+          body: `Gracias por compartirlo así. Me ayuda a entender mejor desde dónde te acercas. Yo también prefiero que podamos hablarlo sin intentar responder “bien” ni llegar demasiado pronto a una conclusión.`,
+          sentAt: new Date().toISOString(),
+          simulated: true,
+        },
+      ])
+    }, 700)
+  }
+
+  const withdrawConversation = () => {
+    setConversationStatus('draft')
+    setConversationRequest(null)
+    setConversationMessages([])
+    navigate('compatibility-report')
+  }
+
+  const viewConversation = () => {
+    const candidate = candidates.find(
+      (item) => item.id === conversationCandidateId,
+    )
+
+    if (candidate) {
+      setSelectedCandidate(candidate)
+    }
+
+    navigate('conversation')
   }
 
   const enterPrototype = () => {
@@ -140,6 +251,17 @@ function App() {
           onViewCandidate={selectCandidate}
           onViewLibrary={() => navigate('library')}
           onPricing={() => navigate('pricing')}
+          conversationStatus={
+            conversationCandidateId ? conversationStatus : undefined
+          }
+          conversationCandidate={
+            conversationCandidateId
+              ? candidates.find(
+                  (candidate) => candidate.id === conversationCandidateId,
+                )
+              : undefined
+          }
+          onViewConversation={viewConversation}
         />
       )}
 
@@ -189,6 +311,25 @@ function App() {
           answers={answers}
           symbolicProfile={symbolicProfile}
           onBack={() => navigate('matches')}
+          onOpenConversation={() => openConversation(selectedCandidate)}
+        />
+      )}
+
+      {currentPage === 'conversation' && (
+        <ConversationPage
+          candidate={selectedCandidate}
+          status={conversationStatus}
+          request={conversationRequest}
+          messages={conversationMessages}
+          onSubmitRequest={submitConversationRequest}
+          onSimulateAcceptance={simulateConversationAcceptance}
+          onSendMessage={sendConversationMessage}
+          onPause={() => setConversationStatus('paused')}
+          onResume={() => setConversationStatus('active')}
+          onClose={() => setConversationStatus('closed')}
+          onWithdraw={withdrawConversation}
+          onBack={() => navigate('compatibility-report')}
+          onDashboard={() => navigate('dashboard')}
         />
       )}
     </AppLayout>

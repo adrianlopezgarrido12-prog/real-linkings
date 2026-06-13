@@ -3,7 +3,11 @@ import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { candidates, mainUser } from '../data/mockUsers'
 import { questionsBySection } from '../data/questions'
-import type { AnswerValue, CandidateProfile } from '../types'
+import type {
+  AnswerValue,
+  CandidateProfile,
+  ConversationStatus,
+} from '../types'
 import { calculateCompatibility } from '../utils/compatibility'
 import {
   getCurrentAccessLevel,
@@ -19,6 +23,9 @@ interface UserDashboardPageProps {
   onViewCandidate: (candidate: CandidateProfile) => void
   onViewLibrary: () => void
   onPricing: () => void
+  conversationStatus?: ConversationStatus
+  conversationCandidate?: CandidateProfile
+  onViewConversation: () => void
 }
 
 const dimensions = [
@@ -62,6 +69,42 @@ const accessDescriptions: Record<AccessLevel, string> = {
   busqueda_profunda: 'Tienes activa la Búsqueda profunda.',
 }
 
+const conversationCopy: Record<
+  ConversationStatus,
+  { eyebrow: string; title: string; text: string; action: string }
+> = {
+  draft: {
+    eyebrow: 'Invitación sin enviar',
+    title: 'Hay una conversación que todavía puedes preparar',
+    text: 'Puedes revisar tu intención y decidir si quieres enviar una invitación cuidada.',
+    action: 'Preparar invitación',
+  },
+  pending: {
+    eyebrow: 'Esperando respuesta',
+    title: 'Has expresado interés y ahora toca dejar espacio',
+    text: 'La otra persona puede aceptar, declinar o no responder. No necesitas insistir.',
+    action: 'Ver solicitud',
+  },
+  active: {
+    eyebrow: 'Conversación abierta',
+    title: 'Ambas personas habéis elegido conversar',
+    text: 'El diálogo está abierto. Puedes continuar a tu ritmo y usar preguntas sugeridas si ayudan.',
+    action: 'Continuar conversación',
+  },
+  paused: {
+    eyebrow: 'Conversación en pausa',
+    title: 'Has elegido tomar distancia antes de continuar',
+    text: 'La pausa protege el ritmo. Puedes retomarla cuando tengas más claridad.',
+    action: 'Revisar conversación',
+  },
+  closed: {
+    eyebrow: 'Conversación cerrada',
+    title: 'El encuentro ha quedado cerrado con claridad',
+    text: 'Puedes revisar el cierre y observar qué te ha enseñado esta conversación.',
+    action: 'Revisar cierre',
+  },
+}
+
 export function UserDashboardPage({
   answers,
   onViewMap,
@@ -70,6 +113,9 @@ export function UserDashboardPage({
   onViewCandidate,
   onViewLibrary,
   onPricing,
+  conversationStatus,
+  conversationCandidate,
+  onViewConversation,
 }: UserDashboardPageProps) {
   const [notice, setNotice] = useState('')
   const accessLevel = getCurrentAccessLevel()
@@ -249,25 +295,36 @@ export function UserDashboardPage({
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
         <Card className="p-7">
-          <p className="eyebrow">Conversaciones pendientes</p>
+          <p className="eyebrow">
+            {conversationStatus
+              ? conversationCopy[conversationStatus].eyebrow
+              : 'Conversaciones pendientes'}
+          </p>
           <h2 className="mt-3 font-serif text-3xl text-forest">
-            Conversaciones que merecen cuidado
+            {conversationStatus
+              ? conversationCopy[conversationStatus].title
+              : 'Conversaciones que merecen cuidado'}
           </h2>
           <p className="mt-5 text-sm leading-7 text-muted">
-            Aún no has abierto ninguna conversación. Cuando una compatibilidad
-            sea mutua, aquí aparecerán preguntas sugeridas para empezar con
-            calma.
+            {conversationStatus
+              ? `${conversationCandidate ? `Con ${conversationCandidate.name}. ` : ''}${conversationCopy[conversationStatus].text}`
+              : 'Aún no has abierto ninguna conversación. Cuando una compatibilidad sea mutua, aquí aparecerán preguntas sugeridas para empezar con calma.'}
           </p>
           <Button
             variant="secondary"
             className="mt-6"
-            onClick={() =>
-              showMockNotice(
-                'Las preguntas sugeridas se activarán con una compatibilidad mutua.',
-              )
+            onClick={
+              conversationStatus
+                ? onViewConversation
+                : () =>
+                    showMockNotice(
+                      'Las preguntas sugeridas se activarán con una compatibilidad mutua.',
+                    )
             }
           >
-            Ver preguntas sugeridas
+            {conversationStatus
+              ? conversationCopy[conversationStatus].action
+              : 'Ver preguntas sugeridas'}
           </Button>
         </Card>
 

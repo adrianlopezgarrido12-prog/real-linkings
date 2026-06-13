@@ -16,6 +16,7 @@ interface CompatibilityReportPageProps {
   answers: Record<string, AnswerValue>
   symbolicProfile: SymbolicProfile
   onBack: () => void
+  onOpenConversation: () => void
 }
 
 export function CompatibilityReportPage({
@@ -23,6 +24,7 @@ export function CompatibilityReportPage({
   answers,
   symbolicProfile,
   onBack,
+  onOpenConversation,
 }: CompatibilityReportPageProps) {
   const report = calculateCompatibility(mainUser, candidate)
   const userHasSymbolic = hasSymbolicData(symbolicProfile)
@@ -361,7 +363,7 @@ export function CompatibilityReportPage({
           bien cuidada.
         </p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-          <Button>
+          <Button onClick={onOpenConversation}>
             Quiero abrir esta conversación
             <span aria-hidden="true">→</span>
           </Button>
