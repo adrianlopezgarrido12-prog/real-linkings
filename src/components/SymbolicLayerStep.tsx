@@ -197,9 +197,8 @@ export function SymbolicLayerStep({
           Un archivo puede ser otra forma de contar tu mapa.
         </h1>
         <p className="mt-2 max-w-3xl text-[0.7rem] leading-5 text-[#f7fbff]/55 sm:mt-3 sm:text-sm">
-          Puedes subir una carta astral, un documento de Human Design o
-          cualquier archivo que ayude a describir esta dimensión. No se envía
-          a ningún servidor.
+          Cada tipo de documento tiene su propio espacio. Puedes completar
+          solo los que quieras y añadir más de un archivo en cada categoría.
         </p>
         <div className="mt-4">
           <SymbolicFileUpload
