@@ -156,7 +156,6 @@ export const questions: Question[] = [
       'Mujeres',
       'Hombres',
       'Personas no binarias',
-      'La identidad de género no es un criterio principal para mí',
     ],
   },
   {
