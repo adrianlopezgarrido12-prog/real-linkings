@@ -164,97 +164,6 @@ button {
   animation: room-enter-backward 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Map zoom transitions */
-@keyframes zoom-to-map {
-  from { opacity: 1; transform: scale(1); filter: blur(0); }
-  to   { opacity: 0; transform: scale(0.86); filter: blur(3px); }
-}
-@keyframes map-zoom-in {
-  from { opacity: 0; transform: scale(1.1); filter: blur(4px); }
-  to   { opacity: 1; transform: scale(1);   filter: blur(0); }
-}
-@keyframes map-zoom-out {
-  from { opacity: 1; transform: scale(1);   filter: blur(0); }
-  to   { opacity: 0; transform: scale(1.1); filter: blur(4px); }
-}
-@keyframes zoom-from-map {
-  from { opacity: 0; transform: scale(0.86); filter: blur(3px); }
-  to   { opacity: 1; transform: scale(1);    filter: blur(0); }
-}
-
-.animate-zoom-to-map    { animation: zoom-to-map  700ms cubic-bezier(0.65, 0, 0.35, 1) both; }
-.animate-map-zoom-in    { animation: map-zoom-in  700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-.animate-map-zoom-out   { animation: map-zoom-out 600ms cubic-bezier(0.65, 0, 0.35, 1) both; }
-.animate-zoom-from-map  { animation: zoom-from-map 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-/* Node pulse for map */
-@keyframes node-ping {
-  0%   { transform: scale(1);   opacity: 0.7; }
-  70%  { transform: scale(1.9); opacity: 0; }
-  100% { transform: scale(1.9); opacity: 0; }
-}
-.animate-node-ping { animation: node-ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite; }
-
-/* Editorial relationship map */
-.dimension-map-grid {
-  background-image:
-    linear-gradient(rgba(42, 74, 58, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(42, 74, 58, 0.045) 1px, transparent 1px);
-  background-size: 42px 42px;
-  mask-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.72), transparent 82%);
-}
-
-.dimension-map-wash {
-  background:
-    radial-gradient(circle at 77% 22%, rgba(168, 144, 184, 0.12), transparent 13rem),
-    radial-gradient(circle at 18% 78%, rgba(138, 176, 128, 0.16), transparent 15rem),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 48%);
-}
-
-.dimension-map-node {
-  transform: translateZ(0);
-  transition:
-    width 500ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 500ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 500ms ease,
-    background-color 500ms ease;
-}
-
-.dimension-map-node-current {
-  animation: map-node-arrive 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.dimension-map-node-next {
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.72);
-}
-
-.dimension-next-orbit {
-  animation: map-orbit 2.4s ease-in-out infinite;
-  opacity: 0.28;
-}
-
-.dimension-path-draw,
-.dimension-path-glow {
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
-  animation: map-path-draw 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes map-path-draw {
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes map-node-arrive {
-  0% { opacity: 0; transform: scale(0.45); }
-  65% { opacity: 1; transform: scale(1.16); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes map-orbit {
-  0%, 100% { opacity: 0.18; transform: translate(-50%, -50%) scale(0.86); }
-  50% { opacity: 0.38; transform: translate(-50%, -50%) scale(1.12); }
-}
-
 @keyframes content-exit-forward {
   to {
     transform: translateX(-5%);
@@ -316,10 +225,5 @@ button {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-  }
-
-  .dimension-path-draw,
-  .dimension-path-glow {
-    stroke-dashoffset: 0;
   }
 }

@@ -11,18 +11,18 @@ interface StageProgressProps {
 }
 
 const accentColors: Record<StageAtmosphereName, string> = {
-  clear:     '#7a9a68',
-  earth:     '#5c8060',
-  structure: '#4e7858',
-  depth:     '#406850',
-  warm:      '#b06848',
-  honest:    '#5c7a50',
-  delicate:  '#a06858',
-  silent:    '#6a7860',
-  poetic:    '#8870a0',
-  mature:    '#4a7850',
-  night:     '#8ab098',
-  summary:   '#5c8068',
+  clear: '#5589b7',
+  earth: '#4f82ad',
+  structure: '#397da4',
+  depth: '#607cad',
+  warm: '#727fc0',
+  honest: '#3f88aa',
+  delicate: '#7788c5',
+  silent: '#6d829b',
+  poetic: '#7d78bc',
+  mature: '#397f9f',
+  night: '#b8d5ff',
+  summary: '#4f84b3',
 }
 
 export function StageProgress({
