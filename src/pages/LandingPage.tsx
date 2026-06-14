@@ -131,7 +131,7 @@ export function LandingPage({ onStart, onPricing }: LandingPageProps) {
           <Card className="grain relative w-[78%] rotate-[-2deg] p-7 sm:p-9">
             <div className="mb-8 flex items-center justify-between">
               <span className="eyebrow">Tu mapa relacional</span>
-              <span className="flex size-8 items-center justify-center rounded-full bg-[#e5f1fb] text-forest">
+              <span className="flex size-8 items-center justify-center rounded-full bg-[#e2ede6] text-forest">
                 ∿
               </span>
             </div>
@@ -275,7 +275,7 @@ export function LandingPage({ onStart, onPricing }: LandingPageProps) {
               miras, cuidas, respondes, respetas y conoces al otro.
             </p>
           </div>
-          <div className="rounded-[2rem] border border-sage/70 bg-[#e8f3fc] p-7 shadow-soft sm:p-10">
+          <div className="rounded-[2rem] border border-sage/70 bg-[#eef5ec] p-7 shadow-soft sm:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-moss">
               Una frase propia de Real Linkings
             </p>

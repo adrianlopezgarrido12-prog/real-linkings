@@ -1,26 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-ivory: #f2f8ff;
-  --color-paper: #fbfdff;
-  --color-forest: #244b72;
-  --color-moss: #668caf;
-  --color-sage: #c7def2;
-  --color-clay: #778bd0;
-  --color-blush: #dfeaff;
-  --color-ink: #253d55;
-  --color-muted: #708399;
-  --color-line: #d7e5f2;
+  --color-ivory: #f5f0e8;
+  --color-paper: #faf7f2;
+  --color-forest: #2a4a3a;
+  --color-moss: #5c7a69;
+  --color-sage: #92b0a0;
+  --color-clay: #b06848;
+  --color-blush: #eeddd4;
+  --color-ink: #1e2e26;
+  --color-muted: #7a8a7a;
+  --color-line: #d8d0c0;
   --font-sans: "Manrope", sans-serif;
-  --font-serif: "Plus Jakarta Sans", sans-serif;
-  --shadow-soft: 0 20px 60px rgba(57, 101, 145, 0.1);
+  --font-serif: "Lora", Georgia, serif;
+  --shadow-soft: 0 20px 60px rgba(42, 74, 58, 0.1);
 }
 
 :root {
   font-family: "Manrope", sans-serif;
-  color: #253d55;
-  background: #f2f8ff;
+  color: #1e2e26;
+  background: #f5f0e8;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -38,9 +38,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 86% 7%, rgba(180, 215, 247, 0.42), transparent 29rem),
-    radial-gradient(circle at 5% 42%, rgba(220, 231, 255, 0.62), transparent 25rem),
-    linear-gradient(145deg, #f8fbff 0%, #eef7ff 52%, #f3f1ff 100%);
+    radial-gradient(circle at 86% 7%, rgba(155, 190, 165, 0.2), transparent 29rem),
+    radial-gradient(circle at 5% 42%, rgba(215, 195, 170, 0.25), transparent 25rem),
+    linear-gradient(145deg, #f5f0e8 0%, #ede8dc 52%, #f2ede3 100%);
   background-attachment: fixed;
 }
 
@@ -56,8 +56,8 @@ button {
 }
 
 ::selection {
-  color: #fbfdff;
-  background: #668caf;
+  color: #faf7f2;
+  background: #5c7a69;
 }
 
 .eyebrow {
@@ -65,7 +65,7 @@ button {
   text-transform: uppercase;
   font-size: 0.72rem;
   font-weight: 600;
-  color: #668caf;
+  color: #5c7a69;
 }
 
 .text-balance {
@@ -104,16 +104,16 @@ button {
   }
   to {
     opacity: 0;
-    filter: blur(14px);
-    transform: translateX(-18%) scale(0.965) rotateY(2deg);
+    filter: blur(3px);
+    transform: translateX(-62%) scale(0.97);
   }
 }
 
 @keyframes room-enter-forward {
   from {
     opacity: 0;
-    filter: blur(14px);
-    transform: translateX(18%) scale(0.965) rotateY(-2deg);
+    filter: blur(3px);
+    transform: translateX(62%) scale(0.97);
   }
   to {
     opacity: 1;
@@ -130,16 +130,16 @@ button {
   }
   to {
     opacity: 0;
-    filter: blur(14px);
-    transform: translateX(18%) scale(0.965) rotateY(-2deg);
+    filter: blur(3px);
+    transform: translateX(62%) scale(0.97);
   }
 }
 
 @keyframes room-enter-backward {
   from {
     opacity: 0;
-    filter: blur(14px);
-    transform: translateX(-18%) scale(0.965) rotateY(2deg);
+    filter: blur(3px);
+    transform: translateX(-62%) scale(0.97);
   }
   to {
     opacity: 1;

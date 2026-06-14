@@ -568,7 +568,7 @@ export function OnboardingPage({
             variant="ghost"
             className={`!min-h-10 !px-3 sm:!px-5 ${
               activeAtmosphere === 'night'
-                ? '!text-[#e7f2ff] hover:!bg-white/8'
+                ? '!text-[#d8edd6] hover:!bg-white/8'
                 : ''
             }`}
             onClick={goBack}
@@ -589,7 +589,7 @@ export function OnboardingPage({
             <Button
               className={`!min-h-10 !px-4 sm:!px-6 ${
                 activeAtmosphere === 'night'
-                  ? '!bg-[#d7e7ff] !text-[#1a3454] hover:!bg-white'
+                  ? '!bg-[#cce8d5] !text-[#182b1e] hover:!bg-[#dff0e5]'
                   : ''
               }`}
               onClick={goNext}

@@ -29,7 +29,7 @@ export function AppLayout({
           className="group flex items-center gap-3 text-left"
           aria-label="Ir al inicio"
         >
-          <span className="flex size-9 items-center justify-center rounded-full border border-forest/15 bg-white/60 shadow-[0_8px_24px_rgba(76,122,165,0.1)] backdrop-blur-md">
+          <span className="flex size-9 items-center justify-center rounded-full border border-forest/15 bg-white/60 shadow-[0_8px_24px_rgba(42,74,58,0.1)] backdrop-blur-md">
             <svg
               viewBox="0 0 32 32"
               className="size-5 text-forest"
@@ -133,7 +133,7 @@ export function AppLayout({
                 <button
                   type="button"
                   onClick={() => onNavigate('register')}
-                  className="rounded-full bg-forest px-5 py-2.5 font-semibold text-paper shadow-[0_10px_25px_rgba(36,75,114,0.16)] transition hover:bg-[#315e8c]"
+                  className="rounded-full bg-forest px-5 py-2.5 font-semibold text-paper shadow-[0_10px_25px_rgba(42,74,58,0.18)] transition hover:bg-[#355d4a]"
                 >
                   Crear cuenta
                 </button>
