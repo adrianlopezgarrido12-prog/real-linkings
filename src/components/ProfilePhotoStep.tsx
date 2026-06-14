@@ -4,7 +4,6 @@ import type { UploadedProfilePhoto } from '../types'
 interface ProfilePhotoStepProps {
   photos: UploadedProfilePhoto[]
   onChange: (photos: UploadedProfilePhoto[]) => void
-  onSkip: () => void
 }
 
 const MAX_PHOTOS = 6
@@ -33,7 +32,6 @@ function createPhoto(file: File): UploadedProfilePhoto {
 export function ProfilePhotoStep({
   photos,
   onChange,
-  onSkip,
 }: ProfilePhotoStepProps) {
   const [message, setMessage] = useState('')
 
@@ -75,23 +73,8 @@ export function ProfilePhotoStep({
     setMessage('')
   }
 
-  const skipPhotos = () => {
-    photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl))
-    onChange([])
-    onSkip()
-  }
-
   return (
     <div className="relative flex h-full flex-col justify-center">
-      <div className="mb-2 flex justify-end sm:absolute sm:right-0 sm:top-0 sm:mb-0">
-        <button
-          type="button"
-          onClick={skipPhotos}
-          className="shrink-0 rounded-full border border-forest/15 bg-white/45 px-3 py-2 text-[0.62rem] font-semibold uppercase tracking-[0.11em] text-moss transition hover:border-forest/35 hover:text-forest"
-        >
-          Omitir fotos
-        </button>
-      </div>
 
       <p className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-moss sm:text-xs">
         Tu presencia · Fotos opcionales

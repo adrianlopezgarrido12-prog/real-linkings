@@ -459,7 +459,6 @@ export function OnboardingPage({
           <ProfilePhotoStep
             photos={profilePhotos}
             onChange={onProfilePhotosChange}
-            onSkip={goNext}
           />
         )}
 
