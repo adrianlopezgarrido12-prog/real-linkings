@@ -218,6 +218,23 @@ button {
   display: none;
 }
 
+.onboarding-dimension-list,
+.onboarding-dimension-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(92, 122, 105, 0.28) transparent;
+}
+
+.onboarding-dimension-list::-webkit-scrollbar,
+.onboarding-dimension-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.onboarding-dimension-list::-webkit-scrollbar-thumb,
+.onboarding-dimension-nav::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(92, 122, 105, 0.28);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

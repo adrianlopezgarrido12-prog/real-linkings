@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { DimensionInterlude } from '../components/DimensionInterlude'
+import { OnboardingDimensionNav } from '../components/OnboardingDimensionNav'
 import { OnboardingStageIntro } from '../components/OnboardingStageIntro'
 import { OnboardingSummaryStep } from '../components/OnboardingSummaryStep'
 import { ProfilePhotoStep } from '../components/ProfilePhotoStep'
@@ -193,6 +194,25 @@ function groupQuestions(questions: Question[]) {
   return groups
 }
 
+function hasAnswer(value: AnswerValue | undefined) {
+  if (Array.isArray(value)) return value.length > 0
+  if (typeof value === 'string') return value.trim().length > 0
+  return value !== undefined
+}
+
+const dimensionLabels = [
+  'Lo visible',
+  'Vida práctica',
+  'Proyecto vital',
+  'Valores',
+  'Emocional',
+  'Conflicto',
+  'Intimidad',
+  'Patrones',
+  'Anhelo',
+  'Disponibilidad',
+]
+
 export function OnboardingPage({
   answers,
   initialScreenId,
@@ -344,6 +364,7 @@ export function OnboardingPage({
 
   const currentScreen = screens[screenIndex]
   const nextScreen = screens[screenIndex + 1]
+  const visibleScreen = transition ? screens[transition.target] : currentScreen
   const activeAtmosphere = transition
     ? screens[transition.target].atmosphere
     : currentScreen.atmosphere
@@ -360,6 +381,57 @@ export function OnboardingPage({
         question.conditionalAnswerId &&
         !answers[question.conditionalAnswerId],
     )
+
+  const dimensionNavigation = useMemo(
+    () => [
+      ...questionsBySection.map((section, index) => {
+        const answeredQuestions = section.questions.filter((question) => {
+          if (!hasAnswer(answers[question.id])) return false
+          if (
+            question.conditionalRequired &&
+            answers[question.id] === question.conditionalWhen &&
+            question.conditionalAnswerId
+          ) {
+            return hasAnswer(answers[question.conditionalAnswerId])
+          }
+          return true
+        }).length
+        const photoStep = index === 0 ? 1 : 0
+        const completedPhotoStep =
+          index === 0 && profilePhotos.length > 0 ? 1 : 0
+        const totalItems = section.questions.length + photoStep
+        const completedItems = answeredQuestions + completedPhotoStep
+
+        return {
+          dimension: index + 1,
+          label: dimensionLabels[index],
+          progress: Math.round((completedItems / totalItems) * 100),
+        }
+      }),
+      {
+        dimension: 11,
+        label: 'Simbólica',
+        progress: symbolicProfile.wantsSymbolicLayer
+          ? Math.min(
+              100,
+              25 +
+                [
+                  symbolicProfile.sunSign,
+                  symbolicProfile.mbtiType,
+                  symbolicProfile.humanDesignType,
+                  symbolicProfile.symbolicNotes,
+                ].filter(Boolean).length *
+                  20,
+            )
+          : 0,
+      },
+      {
+        dimension: 12,
+        label: 'Síntesis',
+      },
+    ],
+    [answers, profilePhotos.length, symbolicProfile],
+  )
 
   useEffect(
     () => () => {
@@ -404,6 +476,15 @@ export function OnboardingPage({
       return
     }
     goToScreen(screenIndex - 1)
+  }
+
+  const goToDimension = (dimension: number) => {
+    const target = screens.findIndex(
+      (screen) =>
+        screen.dimension === dimension &&
+        (dimension > 10 || screen.kind === 'questions'),
+    )
+    if (target >= 0) goToScreen(target)
   }
 
   const skipSymbolicDimension = () => {
@@ -515,88 +596,97 @@ export function OnboardingPage({
         <span className="absolute left-[39%] top-[10%] size-3 rounded-full bg-white/65 shadow-[2.5rem_1.2rem_0_rgba(255,255,255,0.35),5rem_-0.5rem_0_rgba(255,255,255,0.45)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col overflow-hidden px-4 pb-3 sm:px-8 lg:px-10">
-        <StageProgress
-          dimension={currentScreen.dimension}
-          totalDimensions={12}
-          label={currentScreen.label}
-          substep={currentScreen.substep}
-          totalSubsteps={currentScreen.totalSubsteps}
-          globalProgress={globalProgress}
-          atmosphere={activeAtmosphere}
+      <div className="relative z-10 mx-auto grid h-full w-full max-w-[90rem] min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-2 overflow-hidden px-4 pb-3 sm:px-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:grid-rows-1 lg:gap-6 lg:px-10">
+        <OnboardingDimensionNav
+          items={dimensionNavigation}
+          currentDimension={visibleScreen.dimension}
+          disabled={Boolean(transition)}
+          dark={activeAtmosphere === 'night'}
+          onNavigate={goToDimension}
         />
 
-        <div className="grid min-h-0 flex-1 overflow-hidden">
-        <div
-          key={`current-${currentScreen.id}`}
-          className={`col-start-1 row-start-1 min-h-0 min-w-0 ${
-            transition
-              ? transition.direction === 'forward'
-                ? 'animate-room-exit-forward pointer-events-none'
-                : 'animate-room-exit-backward pointer-events-none'
-              : ''
-          }`}
-          style={
-            transition
-              ? { animationDuration: `${transition.duration}ms` }
-              : undefined
-          }
-        >
-          {renderScreen(screenIndex)}
-        </div>
+        <div className="flex min-h-0 min-w-0 flex-col overflow-hidden">
+          <StageProgress
+            dimension={currentScreen.dimension}
+            totalDimensions={12}
+            label={currentScreen.label}
+            substep={currentScreen.substep}
+            totalSubsteps={currentScreen.totalSubsteps}
+            globalProgress={globalProgress}
+            atmosphere={activeAtmosphere}
+          />
 
-        {transition && (
-          <div
-            key={`incoming-${screens[transition.target].id}`}
-            aria-hidden="true"
-            className={`pointer-events-none col-start-1 row-start-1 min-h-0 min-w-0 ${
-              transition.direction === 'forward'
-                ? 'animate-room-enter-forward'
-                : 'animate-room-enter-backward'
-            }`}
-            style={{ animationDuration: `${transition.duration}ms` }}
-          >
-            {renderScreen(transition.target)}
-          </div>
-        )}
-
-        </div>
-
-        <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
-          <Button
-            variant="ghost"
-            className={`!min-h-10 !px-3 sm:!px-5 ${
-              activeAtmosphere === 'night'
-                ? '!text-[#d8edd6] hover:!bg-white/8'
-                : ''
-            }`}
-            onClick={goBack}
-            disabled={Boolean(transition)}
-          >
-            <span aria-hidden="true">←</span>
-            <span className="hidden sm:inline">
-              {screenIndex === 0 ? 'Volver al inicio' : 'Atrás'}
-            </span>
-          </Button>
-
-          <div className="text-center">
-            {conditionalBlocked && (
-              <p className="mb-1 text-[0.66rem] text-clay">
-                Concreta de qué depende para continuar.
-              </p>
-            )}
-            <Button
-              className={`!min-h-10 !px-4 sm:!px-6 ${
-                activeAtmosphere === 'night'
-                  ? '!bg-[#cce8d5] !text-[#182b1e] hover:!bg-[#dff0e5]'
+          <div className="grid min-h-0 flex-1 overflow-hidden">
+            <div
+              key={`current-${currentScreen.id}`}
+              className={`col-start-1 row-start-1 min-h-0 min-w-0 ${
+                transition
+                  ? transition.direction === 'forward'
+                    ? 'animate-room-exit-forward pointer-events-none'
+                    : 'animate-room-exit-backward pointer-events-none'
                   : ''
               }`}
-              onClick={goNext}
-              disabled={Boolean(transition) || conditionalBlocked}
+              style={
+                transition
+                  ? { animationDuration: `${transition.duration}ms` }
+                  : undefined
+              }
             >
-              {nextLabel}
-              <span aria-hidden="true">→</span>
+              {renderScreen(screenIndex)}
+            </div>
+
+            {transition && (
+              <div
+                key={`incoming-${screens[transition.target].id}`}
+                aria-hidden="true"
+                className={`pointer-events-none col-start-1 row-start-1 min-h-0 min-w-0 ${
+                  transition.direction === 'forward'
+                    ? 'animate-room-enter-forward'
+                    : 'animate-room-enter-backward'
+                }`}
+                style={{ animationDuration: `${transition.duration}ms` }}
+              >
+                {renderScreen(transition.target)}
+              </div>
+            )}
+          </div>
+
+          <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
+            <Button
+              variant="ghost"
+              className={`!min-h-10 !px-3 sm:!px-5 ${
+                activeAtmosphere === 'night'
+                  ? '!text-[#d8edd6] hover:!bg-white/8'
+                  : ''
+              }`}
+              onClick={goBack}
+              disabled={Boolean(transition)}
+            >
+              <span aria-hidden="true">←</span>
+              <span className="hidden sm:inline">
+                {screenIndex === 0 ? 'Volver al inicio' : 'Atrás'}
+              </span>
             </Button>
+
+            <div className="text-center">
+              {conditionalBlocked && (
+                <p className="mb-1 text-[0.66rem] text-clay">
+                  Concreta de qué depende para continuar.
+                </p>
+              )}
+              <Button
+                className={`!min-h-10 !px-4 sm:!px-6 ${
+                  activeAtmosphere === 'night'
+                    ? '!bg-[#cce8d5] !text-[#182b1e] hover:!bg-[#dff0e5]'
+                    : ''
+                }`}
+                onClick={goNext}
+                disabled={Boolean(transition) || conditionalBlocked}
+              >
+                {nextLabel}
+                <span aria-hidden="true">→</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
