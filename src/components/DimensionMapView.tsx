@@ -3,62 +3,67 @@ import type { StageAtmosphereName } from '../types'
 interface MapNode {
   dimension: number
   shortLabel: string
+  description: string
   atmosphere: StageAtmosphereName
   x: number
   y: number
+  labelSide: 'top' | 'bottom'
 }
 
 const MAP_NODES: MapNode[] = [
-  { dimension: 1,  shortLabel: 'Lo visible',     atmosphere: 'clear',     x: 10, y: 58 },
-  { dimension: 2,  shortLabel: 'Práctica',        atmosphere: 'earth',     x: 26, y: 62 },
-  { dimension: 3,  shortLabel: 'Proyecto',        atmosphere: 'structure', x: 44, y: 56 },
-  { dimension: 4,  shortLabel: 'Valores',         atmosphere: 'depth',     x: 62, y: 60 },
-  { dimension: 5,  shortLabel: 'Emocional',       atmosphere: 'warm',      x: 78, y: 50 },
-  { dimension: 6,  shortLabel: 'Conflicto',       atmosphere: 'honest',    x: 84, y: 36 },
-  { dimension: 7,  shortLabel: 'Intimidad',       atmosphere: 'delicate',  x: 72, y: 24 },
-  { dimension: 8,  shortLabel: 'Patrones',        atmosphere: 'silent',    x: 55, y: 30 },
-  { dimension: 9,  shortLabel: 'Anhelo',          atmosphere: 'poetic',    x: 38, y: 22 },
-  { dimension: 10, shortLabel: 'Disponible',      atmosphere: 'mature',    x: 24, y: 32 },
-  { dimension: 11, shortLabel: 'Simbólica',       atmosphere: 'night',     x: 18, y: 18 },
-  { dimension: 12, shortLabel: 'Síntesis',        atmosphere: 'summary',   x: 50, y: 8  },
+  { dimension: 1, shortLabel: 'Lo visible', description: 'La primera capa desde la que empiezas a situarte.', atmosphere: 'clear', x: 8, y: 70, labelSide: 'top' },
+  { dimension: 2, shortLabel: 'Vida práctica', description: 'El lugar cotidiano donde una relación tendría que vivir.', atmosphere: 'earth', x: 22, y: 61, labelSide: 'bottom' },
+  { dimension: 3, shortLabel: 'Proyecto vital', description: 'La dirección que quieres poder compartir sin perder la propia.', atmosphere: 'structure', x: 37, y: 69, labelSide: 'top' },
+  { dimension: 4, shortLabel: 'Valores', description: 'Los principios que permanecen cuando elegir tiene un coste.', atmosphere: 'depth', x: 51, y: 55, labelSide: 'bottom' },
+  { dimension: 5, shortLabel: 'Emocional', description: 'Cómo te acercas y cómo te proteges cuando alguien importa.', atmosphere: 'warm', x: 66, y: 63, labelSide: 'top' },
+  { dimension: 6, shortLabel: 'Conflicto', description: 'La manera en que hablas, escuchas y vuelves a encontrarte.', atmosphere: 'honest', x: 82, y: 51, labelSide: 'bottom' },
+  { dimension: 7, shortLabel: 'Intimidad', description: 'El ritmo, el lenguaje y los límites de la cercanía.', atmosphere: 'delicate', x: 91, y: 36, labelSide: 'top' },
+  { dimension: 8, shortLabel: 'Patrones', description: 'Las respuestas antiguas que todavía aparecen al vincularte.', atmosphere: 'silent', x: 75, y: 28, labelSide: 'top' },
+  { dimension: 9, shortLabel: 'Anhelo', description: 'Aquello que esperas poder compartir y todavía cuesta nombrar.', atmosphere: 'poetic', x: 58, y: 34, labelSide: 'top' },
+  { dimension: 10, shortLabel: 'Disponibilidad', description: 'El espacio que hoy puedes ofrecer con hechos.', atmosphere: 'mature', x: 41, y: 22, labelSide: 'bottom' },
+  { dimension: 11, shortLabel: 'Simbólica', description: 'Una lectura opcional de los lenguajes con los que te interpretas.', atmosphere: 'night', x: 24, y: 31, labelSide: 'top' },
+  { dimension: 12, shortLabel: 'Síntesis', description: 'Las capas del recorrido reunidas en tu mapa relacional.', atmosphere: 'summary', x: 10, y: 16, labelSide: 'bottom' },
 ]
 
-const NODE_COLORS: Record<StageAtmosphereName, { fill: string; text: string; glow: string }> = {
-  clear:     { fill: '#b8cc94', text: '#1e2e26', glow: 'rgba(184,204,148,0.5)' },
-  earth:     { fill: '#8ab080', text: '#fff',    glow: 'rgba(138,176,128,0.5)' },
-  structure: { fill: '#7aa878', text: '#fff',    glow: 'rgba(122,168,120,0.5)' },
-  depth:     { fill: '#6a9870', text: '#fff',    glow: 'rgba(106,152,112,0.5)' },
-  warm:      { fill: '#c09060', text: '#fff',    glow: 'rgba(192,144,96,0.5)'  },
-  honest:    { fill: '#7aa870', text: '#fff',    glow: 'rgba(122,168,112,0.5)' },
-  delicate:  { fill: '#c89080', text: '#fff',    glow: 'rgba(200,144,128,0.5)' },
-  silent:    { fill: '#909878', text: '#fff',    glow: 'rgba(144,152,120,0.5)' },
-  poetic:    { fill: '#a890b8', text: '#fff',    glow: 'rgba(168,144,184,0.5)' },
-  mature:    { fill: '#789878', text: '#fff',    glow: 'rgba(120,152,120,0.5)' },
-  night:     { fill: '#263020', text: '#f2ede2', glow: 'rgba(92,122,105,0.5)'  },
-  summary:   { fill: '#5c8068', text: '#fff',    glow: 'rgba(92,128,104,0.5)'  },
+const NODE_COLORS: Record<StageAtmosphereName, string> = {
+  clear: '#b8cc94',
+  earth: '#8ab080',
+  structure: '#7aa878',
+  depth: '#6a9870',
+  warm: '#c09060',
+  honest: '#7aa870',
+  delicate: '#c89080',
+  silent: '#909878',
+  poetic: '#a890b8',
+  mature: '#789878',
+  night: '#344a3c',
+  summary: '#5c8068',
 }
 
-function smoothPath(pts: Array<{ x: number; y: number }>): string {
-  if (pts.length < 2) return ''
-  const d: string[] = [`M ${pts[0].x},${pts[0].y}`]
-  for (let i = 1; i < pts.length; i++) {
-    const prev = pts[i - 1]
-    const curr = pts[i]
-    const pp = pts[i - 2] ?? prev
-    const nx = pts[i + 1] ?? curr
-    const cp1x = +(prev.x + (curr.x - pp.x) * 0.28).toFixed(2)
-    const cp1y = +(prev.y + (curr.y - pp.y) * 0.28).toFixed(2)
-    const cp2x = +(curr.x - (nx.x - prev.x) * 0.28).toFixed(2)
-    const cp2y = +(curr.y - (nx.y - prev.y) * 0.28).toFixed(2)
-    d.push(`C ${cp1x},${cp1y} ${cp2x},${cp2y} ${curr.x},${curr.y}`)
+function smoothPath(points: Array<{ x: number; y: number }>): string {
+  if (points.length < 2) return ''
+
+  const path = [`M ${points[0].x},${points[0].y}`]
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1]
+    const current = points[index]
+    const beforePrevious = points[index - 2] ?? previous
+    const next = points[index + 1] ?? current
+    const firstX = previous.x + (current.x - beforePrevious.x) * 0.26
+    const firstY = previous.y + (current.y - beforePrevious.y) * 0.26
+    const secondX = current.x - (next.x - previous.x) * 0.26
+    const secondY = current.y - (next.y - previous.y) * 0.26
+    path.push(
+      `C ${firstX.toFixed(2)},${firstY.toFixed(2)} ${secondX.toFixed(2)},${secondY.toFixed(2)} ${current.x},${current.y}`,
+    )
   }
-  return d.join(' ')
+  return path.join(' ')
 }
 
-const FULL_PATH = smoothPath(MAP_NODES.map((n) => ({ x: n.x, y: n.y })))
+const FULL_PATH = smoothPath(MAP_NODES)
 
-function completedPathUpTo(n: number): string {
-  return smoothPath(MAP_NODES.slice(0, n + 1).map((m) => ({ x: m.x, y: m.y })))
+function pathThrough(completedUpTo: number): string {
+  return smoothPath(MAP_NODES.slice(0, completedUpTo))
 }
 
 interface DimensionMapViewProps {
@@ -66,171 +71,235 @@ interface DimensionMapViewProps {
   onContinue: () => void
 }
 
-export function DimensionMapView({ completedUpTo, onContinue }: DimensionMapViewProps) {
-  const nextDimension = completedUpTo + 1
+export function DimensionMapView({
+  completedUpTo,
+  onContinue,
+}: DimensionMapViewProps) {
   const isFinished = completedUpTo >= 11
+  const nextDimension = isFinished ? 12 : completedUpTo + 1
+  const nextNode = MAP_NODES[nextDimension - 1]
+  const completedNode = MAP_NODES[completedUpTo - 1]
 
   const ctaLabel = isFinished
-    ? 'Ver mi síntesis →'
+    ? 'Reunir mi mapa'
     : nextDimension === 11
-      ? 'Abrir la dimensión simbólica →'
-      : `Explorar dimensión ${nextDimension} →`
+      ? 'Abrir la dimensión simbólica'
+      : `Entrar en ${nextNode.shortLabel.toLowerCase()}`
 
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4 px-2 py-4 sm:gap-5 sm:py-6">
-      <div className="text-center">
-        <p className="eyebrow mb-1">Mapa del recorrido</p>
-        <h2 className="font-serif text-xl text-forest sm:text-2xl">
-          {isFinished
-            ? 'Has explorado las once dimensiones'
-            : `${completedUpTo} de 11 dimensiones exploradas`}
-        </h2>
-        {!isFinished && (
-          <p className="mt-1 text-xs text-muted">
-            Siguiente: <span className="font-medium text-forest">{MAP_NODES[nextDimension - 1]?.shortLabel}</span>
-          </p>
-        )}
-      </div>
+    <section className="dimension-map-shell flex h-full min-h-[34rem] flex-col justify-center py-2 sm:py-4">
+      <header className="relative z-10 mb-4 flex items-end justify-between gap-5 px-1 sm:mb-6">
+        <div>
+          <p className="eyebrow mb-2">Cartografía del vínculo</p>
+          <h2 className="max-w-xl font-serif text-2xl leading-tight text-forest sm:text-4xl">
+            {isFinished
+              ? 'Las capas empiezan a formar un mapa.'
+              : 'Cada respuesta abre una parte del recorrido.'}
+          </h2>
+        </div>
+        <p className="hidden max-w-[14rem] text-right text-xs leading-5 text-muted md:block">
+          {completedUpTo} de 11 dimensiones exploradas
+        </p>
+      </header>
 
-      {/* Map canvas */}
-      <div className="w-full max-w-3xl rounded-2xl border border-white/80 bg-white/50 p-4 shadow-[0_20px_60px_rgba(42,74,58,0.12)] backdrop-blur-md sm:rounded-[1.5rem] sm:p-6">
-        <div className="relative w-full" style={{ paddingBottom: '55%' }}>
-          {/* SVG: paths */}
-          <svg
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 100 65"
-            preserveAspectRatio="none"
-          >
-            {/* Upcoming path — dashed */}
-            <path
-              d={FULL_PATH}
-              fill="none"
-              stroke="#d0c8b8"
-              strokeWidth="0.7"
-              strokeDasharray="1.2 1"
-              strokeLinecap="round"
-            />
-            {/* Completed path */}
-            {completedUpTo > 0 && (
-              <path
-                d={completedPathUpTo(completedUpTo)}
-                fill="none"
-                stroke="#5c7a69"
-                strokeWidth="1.1"
-                strokeLinecap="round"
-                opacity="0.65"
-              />
-            )}
-          </svg>
+      <div className="dimension-map-card relative min-h-0 flex-1 overflow-hidden rounded-[1.75rem] border border-white/75 bg-[#f7f3eb]/72 shadow-[0_28px_80px_rgba(42,74,58,0.14)] backdrop-blur-xl sm:rounded-[2.25rem]">
+        <div className="dimension-map-grid pointer-events-none absolute inset-0 opacity-45" />
+        <div className="dimension-map-wash pointer-events-none absolute inset-0" />
 
-          {/* Nodes */}
-          {MAP_NODES.map((node) => {
-            const isCompleted = node.dimension <= completedUpTo
-            const isJustCompleted = node.dimension === completedUpTo
-            const isNext = node.dimension === nextDimension && !isFinished
-            const isUpcoming = node.dimension > nextDimension
-            const colors = NODE_COLORS[node.atmosphere]
+        <div className="relative grid h-full min-h-[27rem] lg:grid-cols-[1fr_17rem]">
+          <div className="relative min-h-[20rem] overflow-hidden px-3 pb-1 pt-3 sm:px-6 sm:pt-5 lg:min-h-0 lg:px-8">
+            <div className="absolute left-7 top-5 font-serif text-[0.58rem] italic tracking-[0.18em] text-forest/35 sm:left-10">
+              interior · presencia · vínculo
+            </div>
+            <div className="absolute bottom-5 right-5 hidden text-[0.52rem] uppercase tracking-[0.2em] text-forest/30 sm:block">
+              12 capas / un mapa
+            </div>
 
-            const size = isNext ? 34 : isCompleted ? 30 : 24
-
-            return (
-              <div
-                key={node.dimension}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${node.x}%`, top: `${node.y}%` }}
+            <div className="relative h-full min-h-[20rem] w-full">
+              <svg
+                className="absolute inset-0 h-full w-full"
+                viewBox="0 0 100 82"
+                preserveAspectRatio="none"
+                aria-hidden="true"
               >
-                {/* Ping ring for just-completed node */}
-                {isJustCompleted && (
-                  <div
-                    className="animate-node-ping absolute rounded-full"
-                    style={{
-                      width: size,
-                      height: size,
-                      backgroundColor: colors.glow,
-                      top: 0,
-                      left: 0,
-                    }}
-                  />
-                )}
-                {/* Pulse ring for next node */}
-                {isNext && (
-                  <div
-                    className="absolute animate-pulse rounded-full opacity-30"
-                    style={{
-                      width: size + 10,
-                      height: size + 10,
-                      backgroundColor: colors.fill,
-                      top: -(5),
-                      left: -(5),
-                    }}
-                  />
-                )}
+                <defs>
+                  <filter id="map-soft-glow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="1.25" />
+                  </filter>
+                </defs>
 
-                {/* Node circle */}
-                <div
-                  className="relative flex items-center justify-center rounded-full border transition-all duration-500"
-                  style={{
-                    width: size,
-                    height: size,
-                    backgroundColor: isCompleted
-                      ? colors.fill
-                      : isNext
-                        ? `${colors.fill}70`
-                        : '#e8e4dc',
-                    borderColor: isCompleted
-                      ? 'rgba(255,255,255,0.55)'
-                      : 'rgba(210,202,188,0.8)',
-                    boxShadow: isCompleted
-                      ? `0 3px 12px ${colors.glow}`
-                      : 'none',
-                    opacity: isUpcoming ? 0.38 : 1,
-                  }}
-                >
-                  {isCompleted && !isJustCompleted ? (
-                    <svg viewBox="0 0 10 10" style={{ width: size * 0.42, height: size * 0.42 }} fill="none">
-                      <path d="M2 5.2l2 2 4-4" stroke={colors.text} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  ) : (
+                <path
+                  d="M -8 77 C 14 44, 35 88, 58 52 S 90 48, 108 16"
+                  fill="none"
+                  stroke="rgba(92,122,105,0.08)"
+                  strokeWidth="12"
+                />
+                <path
+                  d="M -10 31 C 9 47, 25 1, 43 18 S 77 1, 110 30"
+                  fill="none"
+                  stroke="rgba(176,104,72,0.07)"
+                  strokeWidth="8"
+                />
+
+                <path
+                  d={FULL_PATH}
+                  fill="none"
+                  stroke="#c9c2b4"
+                  strokeWidth="0.58"
+                  strokeDasharray="1.1 1.45"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+
+                {completedUpTo > 1 && (
+                  <>
+                    <path
+                      d={pathThrough(completedUpTo)}
+                      className="dimension-path-glow"
+                      fill="none"
+                      stroke="#789887"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      opacity="0.16"
+                      filter="url(#map-soft-glow)"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                    <path
+                      d={pathThrough(completedUpTo)}
+                      className="dimension-path-draw"
+                      fill="none"
+                      stroke="#5c7a69"
+                      strokeWidth="1.15"
+                      strokeLinecap="round"
+                      vectorEffect="non-scaling-stroke"
+                    />
+                  </>
+                )}
+              </svg>
+
+              {MAP_NODES.map((node) => {
+                const isCompleted = node.dimension <= completedUpTo
+                const isCurrent = node.dimension === completedUpTo
+                const isNext = node.dimension === nextDimension
+                const isFuture = node.dimension > nextDimension
+                const color = NODE_COLORS[node.atmosphere]
+
+                return (
+                  <div
+                    key={node.dimension}
+                    className="absolute -translate-x-1/2 -translate-y-1/2"
+                    style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                  >
+                    {isNext && (
+                      <span
+                        className="dimension-next-orbit absolute left-1/2 top-1/2 size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border"
+                        style={{ borderColor: color }}
+                      />
+                    )}
+
                     <span
-                      className="font-serif leading-none"
+                      className={`dimension-map-node relative flex items-center justify-center rounded-full border ${
+                        isCurrent ? 'dimension-map-node-current' : ''
+                      } ${isNext ? 'dimension-map-node-next' : ''}`}
                       style={{
-                        fontSize: isNext ? '0.72rem' : '0.58rem',
-                        color: isCompleted ? colors.text : '#9a9080',
-                        fontWeight: 500,
+                        width: isCurrent || isNext ? 30 : 22,
+                        height: isCurrent || isNext ? 30 : 22,
+                        color: isCompleted ? '#fff' : '#7f8379',
+                        backgroundColor: isCompleted
+                          ? color
+                          : isNext
+                            ? '#f7f3eb'
+                            : '#e4dfd5',
+                        borderColor: isCompleted || isNext
+                          ? color
+                          : 'rgba(122,138,122,0.18)',
+                        boxShadow: isCompleted
+                          ? `0 5px 16px ${color}55`
+                          : undefined,
+                        opacity: isFuture ? 0.42 : 1,
                       }}
                     >
-                      {node.dimension}
+                      <span className="font-serif text-[0.62rem] leading-none">
+                        {isCompleted && !isCurrent ? '✓' : node.dimension}
+                      </span>
                     </span>
-                  )}
-                </div>
 
-                {/* Label */}
-                <p
-                  className="pointer-events-none absolute w-14 -translate-x-1/4 text-center leading-tight"
-                  style={{
-                    top: size + 3,
-                    left: 0,
-                    fontSize: '0.46rem',
-                    color: isCompleted ? '#2a4a3a' : '#b0a898',
-                    fontWeight: isNext ? 600 : 400,
-                    opacity: isUpcoming ? 0.4 : 1,
-                  }}
-                >
-                  {node.shortLabel}
-                </p>
+                    <div
+                      className={`pointer-events-none absolute left-1/2 w-24 -translate-x-1/2 text-center ${
+                        node.labelSide === 'top'
+                          ? 'bottom-[calc(100%+0.42rem)]'
+                          : 'top-[calc(100%+0.42rem)]'
+                      }`}
+                      style={{ opacity: isFuture ? 0.42 : 1 }}
+                    >
+                      <span className="block text-[0.43rem] uppercase tracking-[0.12em] text-muted sm:text-[0.48rem]">
+                        {String(node.dimension).padStart(2, '0')}
+                      </span>
+                      <span
+                        className={`mt-0.5 block font-serif text-[0.56rem] leading-tight sm:text-[0.66rem] ${
+                          isNext || isCurrent
+                            ? 'font-medium text-forest'
+                            : 'text-forest/62'
+                        }`}
+                      >
+                        {node.shortLabel}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <aside className="relative flex flex-col justify-between border-t border-forest/10 bg-white/30 p-5 sm:p-6 lg:border-l lg:border-t-0 lg:p-7">
+            <div>
+              <div className="mb-7 flex items-center justify-between">
+                <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-moss">
+                  {isFinished ? 'Próxima lectura' : 'Próxima estación'}
+                </span>
+                <span className="font-serif text-sm italic text-clay">
+                  {String(nextDimension).padStart(2, '0')}
+                </span>
               </div>
-            )
-          })}
+
+              <div
+                className="mb-5 h-px w-12"
+                style={{ backgroundColor: NODE_COLORS[nextNode.atmosphere] }}
+              />
+              <h3 className="font-serif text-2xl leading-tight text-forest">
+                {nextNode.shortLabel}
+              </h3>
+              <p className="mt-3 text-xs leading-5 text-muted">
+                {nextNode.description}
+              </p>
+
+              {completedNode && (
+                <p className="mt-6 border-l border-moss/25 pl-3 text-[0.68rem] leading-5 text-forest/55">
+                  Has dejado atrás{' '}
+                  <span className="font-medium text-forest/75">
+                    {completedNode.shortLabel.toLowerCase()}
+                  </span>
+                  . El mapa conserva esa capa.
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={onContinue}
+              className="group mt-5 flex min-h-11 w-full items-center justify-between rounded-full bg-forest px-5 text-left text-xs font-semibold text-paper shadow-[0_10px_28px_rgba(42,74,58,0.2)] transition hover:bg-[#355d4a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-forest active:scale-[0.98]"
+            >
+              <span>{ctaLabel}</span>
+              <span
+                className="ml-3 text-base transition-transform group-hover:translate-x-1"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </button>
+          </aside>
         </div>
       </div>
-
-      <button
-        type="button"
-        onClick={onContinue}
-        className="rounded-full bg-forest px-8 py-3 font-semibold text-paper shadow-[0_10px_28px_rgba(42,74,58,0.22)] transition hover:bg-[#355d4a] active:scale-95"
-      >
-        {ctaLabel}
-      </button>
-    </div>
+    </section>
   )
 }
