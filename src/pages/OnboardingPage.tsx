@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { DimensionInterlude } from '../components/DimensionInterlude'
+import { DimensionMapView } from '../components/DimensionMapView'
 import { OnboardingStageIntro } from '../components/OnboardingStageIntro'
 import { OnboardingSummaryStep } from '../components/OnboardingSummaryStep'
 import { ProfilePhotoStep } from '../components/ProfilePhotoStep'
@@ -93,6 +94,16 @@ type OnboardingScreen =
       view: SymbolicView
       substep: number
       totalSubsteps: number
+    }
+  | {
+      id: string
+      kind: 'map'
+      completedUpTo: number
+      dimension: number
+      label: string
+      atmosphere: StageAtmosphereName
+      substep: 1
+      totalSubsteps: 1
     }
   | {
       id: 'summary'
@@ -308,8 +319,26 @@ export function OnboardingPage({
       'notes',
     ]
 
+    // Insert a map screen after the last substep of each dimension (D1–D10)
+    const questionScreensWithMaps: OnboardingScreen[] = []
+    for (const screen of questionScreens) {
+      questionScreensWithMaps.push(screen)
+      if (screen.substep === screen.totalSubsteps) {
+        questionScreensWithMaps.push({
+          id: `dimension-map-${screen.dimension}`,
+          kind: 'map' as const,
+          completedUpTo: screen.dimension,
+          dimension: screen.dimension,
+          label: 'Mapa del recorrido',
+          atmosphere: 'summary' as const,
+          substep: 1 as const,
+          totalSubsteps: 1 as const,
+        })
+      }
+    }
+
     const allScreens: OnboardingScreen[] = [
-      ...questionScreens,
+      ...questionScreensWithMaps,
       ...symbolicViews.map((view, index) => ({
         id: `symbolic-${view}`,
         kind: 'symbolic' as const,
@@ -320,6 +349,17 @@ export function OnboardingPage({
         substep: index + 1,
         totalSubsteps: symbolicViews.length,
       })),
+      // Map after the symbolic dimension, before final synthesis
+      {
+        id: 'dimension-map-11',
+        kind: 'map' as const,
+        completedUpTo: 11,
+        dimension: 11,
+        label: 'Mapa del recorrido',
+        atmosphere: 'summary' as const,
+        substep: 1 as const,
+        totalSubsteps: 1 as const,
+      },
       {
         id: 'summary',
         kind: 'summary',
@@ -381,7 +421,9 @@ export function OnboardingPage({
     }
 
     const direction = target > screenIndex ? 'forward' : 'backward'
-    const duration = 560
+    const involvesMap =
+      currentScreen.kind === 'map' || screens[target]?.kind === 'map'
+    const duration = involvesMap ? 700 : 560
 
     setTransition({ target, direction, duration })
     transitionTimer.current = window.setTimeout(() => {
@@ -471,6 +513,13 @@ export function OnboardingPage({
           />
         )}
 
+        {screen.kind === 'map' && (
+          <DimensionMapView
+            completedUpTo={screen.completedUpTo}
+            onContinue={goNext}
+          />
+        )}
+
         {screen.kind === 'summary' && (
           <OnboardingSummaryStep
             answers={answers}
@@ -485,15 +534,19 @@ export function OnboardingPage({
   const nextLabel =
     currentScreen.kind === 'summary'
       ? 'Construir mi mapa relacional'
-      : currentScreen.kind === 'symbolic'
-        ? 'Continuar'
-        : isFirstScreenOfDimension
-          ? 'Entrar en esta dimensión'
-          : isLastScreenOfDimension && nextScreen?.dimension !== 11
-            ? 'Pasar a la siguiente dimensión'
-            : isLastScreenOfDimension && nextScreen?.dimension === 11
-              ? 'Abrir la dimensión simbólica'
-              : 'Continuar'
+      : currentScreen.kind === 'map'
+        ? ''
+        : currentScreen.kind === 'symbolic'
+          ? 'Continuar'
+          : isFirstScreenOfDimension
+            ? 'Entrar en esta dimensión'
+            : isLastScreenOfDimension && nextScreen?.kind === 'map'
+              ? 'Ver el mapa'
+              : isLastScreenOfDimension && nextScreen?.dimension === 11
+                ? 'Abrir la dimensión simbólica'
+                : isLastScreenOfDimension
+                  ? 'Pasar a la siguiente dimensión'
+                  : 'Continuar'
 
   return (
     <div
@@ -516,52 +569,70 @@ export function OnboardingPage({
       </div>
 
       <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col overflow-hidden px-4 pb-3 sm:px-8 lg:px-10">
-        <StageProgress
-          dimension={currentScreen.dimension}
-          totalDimensions={12}
-          label={currentScreen.label}
-          substep={currentScreen.substep}
-          totalSubsteps={currentScreen.totalSubsteps}
-          globalProgress={globalProgress}
-          atmosphere={activeAtmosphere}
-        />
-
-        <div className="grid min-h-0 flex-1 overflow-hidden">
-        <div
-          key={`current-${currentScreen.id}`}
-          className={`col-start-1 row-start-1 min-h-0 min-w-0 ${
-            transition
-              ? transition.direction === 'forward'
-                ? 'animate-room-exit-forward pointer-events-none'
-                : 'animate-room-exit-backward pointer-events-none'
-              : ''
-          }`}
-          style={
-            transition
-              ? { animationDuration: `${transition.duration}ms` }
-              : undefined
-          }
-        >
-          {renderScreen(screenIndex)}
-        </div>
-
-        {transition && (
-          <div
-            key={`incoming-${screens[transition.target].id}`}
-            aria-hidden="true"
-            className={`pointer-events-none col-start-1 row-start-1 min-h-0 min-w-0 ${
-              transition.direction === 'forward'
-                ? 'animate-room-enter-forward'
-                : 'animate-room-enter-backward'
-            }`}
-            style={{ animationDuration: `${transition.duration}ms` }}
-          >
-            {renderScreen(transition.target)}
-          </div>
+        {currentScreen.kind !== 'map' && (
+          <StageProgress
+            dimension={currentScreen.dimension}
+            totalDimensions={12}
+            label={currentScreen.label}
+            substep={currentScreen.substep}
+            totalSubsteps={currentScreen.totalSubsteps}
+            globalProgress={globalProgress}
+            atmosphere={activeAtmosphere}
+          />
         )}
 
-        </div>
+        {(() => {
+          const goingToMap = Boolean(transition && screens[transition.target]?.kind === 'map')
+          const leavingMap = currentScreen.kind === 'map'
+          const mapDuration = 700
 
+          const currentExitClass = goingToMap
+            ? 'animate-zoom-to-map pointer-events-none'
+            : leavingMap
+              ? 'animate-map-zoom-out pointer-events-none'
+              : transition
+                ? transition.direction === 'forward'
+                  ? 'animate-room-exit-forward pointer-events-none'
+                  : 'animate-room-exit-backward pointer-events-none'
+                : ''
+
+          const incomingEnterClass = goingToMap
+            ? 'animate-map-zoom-in'
+            : leavingMap
+              ? 'animate-zoom-from-map'
+              : transition
+                ? transition.direction === 'forward'
+                  ? 'animate-room-enter-forward'
+                  : 'animate-room-enter-backward'
+                : ''
+
+          const duration = (goingToMap || leavingMap) ? mapDuration : transition?.duration ?? 560
+
+          return (
+            <div className="grid min-h-0 flex-1 overflow-hidden">
+              <div
+                key={`current-${currentScreen.id}`}
+                className={`col-start-1 row-start-1 min-h-0 min-w-0 ${transition ? currentExitClass : ''}`}
+                style={transition ? { animationDuration: `${duration}ms` } : undefined}
+              >
+                {renderScreen(screenIndex)}
+              </div>
+
+              {transition && (
+                <div
+                  key={`incoming-${screens[transition.target].id}`}
+                  aria-hidden="true"
+                  className={`pointer-events-none col-start-1 row-start-1 min-h-0 min-w-0 ${incomingEnterClass}`}
+                  style={{ animationDuration: `${duration}ms` }}
+                >
+                  {renderScreen(transition.target)}
+                </div>
+              )}
+            </div>
+          )
+        })()}
+
+        {currentScreen.kind !== 'map' && (
         <div className="flex shrink-0 items-center justify-between gap-3 pt-3 sm:pt-4">
           <Button
             variant="ghost"
@@ -599,6 +670,7 @@ export function OnboardingPage({
             </Button>
           </div>
         </div>
+        )}
       </div>
     </div>
   )

@@ -24,8 +24,8 @@ export function DimensionInterlude({
       <article
         className={`relative w-full max-w-4xl overflow-hidden rounded-[2rem] border p-6 backdrop-blur-md sm:p-10 lg:p-12 ${
           dark
-            ? 'border-[#b8d5ff]/22 bg-[#172f4d]/76 text-[#f7fbff]'
-            : 'border-white/80 bg-white/68 text-forest shadow-[0_24px_70px_rgba(66,111,154,0.1)]'
+            ? 'border-white/15 bg-[#182b1e]/80 text-[#f2ede2]'
+            : 'border-white/80 bg-white/68 text-forest shadow-[0_24px_70px_rgba(42,74,58,0.1)]'
         }`}
       >
         <span
@@ -37,7 +37,7 @@ export function DimensionInterlude({
         </span>
         <p
           className={`text-xs font-semibold uppercase tracking-[0.16em] ${
-            dark ? 'text-[#b8d5ff]' : 'text-moss'
+            dark ? 'text-[#8ab098]' : 'text-moss'
           }`}
         >
           {label} · Una pausa
@@ -47,7 +47,7 @@ export function DimensionInterlude({
         </h2>
         <p
           className={`mt-5 max-w-2xl text-sm leading-7 ${
-            dark ? 'text-[#f7fbff]/62' : 'text-muted'
+            dark ? 'text-[#f2ede2]/62' : 'text-muted'
           }`}
         >
           {text}
@@ -55,7 +55,7 @@ export function DimensionInterlude({
         <div
           className={`mt-7 max-w-2xl border-l pl-5 font-serif text-lg italic leading-7 sm:text-xl ${
             dark
-              ? 'border-[#b8d5ff]/40 text-[#c7dcff]'
+              ? 'border-[#8ab098]/50 text-[#b8d8c0]'
               : 'border-clay/40 text-clay'
           }`}
         >
